@@ -1,0 +1,43 @@
+---
+title: "Analysis Phytophthora spp. survey"
+author: "Daniel Cerritos"
+date: "4/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(tidyverse)
+library(here)
+```
+
+# Import data
+
+```{r data}
+# samples collection
+samples <- read_csv(here("output", "clean_data", "01_sample-collection_clean-data.csv"))
+```
+
+
+# Exploratotry analysis
+
+```{r exp analysis}
+# 2016-2017: soil samples
+# 2018: plants
+samples %>%
+  group_by(year) %>% 
+  count() 
+
+samples$county %>% 
+  n_distinct() # 47 counties sampled 
+```
+
+# sample collection map
+
+```{r map}
+
+```
+

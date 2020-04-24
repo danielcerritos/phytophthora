@@ -72,7 +72,7 @@ fs.2019 <- path.fs.2019 %>%
 
 ```{r samples}
 samples.2016 <- samples.2016 %>% 
-  mutate(year = 2017) %>% 
+  mutate(year = 2016) %>% 
   select(year, sample_id, county)
 
 samples.2017 <- samples.2017 %>% 
@@ -81,6 +81,7 @@ samples.2017 <- samples.2017 %>%
 
 samples.2018 <- samples.2018 %>% 
   mutate(year = 2018) %>% 
+  filter(`Genus Confirmation` == "Confirmed") %>% 
   select(year, 
          sample_id = `Sample #`, 
          county = County)
