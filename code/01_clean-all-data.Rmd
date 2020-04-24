@@ -1,0 +1,199 @@
+---
+title: "raw data cleaning"
+author: "Daniel Cerritos"
+date: "4/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(here)
+library(tidyverse)
+library(readxl)
+```
+
+# Import data
+
+```{r import data}
+# sample collection 
+samples.2016 <- read_excel(here("data", "Samples 2016.xlsx"))
+samples.2017 <- read_excel(here("data", "Samples 2017.xlsx"))
+samples.2018 <- read_excel(here("data", "2018 soypocalypse.xlsx"))
+
+# pathotype  
+sansomeana <- read_excel(here("data", "P. sansomeana pathotyping.xlsx"))
+sojae <- read_excel(here("data","P. sojae Pathotyping.xlsx "), sheet = 3)
+
+# aggressiveness 
+exp_names <- c("exp 1", " exp 2", " exp 3")
+
+path.design <- list.files(here("data"), pattern = "design", full.names = TRUE)
+agg.design <- path.design %>% 
+  set_names(exp_names) %>% 
+  map_df(read_csv, .id = "names")
+
+path.dry.weight <- list.files(here("data"), pattern = "dry-weigth", full.names = TRUE)
+dry_weight <- path.dry.weight %>% 
+  set_names(exp_names) %>% 
+  map_df(read_excel, .id = "names")
+
+path.length.area <- list.files(here("data"), pattern = "root-length-and-area", 
+                               full.names = TRUE)
+length_area <- path.length.area %>% 
+  set_names(exp_names) %>% 
+  map_df(read_excel, .id = "names")
+
+path.emergence <- list.files(here("data"), pattern = "germination", full.names = TRUE)
+emergence <- path.emergence %>% 
+  set_names(exp_names) %>% 
+  map_df(read_csv, .id = "names")
+
+# fungicide sensitivity
+path.fs.2018 <- list.files(here("data"), pattern = "2018_exp" , full.names = TRUE)
+fs.2018 <- path.fs.2018 %>% 
+  set_names(c("azoxystrobin_1", "mefenoxam_1", "metalaxyl_1", 
+              "azoxystrobin_2", "mefenoxam_2", "metalaxyl_2")) %>% 
+  map_df(read_excel, .id = "names")
+
+pilot_ethaboxam <- read_excel(here("data", "fungicide-sensitivity-2019_pilot_ethaboxam.xlsx"))
+
+path.fs.2019 <- list.files(here("data"), pattern = "2019_exp", full.names = TRUE)
+path.fs.2019
+fs.2019 <- path.fs.2019 %>% 
+   set_names(c("azoxystrobin_1", "ethaboxam_1", "mefenoxam_1", "metalaxyl_1", 
+              "azoxystrobin_2", "ethaboxam_2", "mefenoxam_2", "metalaxyl_2")) %>% 
+  map_df(read_excel, .id = "names")
+```
+
+# Sample collection
+
+```{r samples}
+samples.2016 <- samples.2016 %>% 
+  mutate(year = 2017) %>% 
+  select(year, sample_id, county)
+
+samples.2017 <- samples.2017 %>% 
+  mutate(year = 2017) %>% 
+  select(year, sample_id, county)
+
+samples.2018 <- samples.2018 %>% 
+  mutate(year = 2018) %>% 
+  select(year, 
+         sample_id = `Sample #`, 
+         county = County)
+
+samples <- rbind(samples.2016, samples.2017, samples.2018)
+
+write_csv(samples, path = here("output", "clean_data", "01_sample-collection_clean-data.csv"))
+```
+
+# Pathotype
+
+```{r p sojae}
+sojae <- sojae[-1, ] 
+sojae <- sojae %>% 
+  select(isolate_number = ...1,
+         isolate_id = ...2,
+         isolate_name = ...3, 
+         county = ...4,
+         Williams...7:Harosoy, Williams...15:`L85-3059`)
+
+sojae <- sojae %>% 
+  pivot_longer(
+    c(-isolate_number, -isolate_id, -isolate_name, -county), 
+    names_to = "differential", 
+    values_to = "n",
+  ) %>% 
+  separate(n, 
+           sep = "/", 
+           into = c("dead", "total"))
+
+sojae[c(22, 106, 134, 190, 232), c("dead", "total")] <- 12  # 12/12 was transfomed to date
+
+sojae$differential <- str_replace_all(sojae$differential, # two susceptible controls included
+                                      c("Williams...7" = "Williams", 
+                                      "Williams...15" = "Williams")) 
+sojae <- sojae %>% 
+  mutate(
+    gene = case_when(
+    differential == "Williams" ~ "rps",
+    differential == "Harlon" ~ "1a", 
+    differential == "Harosoy 13XX" ~ "1b", 
+    differential == "Williams 79" ~ "1c", 
+    differential == "Williams 82" ~ "1k", 
+    differential == "Harosoy 62XX" ~ "6", 
+    differential == "Harosoy" ~ "7", 
+    differential == "L76-1988" ~ "2", 
+    differential == "L83-570" ~ "3a", 
+    differential == "PRX-146-36" ~ "3b", 
+    differential == "PRX-145-48" ~ "3c", 
+    differential == "L85-2352" ~ "4", 
+    differential == "L85-3059" ~ "5"
+  ))
+
+sojae <- sojae %>% 
+  select(isolate_number:differential, gene, dead:total) # reorganize columns 
+
+write_csv(sojae, path = here("output", "clean_data", "01_pathotype-psojae_clean-data.csv"))
+```
+
+```{r p sansomeana}
+sansomeana <- sansomeana[-1, ]
+sansomeana <- sansomeana %>% 
+  pivot_longer(-Isolate, 
+               names_to = "differential", 
+               values_to = "n") %>% 
+  separate(n, 
+           sep = "/", 
+           into = c("dead", "total"))
+
+sansomeana <- sansomeana %>% 
+  mutate(
+    gene = case_when(
+    differential == "Williams" ~ "rps",
+    differential == "Harlon" ~ "1a", 
+    differential == "Harosoy 13XX" ~ "1b", 
+    differential == "Williams 79" ~ "1c", 
+    differential == "Williams 82" ~ "1k", 
+    differential == "Harosoy 62XX" ~ "6", 
+    differential == "Harosoy" ~ "7", 
+    differential == "L79-1988" ~ "2", 
+    differential == "L83-570" ~ "3a", 
+    differential == "PRX-146-36" ~ "3b", 
+    differential == "PRX-145-48" ~ "3c", 
+    differential == "L85-2352" ~ "4", 
+    differential == "L85-3059" ~ "5"
+  ))
+
+sansomeana <- sansomeana %>%
+  select(isolate_id = Isolate, 
+         differential, gene, dead:total) 
+
+write_csv(sansomeana, path = here("output", "clean_data", "01_pathotype-psansomeana_clean-data.csv"))
+```
+
+# Aggressiveness
+
+```{r agg data}
+
+```
+
+
+# Fungicide sensitivity 
+
+```{r fs 2018}
+fs.2018 <- fs.2018 %>% 
+  separate(names, sep = "_", into = c("fungicide", "experiment"))
+
+write_csv(sansomeana, path = here("output", "clean_data", "01_fungicide-sensitivity-2018_clean-data.csv"))
+
+fs.2019 <- fs.2019 %>% 
+  separate(names, sep = "_", into = c("fungicide", "experiment"))
+
+write_csv(sansomeana, path = here("output", "clean_data", "01_fungicide-sensitivity-2019_clean-data.csv"))
+```
+
+
