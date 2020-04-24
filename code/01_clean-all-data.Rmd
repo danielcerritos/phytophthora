@@ -105,8 +105,7 @@ sojae <- sojae %>%
   pivot_longer(
     c(-isolate_number, -isolate_id, -isolate_name, -county), 
     names_to = "differential", 
-    values_to = "n",
-  ) %>% 
+    values_to = "n") %>% 
   separate(n, 
            sep = "/", 
            into = c("dead", "total"))
@@ -178,7 +177,10 @@ write_csv(sansomeana, path = here("output", "clean_data", "01_pathotype-psansome
 # Aggressiveness
 
 ```{r agg data}
-
+agg.design
+dry_weight
+emergence
+length_area
 ```
 
 
