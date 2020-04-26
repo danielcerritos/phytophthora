@@ -10,17 +10,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-library(tidyverse)
+# install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+
 library(here)
+library(tidyverse)
+library(ggplot2)
+library(sf)
+library(maps)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(cowplot)
 ```
 
 # Import data
 
 ```{r data}
 # samples collection
-samples <- read_csv(here("output", "clean_data", "01_sample-collection_clean-data.csv"))
+soil.samples <- read_csv(here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
+plant.samples <- read_csv(here("output", "clean_data", "01_plant-samples-2018_clean-data.csv"))
 ```
-
 
 # Exploratotry analysis
 
@@ -38,6 +46,39 @@ samples$county %>%
 # sample collection map
 
 ```{r map}
+# fields where soil samples were collected
+soil.samples <- soil.samples %>% 
+  select(year, long, lat) %>% 
+  filter(!is.na(long))
+# convert to sf object
+soil.samples <- st_as_sf(soil.samples, coords = c("long", "lat"), 
+                   crs = 4326, agr = "constant")
 
+world <- ne_countries(scale = "medium", returnclass = "sf")
+states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+
+counties <- st_as_sf(map("county", plot = FALSE, fill = TRUE))
+counties <- subset(counties, grepl("illinois", counties$ID))
+
+counties.list <- counties$ID
+
+# save counties geom points and add manually plant samples data
+write.csv(counties.list, here("output", "add_plant-samples-and-isolates-data.csv"))
+
+# add data
+all_data <- read.csv(here("output", "isolates.csv")) # correct these code, dont do it manually
+
+all_data <- inner_join(counties, all_data, by = "ID")
+  
+soil.samples$year <- as.factor(soil.samples$year)
+
+# map 
+ggplot(data = world) +
+  geom_sf(data = states, fill = NA) + 
+  geom_sf(data = all_data, aes(fill = plant_samples), color = "black") +
+  geom_sf(data = soil.samples, aes(shape = year),  size = 4) +
+  coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
+  theme_map() +
+  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7", na.value = "white")
 ```
 

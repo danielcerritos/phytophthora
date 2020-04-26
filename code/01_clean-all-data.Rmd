@@ -71,13 +71,14 @@ fs.2019 <- path.fs.2019 %>%
 # Sample collection
 
 ```{r samples}
+
 samples.2016 <- samples.2016 %>% 
   mutate(year = 2016) %>% 
-  select(year, sample_id, county)
+  select(year, sample_id, lat = `GPS N`, long = `GPS W`, county)
 
 samples.2017 <- samples.2017 %>% 
   mutate(year = 2017) %>% 
-  select(year, sample_id, county)
+  select(year, sample_id, lat = `GPS N`, long = `GPS W`, county)
 
 samples.2018 <- samples.2018 %>% 
   mutate(year = 2018) %>% 
@@ -86,9 +87,11 @@ samples.2018 <- samples.2018 %>%
          sample_id = `Sample #`, 
          county = County)
 
-samples <- rbind(samples.2016, samples.2017, samples.2018)
+soil.samples <- rbind(samples.2016, samples.2017)
 
-write_csv(samples, path = here("output", "clean_data", "01_sample-collection_clean-data.csv"))
+write_csv(soil.samples, path = here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
+write_csv(samples.2018, path = here("output", "clean_data", "01_plant-samples-2018_clean-data.csv"))
+
 ```
 
 # Pathotype
