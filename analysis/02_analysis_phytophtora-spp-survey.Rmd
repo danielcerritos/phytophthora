@@ -10,7 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+
+# devtools::install_github("yutannihilation/ggsflabel")
 
 library(here)
 library(tidyverse)
@@ -19,7 +21,9 @@ library(sf)
 library(maps)
 library(rnaturalearth)
 library(rnaturalearthdata)
+library(ggrepel)
 library(cowplot)
+library(ggsflabel)
 ```
 
 # Import data
@@ -45,7 +49,10 @@ samples$county %>%
 
 # sample collection map
 
-```{r map}
+```{r samples map}
+# https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html use code from here
+
+
 # fields where soil samples were collected
 soil.samples <- soil.samples %>% 
   select(year, long, lat) %>% 
@@ -72,13 +79,24 @@ all_data <- inner_join(counties, all_data, by = "ID")
   
 soil.samples$year <- as.factor(soil.samples$year)
 
+label <- all_data %>% 
+  filter(ID %in% c("illinois,boone", "illinois,champaign", "illinois,crawford", "illinois,grundy", 
+                   "illinois,jefferson", "illinois,kankakee", "illinois,knox", "illinois,macon", 
+                   "illinois,madison", "illinois,massac", "illinois,morgan", "illinois,vermilion")) %>% 
+  separate(ID, into = c("state", "county"), sep = ",")
+
 # map 
 ggplot(data = world) +
   geom_sf(data = states, fill = NA) + 
   geom_sf(data = all_data, aes(fill = plant_samples), color = "black") +
   geom_sf(data = soil.samples, aes(shape = year),  size = 4) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  theme_map() +
-  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7", na.value = "white")
+  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7") +
+  geom_sf_text_repel(data = label, aes(label = county), 
+                      force = 100, nudge_x = -2, seed = 10)
 ```
+
+# Isolates collected map 
+
+
 
