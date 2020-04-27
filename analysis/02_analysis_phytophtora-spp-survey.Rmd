@@ -11,9 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r library}
 # install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
-
 # devtools::install_github("yutannihilation/ggsflabel")
-
 library(here)
 library(tidyverse)
 library(ggplot2)
