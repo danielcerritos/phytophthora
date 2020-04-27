@@ -1,0 +1,298 @@
+names,pot,rep,isolate,species,isolate_id,emergence,germination,shoot.mg,root.mg
+exp 1,1,1,18PR015,Phytophthora sojae,29,6,8,553.4,118.7
+exp 1,2,1,Control Agar,Control Agar,Control Agar,6,8,720.1,279.7
+exp 1,3,1,18PR004,Phytophthora sansomeana,18,5,7,486.1,200.6
+exp 1,4,1,18PR012,Phytophthora sojae,26,7,7,285.5,69.3
+exp 1,5,1,17PR009A.2,Phytophthora sojae,10,6,6,316,121.1
+exp 1,6,1,17PR006L.1,Phytophthora sansomeana,8,4,8,400.8,239.3
+exp 1,7,1,16PR024C.2,Phytophthora sansomeana,5,5,7,413.1,257.7
+exp 1,8,2,18PR015,Phytophthora sojae,29,5,6,276.2,107.8
+exp 1,9,1,18PR013,Phytophthora sojae,27,3,5,334.9,142.8
+exp 1,10,1,18PR016,Phytophthora sojae,30,4,8,458.4,109.7
+exp 1,11,1,17PR013G.3,Phytophthora sojae,11,2,8,413.9,193.2
+exp 1,12,1,18PR005,Phytophthora sansomeana,19,6,8,574.2,279.6
+exp 1,13,1,18PR007,Phytophthora sojae,21,5,7,243.1,79.9
+exp 1,14,1,18PR001,Phytophthora sojae,16,5,7,239.5,87.5
+exp 1,15,1,18PR006,Phytophthora sojae,20,5,8,462.4,155.2
+exp 1,16,1,16PR027C.1,Phytophthora sojae,6,6,8,474.1,186.2
+exp 1,17,1,Control None,Control None,Control None,7,7,502.7,185.3
+exp 1,18,1,16PR018B.1,Phytophthora sansomeana,3,4,8,562.6,261.1
+exp 1,19,3,18PR015,Phytophthora sojae,29,3,8,383,203.4
+exp 1,20,1,18PR008,Phytophthora sojae,22,5,6,248.4,67.9
+exp 1,21,1,16PR009.1,Phytophthora sojae,1,7,7,431.8,56.9
+exp 1,22,1,18PR014,Phytophthora sojae,28,7,8,357.4,118.2
+exp 1,23,2,18PR014,Phytophthora sojae,28,8,9,481.1,148.4
+exp 1,24,1,16PR024C.1,Phytophthora sansomeana,4,6,8,640.5,245.3
+exp 1,25,2,18PR012,Phytophthora sojae,26,4,9,370.1,122.2
+exp 1,26,1,16PR027C.2,Phytophthora sojae,7,3,8,463.9,235.1
+exp 1,27,1,18PR010,Phytophthora sojae,24,4,7,366.5,104.9
+exp 1,28,1,17PR018J.3,Phytophthora sojae,15,5,7,345.8,116.1
+exp 1,29,1,18PR009,Phytophthora sojae,23,3,8,444.8,144.9
+exp 1,30,1,16PR009.2,Phytophthora sojae,2,4,6,338.3,112.1
+exp 1,31,2,18PR016,Phytophthora sojae,30,5,7,430.9,106.8
+exp 1,32,2,17PR009A.2,Phytophthora sojae,10,5,9,326.3,123.8
+exp 1,33,2,18PR001,Phytophthora sojae,16,4,7,366.5,175.6
+exp 1,34,2,16PR018B.1,Phytophthora sansomeana,3,5,8,517.1,261.5
+exp 1,35,2,18PR005,Phytophthora sansomeana,19,8,8,465.8,246.9
+exp 1,36,2,18PR009,Phytophthora sojae,23,7,7,231.1,90.6
+exp 1,37,2,16PR024C.2,Phytophthora sansomeana,5,5,8,795.6,284.2
+exp 1,38,2,18PR010,Phytophthora sojae,24,7,7,154.2,73.4
+exp 1,39,1,18PR003,Phytophthora sansomeana,17,7,7,536.4,152.7
+exp 1,40,2,16PR009.1,Phytophthora sojae,1,5,7,452.3,209.7
+exp 1,41,2,18PR006,Phytophthora sojae,20,7,8,566.7,159.9
+exp 1,42,1,17PR018F.2,Phytophthora sojae,13,4,7,414.7,111.2
+exp 1,43,2,17PR006L.1,Phytophthora sansomeana,8,4,8,462,266.2
+exp 1,44,1,17PR018H.1,Phytophthora sojae,14,7,7,361.9,70.1
+exp 1,45,2,16PR027C.1,Phytophthora sojae,6,4,7,488.3,175.5
+exp 1,46,2,17PR013G.3,Phytophthora sojae,11,7,8,622.2,271.1
+exp 1,47,2,17PR018J.3,Phytophthora sojae,15,5,7,261.1,115.2
+exp 1,48,2,17PR018F.2,Phytophthora sojae,13,6,9,377.6,181.1
+exp 1,49,2,18PR003,Phytophthora sansomeana,17,4,7,545,232.5
+exp 1,50,2,16PR024C.1,Phytophthora sansomeana,4,4,8,499.9,257.5
+exp 1,51,2,Control None,Control None,Control None,6,8,267.2,247.2
+exp 1,52,1,17PR018F.1,Phytophthora sojae,12,6,6,400.5,184.6
+exp 1,53,3,16PR027C.1,Phytophthora sojae,6,5,8,505.6,219.9
+exp 1,54,1,18PR011,Phytophthora sojae,25,4,7,428.1,152
+exp 1,55,2,18PR004,Phytophthora sansomeana,18,4,7,418.3,240.3
+exp 1,56,2,18PR013,Phytophthora sojae,27,5,6,243.8,76.6
+exp 1,57,3,17PR018F.2,Phytophthora sojae,13,5,7,372.1,226.1
+exp 1,58,3,16PR009.1,Phytophthora sojae,1,5,6,181.8,59.2
+exp 1,59,1,18PR017,Phytophthora sojae,31,7,7,327.5,116.5
+exp 1,60,2,17PR018H.1,Phytophthora sojae,14,4,4,242.1,109.9
+exp 1,61,3,18PR014,Phytophthora sojae,28,6,7,301.2,122.1
+exp 1,62,3,18PR013,Phytophthora sojae,27,7,8,172,69.8
+exp 1,63,3,18PR010,Phytophthora sojae,24,6,7,288.1,67.6
+exp 1,64,2,16PR027C.2,Phytophthora sojae,7,4,7,459.5,211.5
+exp 1,65,3,18PR001,Phytophthora sojae,16,4,6,379.9,209.4
+exp 1,66,2,16PR009.2,Phytophthora sojae,2,3,7,476.2,173.8
+exp 1,67,2,Control Agar,Control Agar,Control Agar,3,5,285.5,149.9
+exp 1,68,3,18PR012,Phytophthora sojae,26,7,7,395.2,80.2
+exp 1,69,2,18PR008,Phytophthora sojae,22,6,7,293.3,139.7
+exp 1,70,3,16PR024C.1,Phytophthora sansomeana,4,4,6,291.8,150.7
+exp 1,71,2,18PR017,Phytophthora sojae,31,6,7,224.8,18.8
+exp 1,72,3,18PR016,Phytophthora sojae,30,4,6,184.7,80.4
+exp 1,73,2,17PR018F.1,Phytophthora sojae,12,4,4,108.8,74.4
+exp 1,74,3,Control Agar,Control Agar,Control Agar,5,7,590.3,329.3
+exp 1,75,2,18PR007,Phytophthora sojae,21,3,6,564.3,132.5
+exp 1,76,3,16PR018B.1,Phytophthora sansomeana,3,5,8,324.4,211.7
+exp 1,77,3,17PR018J.3,Phytophthora sojae,15,5,7,302.3,155.5
+exp 1,78,2,18PR011,Phytophthora sojae,25,4,5,163.9,74.3
+exp 1,79,3,18PR008,Phytophthora sojae,22,2,5,259.5,40.9
+exp 1,80,1,17PR009A.1,Phytophthora sojae,9,4,5,395.6,115.3
+exp 1,81,3,18PR009,Phytophthora sojae,23,4,6,325.8,22.2
+exp 1,82,3,Control None,Control None,Control None,3,8,541.5,170.9
+exp 1,83,3,18PR017,Phytophthora sojae,31,6,3,110.8,19.5
+exp 1,84,3,16PR024C.2,Phytophthora sansomeana,5,6,8,420.4,179.1
+exp 1,85,3,18PR005,Phytophthora sansomeana,19,3,7,360.4,211.3
+exp 1,86,3,18PR006,Phytophthora sojae,20,4,9,280.4,130.4
+exp 1,87,3,18PR003,Phytophthora sansomeana,17,3,7,487.5,133.3
+exp 1,88,3,17PR013G.3,Phytophthora sojae,11,3,4,560.9,52.5
+exp 1,89,2,17PR009A.1,Phytophthora sojae,9,6,6,170.1,83.4
+exp 1,90,3,16PR009.2,Phytophthora sojae,2,5,4,392.2,78.3
+exp 1,91,3,17PR018F.1,Phytophthora sojae,12,5,7,272.3,82.2
+exp 1,92,3,16PR027C.2,Phytophthora sojae,7,3,7,203.7,85.6
+exp 1,93,3,17PR009A.1,Phytophthora sojae,9,7,3,356.5,8.9
+exp 1,94,3,18PR004,Phytophthora sansomeana,18,5,8,396.5,197.9
+exp 1,95,3,18PR007,Phytophthora sojae,21,2,5,191.3,75.4
+exp 1,96,3,17PR009A.2,Phytophthora sojae,10,5,8,351.1,114.5
+exp 1,97,3,18PR011,Phytophthora sojae,25,3,7,297.7,60.2
+exp 1,98,3,17PR018H.1,Phytophthora sojae,14,7,6,305.4,89.3
+exp 1,99,3,17PR006L.1,Phytophthora sansomeana,8,7,6,344.2,222.4
+ exp 2,1,1,18PR017,Phytophthora sojae,31,6,7,328.4,86.3
+ exp 2,2,1,16PR024C.1,Phytophthora sansomeana,4,6,6,613,232.1
+ exp 2,3,1,18PR005,Phytophthora sansomeana,19,6,7,560.2,260.5
+ exp 2,4,1,16PR009.1,Phytophthora sojae,1,5,8,331.8,82.3
+ exp 2,5,1,18PR008,Phytophthora sojae,22,6,7,416.4,113.7
+ exp 2,6,1,18PR014,Phytophthora sojae,28,6,8,623.9,140
+ exp 2,7,1,17PR006L.1,Phytophthora sansomeana,8,7,8,603.8,263.9
+ exp 2,8,1,Control Agar,Control Agar,Control Agar,5,7,624.5,270.6
+ exp 2,9,1,18PR010,Phytophthora sojae,24,5,7,278.1,57.3
+ exp 2,10,1,18PR001,Phytophthora sojae,16,8,8,617.4,131
+ exp 2,11,1,16PR024C.2,Phytophthora sansomeana,5,7,8,727.8,317.3
+ exp 2,12,2,Control Agar,Control Agar,Control Agar,7,8,818.5,331.6
+ exp 2,13,2,18PR005,Phytophthora sansomeana,19,5,8,714.1,318.8
+ exp 2,14,1,18PR012,Phytophthora sojae,26,7,8,560.4,179.8
+ exp 2,15,1,18PR009,Phytophthora sojae,23,4,6,385.2,71.6
+ exp 2,16,1,16PR027C.2,Phytophthora sojae,7,7,8,337.8,145.3
+ exp 2,17,1,17PR018F.2,Phytophthora sojae,13,7,7,417.7,98.8
+ exp 2,18,1,17PR018H.1,Phytophthora sojae,14,6,6,236.7,87.5
+ exp 2,19,1,16PR009.2,Phytophthora sojae,2,5,5,188.2,27.3
+ exp 2,20,1,17PR009A.1,Phytophthora sojae,9,6,7,385.4,101.4
+ exp 2,21,2,18PR017,Phytophthora sojae,31,6,7,457.8,139.8
+ exp 2,22,2,17PR006L.1,Phytophthora sansomeana,8,4,5,497.5,227.6
+ exp 2,23,2,18PR008,Phytophthora sojae,22,5,6,324.7,126.4
+ exp 2,24,1,17PR013G.3,Phytophthora sojae,11,7,7,712.4,275.4
+ exp 2,25,2,16PR009.1,Phytophthora sojae,1,5,6,296.6,54.4
+ exp 2,26,2,18PR009,Phytophthora sojae,23,6,5,235,71.1
+ exp 2,27,1,18PR011,Phytophthora sojae,25,7,8,449.9,76.3
+ exp 2,28,2,18PR011,Phytophthora sojae,25,7,8,359.7,121
+ exp 2,29,1,18PR004,Phytophthora sansomeana,18,8,8,837.3,290.3
+ exp 2,30,1,16PR027C.1,Phytophthora sojae,6,7,7,354,177.3
+ exp 2,31,3,16PR009.1,Phytophthora sojae,1,6,6,485.9,120.2
+ exp 2,32,2,17PR018H.1,Phytophthora sojae,14,6,7,452.5,259
+ exp 2,33,1,17PR009A.2,Phytophthora sojae,10,8,7,280.5,108.8
+ exp 2,34,1,18PR015,Phytophthora sojae,29,6,7,253.1,120.4
+ exp 2,35,1,18PR006,Phytophthora sojae,20,6,7,399.1,158.3
+ exp 2,36,1,17PR018J.3,Phytophthora sojae,15,7,8,273.6,111
+ exp 2,37,2,17PR009A.1,Phytophthora sojae,9,5,5,228.1,80.9
+ exp 2,38,2,18PR014,Phytophthora sojae,28,4,6,137.6,79.4
+ exp 2,39,3,17PR006L.1,Phytophthora sansomeana,8,6,7,662.1,276.5
+ exp 2,40,1,Control None,Control None,Control None,6,7,338.4,231.6
+ exp 2,41,2,18PR015,Phytophthora sojae,29,8,8,470.8,151.6
+ exp 2,42,1,17PR018F.1,Phytophthora sojae,12,6,7,245.8,105.4
+ exp 2,43,3,17PR009A.1,Phytophthora sojae,9,8,8,54.5,148.5
+ exp 2,44,2,16PR027C.2,Phytophthora sojae,7,5,8,208.9,145.6
+ exp 2,45,2,18PR004,Phytophthora sansomeana,18,6,8,592,231
+ exp 2,46,2,16PR024C.2,Phytophthora sansomeana,5,6,7,681.4,305.3
+ exp 2,47,1,18PR007,Phytophthora sojae,21,4,5,244.8,93.9
+ exp 2,48,3,17PR018H.1,Phytophthora sojae,14,5,6,254.6,86.4
+ exp 2,49,3,Control Agar,Control Agar,Control Agar,6,8,849.5,307.7
+ exp 2,50,2,18PR007,Phytophthora sojae,21,7,7,338.7,110.3
+ exp 2,51,3,18PR009,Phytophthora sojae,23,7,7,231.5,92.4
+ exp 2,52,2,18PR010,Phytophthora sojae,24,8,8,293.7,69.9
+ exp 2,53,3,16PR024C.2,Phytophthora sansomeana,5,6,8,605.5,308.4
+ exp 2,54,2,17PR018J.3,Phytophthora sojae,15,7,8,320.6,137
+ exp 2,55,2,Control None,Control None,Control None,7,8,608.5,287.5
+ exp 2,56,3,18PR004,Phytophthora sansomeana,18,5,7,458.3,248.2
+ exp 2,57,3,Control None,Control None,Control None,5,7,388.4,282.8
+ exp 2,58,2,18PR012,Phytophthora sojae,26,6,6,295.2,102.3
+ exp 2,59,1,18PR016,Phytophthora sojae,30,6,8,229.2,101.9
+ exp 2,60,1,18PR003,Phytophthora sansomeana,17,6,7,630.1,260.2
+ exp 2,61,2,16PR027C.1,Phytophthora sojae,6,6,7,257.4,160.7
+ exp 2,62,1,18PR013,Phytophthora sojae,27,6,7,250.3,129.8
+ exp 2,63,2,18PR006,Phytophthora sojae,20,8,8,328.9,142.9
+ exp 2,64,3,18PR011,Phytophthora sojae,25,7,7,162.6,92.3
+ exp 2,65,1,16PR018B.1,Phytophthora sansomeana,3,6,7,713.4,298.7
+ exp 2,66,2,16PR018B.1,Phytophthora sansomeana,3,7,8,732.5,286.7
+ exp 2,67,3,18PR005,Phytophthora sansomeana,19,4,5,463.9,210.4
+ exp 2,68,3,18PR012,Phytophthora sojae,26,6,6,272.5,96.5
+ exp 2,69,2,16PR009.2,Phytophthora sojae,2,5,5,204.3,37.1
+ exp 2,70,3,16PR018B.1,Phytophthora sansomeana,3,6,7,593.5,249.8
+ exp 2,71,2,17PR018F.2,Phytophthora sojae,13,7,7,416.8,139.4
+ exp 2,72,3,18PR008,Phytophthora sojae,22,5,7,126.6,75.9
+ exp 2,73,3,18PR007,Phytophthora sojae,21,7,8,331.5,106.4
+ exp 2,74,2,18PR001,Phytophthora sojae,16,4,5,309.8,125.4
+ exp 2,75,2,18PR003,Phytophthora sansomeana,17,11,8,615.8,328.9
+ exp 2,76,2,16PR024C.1,Phytophthora sansomeana,4,5,7,697.3,301
+ exp 2,77,2,17PR018F.1,Phytophthora sojae,12,8,8,365.4,100.6
+ exp 2,78,3,16PR027C.1,Phytophthora sojae,6,6,6,468.3,229
+ exp 2,79,3,18PR014,Phytophthora sojae,28,7,7,497.2,161.4
+ exp 2,80,2,18PR016,Phytophthora sojae,30,5,7,287.7,106.3
+ exp 2,81,3,18PR010,Phytophthora sojae,24,7,8,379.5,98.6
+ exp 2,82,3,18PR001,Phytophthora sojae,16,6,7,465.8,212.2
+ exp 2,83,3,17PR018F.2,Phytophthora sojae,13,6,8,488.9,181.7
+ exp 2,84,2,18PR013,Phytophthora sojae,27,6,8,190.5,76.2
+ exp 2,85,2,17PR013G.3,Phytophthora sojae,11,6,8,569.1,295.5
+ exp 2,86,3,18PR003,Phytophthora sansomeana,17,5,5,373.9,222.5
+ exp 2,87,3,18PR016,Phytophthora sojae,30,6,7,246.7,98.2
+ exp 2,88,3,17PR018J.3,Phytophthora sojae,15,6,6,464.4,180.4
+ exp 2,89,3,17PR018F.1,Phytophthora sojae,12,5,7,213.4,88.2
+ exp 2,90,3,16PR024C.1,Phytophthora sansomeana,4,6,7,668.1,271.9
+ exp 2,91,3,18PR013,Phytophthora sojae,27,6,7,249.1,94
+ exp 2,92,3,16PR027C.2,Phytophthora sojae,7,4,7,214.3,172.3
+ exp 2,93,3,17PR013G.3,Phytophthora sojae,11,6,6,414.4,120.2
+ exp 2,94,3,18PR015,Phytophthora sojae,29,8,8,578.5,265.8
+ exp 2,95,2,17PR009A.2,Phytophthora sojae,10,7,6,178,73.1
+ exp 2,96,3,17PR009A.2,Phytophthora sojae,10,5,7,167.3,114.1
+ exp 2,97,3,18PR006,Phytophthora sojae,20,6,6,182.1,54.6
+ exp 2,98,3,16PR009.2,Phytophthora sojae,2,6,6,143.6,62.6
+ exp 2,99,3,18PR017,Phytophthora sojae,31,5,6,200.2,53.4
+ exp 3,1,1,16PR009.2,Phytophthora sojae,2,NA,8,158.1,33.4
+ exp 3,2,1,18PR004,Phytophthora sansomeana,18,NA,7,484.2,162.8
+ exp 3,3,1,16PR018B.1,Phytophthora sansomeana,3,NA,7,425.3,125.5
+ exp 3,4,1,17PR018F.1,Phytophthora sojae,12,NA,7,152.8,51.4
+ exp 3,5,2,18PR004,Phytophthora sansomeana,18,NA,8,391.2,140.8
+ exp 3,6,1,17PR009A.2,Phytophthora sojae,10,NA,1,108.1,34.5
+ exp 3,7,1,16PR024C.1,Phytophthora sansomeana,4,NA,7,366.9,146.4
+ exp 3,8,1,18PR003,Phytophthora sansomeana,17,NA,6,530.4,176.2
+ exp 3,9,2,18PR003,Phytophthora sansomeana,17,NA,3,218.2,55.5
+ exp 3,10,1,18PR008,Phytophthora sojae,22,NA,7,304.2,60.2
+ exp 3,11,1,16PR027C.2,Phytophthora sojae,7,NA,8,193.2,49
+ exp 3,12,2,16PR024C.2,Phytophthora sansomeana,5,NA,6,337.2,107.2
+ exp 3,13,3,18PR003,Phytophthora sansomeana,17,NA,5,358.2,117.9
+ exp 3,14,1,18PR010,Phytophthora sojae,24,NA,6,280.2,50.7
+ exp 3,15,1,16PR027C.1,Phytophthora sojae,6,NA,5,297.2,86.1
+ exp 3,16,1,18PR007,Phytophthora sojae,21,NA,5,231.1,71.2
+ exp 3,17,2,16PR009.2,Phytophthora sojae,2,NA,5,193.1,36.9
+ exp 3,18,2,17PR018F.1,Phytophthora sojae,12,NA,6,267.2,79.8
+ exp 3,19,1,18PR015,Phytophthora sojae,29,NA,7,178.2,47.1
+ exp 3,20,1,18PR009,Phytophthora sojae,23,NA,7,113.9,40.3
+ exp 3,21,2,16PR018B.1,Phytophthora sansomeana,3,NA,6,275.2,86.9
+ exp 3,22,2,17PR018J.3,Phytophthora sojae,15,NA,5,92.3,33.7
+ exp 3,23,2,18PR012,Phytophthora sojae,26,NA,7,242.4,45.4
+ exp 3,24,1,18PR017,Phytophthora sojae,31,NA,5,69.9,19.9
+ exp 3,25,2,18PR007,Phytophthora sojae,21,NA,7,319.2,69.1
+ exp 3,26,2,16PR009.1,Phytophthora sojae,1,NA,6,107.6,23.6
+ exp 3,27,2,16PR024C.1,Phytophthora sansomeana,4,NA,7,381,122.3
+ exp 3,28,1,17PR018H.1,Phytophthora sojae,14,NA,7,231.4,73.1
+ exp 3,29,2,16PR024C.2,Phytophthora sansomeana,5,NA,7,391.8,152.5
+ exp 3,30,2,18PR012,Phytophthora sojae,26,NA,5,230.5,62
+ exp 3,31,2,18PR015,Phytophthora sojae,29,NA,6,246.7,98.6
+ exp 3,32,2,17PR018H.1,Phytophthora sojae,14,NA,6,327.5,85.2
+ exp 3,33,1,18PR013,Phytophthora sojae,27,NA,8,176.3,65.2
+ exp 3,34,1,17PR006L.1,Phytophthora sansomeana,8,NA,7,436.2,148.4
+ exp 3,35,1,17PR009A.1,Phytophthora sojae,9,NA,6,185.9,78.3
+ exp 3,36,1,Control Agar,Control Agar,Control Agar,NA,8,637.2,204.8
+ exp 3,37,1,17PR018F.2,Phytophthora sojae,13,NA,8,371.6,103.6
+ exp 3,38,3,18PR012,Phytophthora sojae,26,NA,6,148.9,95.9
+ exp 3,39,2,17PR009A.2,Phytophthora sojae,10,NA,8,198.5,50.9
+ exp 3,40,2,17PR018F.2,Phytophthora sojae,13,NA,7,254.9,91.5
+ exp 3,41,1,18PR016,Phytophthora sojae,30,NA,7,207.8,86.1
+ exp 3,42,1,18PR014,Phytophthora sojae,28,NA,6,98.2,60.2
+ exp 3,43,2,17PR018J.3,Phytophthora sojae,15,NA,7,157.8,50.5
+ exp 3,44,3,18PR015,Phytophthora sojae,29,NA,7,267.4,96.1
+ exp 3,45,2,18PR017,Phytophthora sojae,31,NA,7,141.3,46.6
+ exp 3,46,1,17PR013G.3,Phytophthora sojae,11,NA,7,274.2,139.7
+ exp 3,47,1,18PR006,Phytophthora sojae,20,NA,7,228.5,119.6
+ exp 3,48,1,Control None,Control None,Control None,NA,6,481.5,134.2
+ exp 3,49,2,16PR027C.2,Phytophthora sojae,7,NA,4,142.7,75.1
+ exp 3,50,2,16PR027C.1,Phytophthora sojae,6,NA,7,269.3,75.5
+ exp 3,51,2,18PR010,Phytophthora sojae,24,NA,6,230.5,47.4
+ exp 3,52,3,16PR024C.2,Phytophthora sansomeana,5,NA,5,369.3,159.7
+ exp 3,53,2,18PR008,Phytophthora sojae,22,NA,7,272.9,69.8
+ exp 3,54,2,18PR013,Phytophthora sojae,27,NA,7,252,141.8
+ exp 3,55,3,16PR009.2,Phytophthora sojae,2,NA,5,206.3,84.9
+ exp 3,56,2,18PR014,Phytophthora sojae,28,NA,5,199.7,78.5
+ exp 3,57,1,18PR011,Phytophthora sojae,25,NA,6,141.5,89.8
+ exp 3,58,2,16PR009.1,Phytophthora sojae,1,NA,6,182.7,54.2
+ exp 3,59,2,18PR006,Phytophthora sojae,20,NA,8,214.3,119.2
+ exp 3,60,1,18PR005,Phytophthora sansomeana,19,NA,8,346.2,172.3
+ exp 3,61,3,17PR018F.1,Phytophthora sojae,12,NA,7,156.6,95.9
+ exp 3,62,2,18PR011,Phytophthora sojae,25,NA,4,84.5,77.6
+ exp 3,63,1,18PR001,Phytophthora sojae,16,NA,7,174.2,74.4
+ exp 3,64,2,17PR006L.1,Phytophthora sansomeana,8,NA,6,298.5,163.5
+ exp 3,65,3,17PR018J.3,Phytophthora sojae,15,NA,6,107.1,186.4
+ exp 3,66,3,18PR008,Phytophthora sojae,22,NA,7,241.7,92.2
+ exp 3,67,3,18PR014,Phytophthora sojae,28,NA,6,204.7,104.3
+ exp 3,68,2,18PR005,Phytophthora sansomeana,19,NA,9,474.2,174.8
+ exp 3,69,2,18PR001,Phytophthora sojae,16,NA,7,192.1,91.4
+ exp 3,70,3,16PR027C.2,Phytophthora sojae,7,NA,4,238.2,98.5
+ exp 3,71,3,18PR006,Phytophthora sojae,20,NA,5,103.3,38
+ exp 3,72,3,18PR013,Phytophthora sojae,27,NA,7,156.7,52.1
+ exp 3,73,3,Control Agar,Control Agar,Control Agar,NA,5,363.9,102.1
+ exp 3,74,3,18PR011,Phytophthora sojae,25,NA,6,118.3,35.5
+ exp 3,75,3,Control Agar,Control Agar,Control Agar,NA,8,556.2,231.8
+ exp 3,76,3,17PR018F.2,Phytophthora sojae,13,NA,6,136.6,37.5
+ exp 3,77,3,18PR017,Phytophthora sojae,31,NA,6,103.6,37.2
+ exp 3,78,3,16PR024C.1,Phytophthora sansomeana,4,NA,6,337.2,130.4
+ exp 3,79,2,Control None,Control None,Control None,NA,6,299.2,91.8
+ exp 3,80,3,16PR009.1,Phytophthora sojae,1,NA,5,90.2,45.4
+ exp 3,81,3,18PR001,Phytophthora sojae,16,NA,7,115.2,139.1
+ exp 3,82,2,17PR013G.3,Phytophthora sojae,11,NA,6,262.2,119.7
+ exp 3,83,3,18PR004,Phytophthora sansomeana,18,NA,3,195.3,95.5
+ exp 3,84,3,16PR018B.1,Phytophthora sansomeana,3,NA,6,459.3,148.9
+ exp 3,85,2,18PR016,Phytophthora sojae,30,NA,7,172.3,72.3
+ exp 3,86,3,18PR016,Phytophthora sojae,30,NA,6,131.5,116.2
+ exp 3,87,3,17PR013G.3,Phytophthora sojae,11,NA,5,229.1,86.5
+ exp 3,88,3,16PR027C.1,Phytophthora sojae,6,NA,6,144.8,51.4
+ exp 3,89,2,17PR009A.1,Phytophthora sojae,9,NA,5,153.2,105.6
+ exp 3,90,3,17PR018H.1,Phytophthora sojae,14,NA,8,266.3,62.3
+ exp 3,91,3,17PR006L.1,Phytophthora sansomeana,8,NA,6,429.9,158.3
+ exp 3,92,3,18PR007,Phytophthora sojae,21,NA,5,57,42.2
+ exp 3,93,3,17PR009A.1,Phytophthora sojae,9,NA,5,94.5,91.1
+ exp 3,94,3,17PR009A.2,Phytophthora sojae,10,NA,7,185.3,50.9
+ exp 3,95,3,Control None,Control None,Control None,NA,6,398.8,173.6
+ exp 3,96,3,18PR005,Phytophthora sansomeana,19,NA,7,397.7,153.2
+ exp 3,97,3,18PR010,Phytophthora sojae,24,NA,7,133.2,43.6
+ exp 3,98,2,18PR009,Phytophthora sojae,23,NA,6,104.6,72.2
+ exp 3,99,3,18PR009,Phytophthora sojae,23,NA,5,158.4,29.6
