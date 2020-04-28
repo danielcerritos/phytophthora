@@ -55,7 +55,6 @@ plant.samples$county %>%
 
 I use code from here: 
 https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html 
-
 https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
 
 ```{r samples map}
@@ -129,13 +128,12 @@ isolates <- isolates %>%
     grepl("Phyto", species) ~ "Phytophthora spp.",
     grepl("Pyth", species) ~"Pythium spp."))
 
-
 write.csv(isolates, here("output", "isolates-count-genus.csv"))
 
 collection.map <- read_csv(here("output", "isolates-count-genus.csv"))
 il_counties <- map_data("county", "illinois")
 
-
+#counties labels 
 phyto.conties <- collection.map %>% 
   filter(genus == "Phytophthora spp.")
 
@@ -144,8 +142,14 @@ ggplot() +
                fill = "white", color = "grey50") +
   geom_point(data = collection.map, aes(x = long, y = lat, size = isolates, 
                                         color = genus)) +
+  geom_text_repel(data=phyto.conties, aes(x=long, y=lat, label= county), size=5) +
   coord_map() +
-  theme_map() +
-  geom_text_repel(data=phyto.conties, aes(x=long, y=lat, label= county), size=5) 
+  theme_map() 
 ```
+
+```{r figure species collected}
+
+```
+
+
 
