@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 # devtools::install_github("yutannihilation/ggsflabel")
 library(here)
 library(tidyverse)
-library(ggplot2)
 library(sf)
 library(maps)
 library(rnaturalearth)
@@ -30,6 +29,9 @@ library(ggsflabel)
 # samples collection
 soil.samples <- read_csv(here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
 plant.samples <- read_csv(here("output", "clean_data", "01_plant-samples-2018_clean-data.csv"))
+
+# identification of isolates
+isolates.recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
 ```
 
 # Sample collection
@@ -47,12 +49,14 @@ plant.samples %>%
   count() 
 plant.samples$county %>%
   n_distinct()
-
 ```
 
 ## Map
 
-I use code from here: https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html 
+I use code from here: 
+https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html 
+
+https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
 
 ```{r samples map}
 soil.samples <- soil.samples %>% 
@@ -68,7 +72,6 @@ soil.samples$year <- as.factor(soil.samples$year)
 # subset county data 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
-
 counties <- st_as_sf(map("county", plot = FALSE, fill = TRUE))
 counties <- subset(counties, grepl("illinois", counties$ID))
 
@@ -82,18 +85,67 @@ plant.samples <- plant.samples %>%
   rename(plant_samples = n)
 
 plant.samples$county <- tolower(plant.samples$county)
- 
 all_data <- left_join(counties, plant.samples, by = "county")
 
 # map 
 ggplot(data = world) +
   geom_sf(data = states, fill = NA) + 
   geom_sf(data = all_data, aes(fill = plant_samples), color = "black") +
-  geom_sf(data = soil.samples, aes(shape = year),  size = 4) +
+  geom_sf(data = soil.samples, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7", na.value = "gay01") +
+  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7", na.value = "white") +
   theme_map()
 ```
 
+# Identification of isolates
 
+```{r exp isolates}
+isolates.recovered %>% 
+  group_by(year, source) %>% 
+  count()
+
+isolates.recovered %>% 
+  group_by(identification) %>% 
+  count() 
+```
+
+##  Map
+
+```{r map isolates}
+# I added the coordinates manually, change code 
+isolates <- isolates.recovered %>% 
+  select(county, species) %>%  
+  mutate(genus = case_when(
+    grepl("Phyto", species) ~ "Phytophthora spp.",
+    grepl("Pyth", species) ~"Pythium spp."))
+
+isolates <- isolates %>% 
+  filter(!is.na(county)) %>% 
+  group_by(county, genus) %>% 
+  count()
+
+isolates <- isolates %>%  
+  mutate(genus = case_when(
+    grepl("Phyto", species) ~ "Phytophthora spp.",
+    grepl("Pyth", species) ~"Pythium spp."))
+
+
+write.csv(isolates, here("output", "isolates-count-genus.csv"))
+
+collection.map <- read_csv(here("output", "isolates-count-genus.csv"))
+il_counties <- map_data("county", "illinois")
+
+
+phyto.conties <- collection.map %>% 
+  filter(genus == "Phytophthora spp.")
+
+ggplot() +
+  geom_polygon(data = il_counties, aes(x = long, y = lat, group = group), 
+               fill = "white", color = "grey50") +
+  geom_point(data = collection.map, aes(x = long, y = lat, size = isolates, 
+                                        color = genus)) +
+  coord_map() +
+  theme_map() +
+  geom_text_repel(data=phyto.conties, aes(x=long, y=lat, label= county), size=5) 
+```
 
