@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis"))
 # devtools::install_github("yutannihilation/ggsflabel")
 library(here)
 library(tidyverse)
@@ -21,6 +21,8 @@ library(rnaturalearthdata)
 library(ggrepel)
 library(cowplot)
 library(ggsflabel)
+library(hagis)
+library(pander)
 ```
 
 # Import data
@@ -29,9 +31,14 @@ library(ggsflabel)
 # samples collection
 soil.samples <- read_csv(here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
 plant.samples <- read_csv(here("output", "clean_data", "01_plant-samples-2018_clean-data.csv"))
-
 # identification of isolates
 isolates.recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
+# pathotype
+sojae <- read_csv(here("output", "clean_data", "01_pathotype-psojae_clean-data.csv"))
+sansomeana <- read_csv(here("output", "clean_data", "01_pathotype-psansomeana_clean-data.csv"))
+#aggressiveness
+dry.weigth <- read_csv(here("output", "clean_data", "01_agg_germination-dry-weigth_clean-data.csv"))
+area.length <- read_csv(here("output", "clean_data", "01_agg_length-area_clean-data.csv"))
 ```
 
 # Sample collection
@@ -148,8 +155,140 @@ ggplot() +
 ```
 
 ```{r figure species collected}
+isolates.summary <- isolates.recovered %>% 
+  select(species) %>%
+  group_by(species) %>% 
+  count() %>%  
+  mutate(genus = case_when(
+    grepl("Phyto", species) ~ "Phytophthora spp.",
+    grepl("Pyth", species) ~"Pythium spp.")) %>% 
+  mutate(percentage = (n/182)*100)
+
+isolates.summary %>% 
+  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus))+
+  geom_col() +
+  coord_flip() +
+  theme_minimal_hgrid()+
+  labs(title = "Isolates recovered between 2016 - 2018 in Illinois", 
+       y = "Isolates (%)", 
+       x = "Species") +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05)))+
+  theme_minimal_hgrid()+
+  panel_border() +
+  theme(legend.position = "none", 
+        panel.grid.major.y = element_line(linetype = "dotted", 
+                                          color = "grey80")) +
+  scale_fill_manual(values = c("#FF6A6A", "#BEBEBE"))
+```
+
+# Pathotype
+
+## Phytophthora sojae
+
+```{r effective Rps}
+# two susceptible controls
+williams <- sojae %>% 
+  filter(differential == "Williams") %>% 
+  group_by(isolate_number, isolate_id, isolate_name, county, differential, gene) %>% 
+  summarise(dead = sum(dead), 
+            total = sum(total))
+
+sojae <- sojae %>% 
+  filter(!differential == "Williams")
+sojae <- bind_rows(williams, sojae)
+sojae <- sojae %>% 
+  mutate(percent.susceptible = round((dead/total)*100))
+
+hagis_args <- list(
+  x = sojae,
+  cutoff = 75,
+  control = "rps",
+  sample = "isolate_id",
+  gene = "gene",
+  perc_susc = "percent.susceptible"
+)
+# effective Rps
+Rps.summary <- do.call(summarize_gene, hagis_args)
+Rps.summary %>% 
+  ggplot(aes(x = gene, y = percent_pathogenic)) +
+  geom_col(fill = "#FF7256", alpha = 0.5) +
+  theme_minimal_hgrid() +
+  labs(x = "Rps gene", y = "Percent pathogenic") +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05))) 
+```
+
+```{r complexity}
+# mean complexity
+complexities <- do.call(calculate_complexities, hagis_args)
+
+complexity.percent <- complexities$grouped_complexities %>% 
+  mutate(percent = (frequency/21)*100)
+
+complexity.percent$complexity <- as.numeric(complexity.percent$complexity)
+
+complexity.percent %>% 
+  ggplot(aes(x = complexity, y = percent)) +
+  geom_col(fill = "#6495ED", alpha = 0.5) +
+  theme_minimal_hgrid() +
+  labs(x = "Complexity", y = "Percent Isolates") +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05))) +
+  scale_x_continuous(limits = c(1, 12), breaks = 1:12)
+
+pander(summary(complexities))
+```
+
+```{r pathotype}
+# diversity
+diversity <- do.call(calculate_diversities, hagis_args)
+diversity
+
+# pathotypes
+diversities_table(diversity)
+```
+
+## Phytophthora sansomeana
+
+```{r sansomena effective genes}
+sansomeana <- sansomeana %>% 
+  mutate(percent.susceptible = round((dead/total)*100))
+
+sansomeana.rps <- summarize_gene(
+  x = sansomeana,
+  cutoff = 75,
+  control = "rps",
+  sample = "isolate_id",
+  gene = "gene",
+  perc_susc = "percent.susceptible"
+)
+
+sansomeana.rps%>% 
+  ggplot(aes(x = gene, y = percent_pathogenic)) +
+  geom_col(fill = "#FF7256", alpha = 0.5) +
+  theme_minimal_hgrid() +
+  labs(x = "Rps gene", y = "Percent pathogenic") +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05))) 
 
 ```
 
+# Aggressiveness
 
+```{r area and legth}
+area.length <- area.length %>% 
+  group_by(experiment, sample) %>% 
+  summarise(length_in = mean(length_in), 
+            area_in.2 = mean(area_in.2))
+
+area.length <- area.length %>% 
+  rename(pot = sample)
+
+dry.weigth <- dry.weigth %>% 
+  rename(experiment = names)
+
+
+prueba <- left_join(dry.weigth, area.length, by = c("experiment", "pot"))
+```
 
