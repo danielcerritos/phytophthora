@@ -242,9 +242,7 @@ pander(summary(complexities))
 
 ```{r pathotype}
 # diversity
-diversity <- do.call(calculate_diversities, hagis_args)
-diversity
-
+do.call(calculate_diversities, hagis_args)
 # pathotypes
 diversities_table(diversity)
 ```
@@ -264,7 +262,7 @@ sansomeana.rps <- summarize_gene(
   perc_susc = "percent.susceptible"
 )
 
-sansomeana.rps%>% 
+sansomeana.rps %>% 
   ggplot(aes(x = gene, y = percent_pathogenic)) +
   geom_col(fill = "#FF7256", alpha = 0.5) +
   theme_minimal_hgrid() +
@@ -276,19 +274,73 @@ sansomeana.rps%>%
 # Aggressiveness
 
 ```{r area and legth}
+# root length in experiment 1 was measured by seedling, in 2 and 3 is the total length by pot
 area.length <- area.length %>% 
   group_by(experiment, sample) %>% 
   summarise(length_in = mean(length_in), 
             area_in.2 = mean(area_in.2))
 
-area.length <- area.length %>% 
+area.length <- area.length %>% # change this in data cleaning
   rename(pot = sample)
 
 dry.weigth <- dry.weigth %>% 
   rename(experiment = names)
 
-aggressiveness <- left_join(dry.weigth, area.length, by = c("experiment", "pot"))
+aggressiveness <- left_join(dry.weigth, area.length, 
+                            by = c("experiment", "pot")) 
 
-# exploratory analysis
+# results  are by pot, divide by germination to get mean by seedling
+aggressiveness <- aggressiveness %>% 
+  mutate(shoot.mg = shoot.mg/germination, 
+         root.mg = root.mg/germination, 
+         length_in = length_in/germination, 
+         area_in.2 = area_in.2/germination)
 ```
 
+## Exploratory plots 
+
+```{r exploratory plots }
+
+# aggressiveness by species
+exp_plot <- function(y) {
+  ggplot(aggressiveness, aes(x = species, y = .data[[y]], fill = species)) +
+    geom_boxplot(alpha = 0.6) +
+    geom_point(position = position_jitterdodge()) +
+    theme_bw() +
+    panel_border() +
+    theme(axis.text.x = element_blank(), 
+          axis.ticks.x = element_blank(), 
+          legend.position = "bottom") +
+    facet_grid(~ experiment, scales = "free") +
+    labs(x = "species", 
+         y = y) 
+}
+
+exp_plot("shoot.mg")
+exp_plot("root.mg")
+exp_plot("length_in")
+exp_plot("area_in.2")
+
+# aggressiveness by isolate
+exp_plot_2 <- function(y) {
+  ggplot(aggressiveness, aes(x = isolate_id, y = .data[[y]], color = species)) + 
+    geom_point(alpha = 0.2) +
+    geom_jitter(colour="gray50", alpha=0.3, width=0.1) +
+    stat_summary(fun.data = "mean_cl_boot", 
+                 position = position_dodge(width = 0.5), 
+                 alpha = 0.7) +
+    theme_bw() +
+    theme(axis.text.x=element_text(angle=45, hjust=1)) +
+    theme(legend.position = "bottom") +
+    facet_grid(experiment ~ ., scales = "free") +
+    labs(x = "Isolate ID", 
+         y = y) 
+}
+
+exp_plot_2("shoot.mg")
+exp_plot_2("root.mg")
+exp_plot_2("length_in")
+exp_plot_2("area_in.2")
+```
+
+## Linear models 
