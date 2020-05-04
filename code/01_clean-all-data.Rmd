@@ -28,7 +28,7 @@ sansomeana <- read_excel(here("data", "P. sansomeana pathotyping.xlsx"))
 sojae <- read_excel(here("data","P. sojae Pathotyping.xlsx "), sheet = 3)
 
 # aggressiveness 
-exp_names <- c("exp 1", " exp 2", " exp 3")
+exp_names <- c(1, 2, 3)
 
 path.design <- list.files(here("data"), pattern = "design", full.names = TRUE)
 agg.design <- path.design %>% 
@@ -191,11 +191,13 @@ damping_off <- emergence.dampingoff %>%
 
 design_energence <- inner_join(agg.design, emergence, by = c("names", "pot")) 
 most_data <- inner_join(design_energence, dry_weight, by = c("names", "pot"))
+most_data <- most_data %>% 
+  rename(experiment = "names")
 
 write_csv(most_data, here("output", "clean_data", "01_agg_germination-dry-weigth_clean-data.csv"))
 
 length_area <- length_area %>% 
-  select(experiment = names, sample = `Sample #`,
+  select(experiment = names, pot = `Sample #`,
          length_in = `Calib. Length inch`, 
          area_in.2 = area)
 
