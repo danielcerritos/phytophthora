@@ -44,12 +44,15 @@ path.length.area <- list.files(here("data"), pattern = "root-length-and-area",
                                full.names = TRUE)
 length_area <- path.length.area %>% 
   set_names(exp_names) %>% 
-  map_df(read_excel, .id = "names")
+  map_df(read_excel, skip = 1, .id = "names")
 
 path.emer.damp <- list.files(here("data"), pattern = "germination", full.names = TRUE)
 emergence.dampingoff <- path.emer.damp %>% 
   set_names(exp_names) %>% 
   map_df(read_csv, .id = "names")
+
+# temperature data from greenhouse 
+
 
 # fungicide sensitivity
 path.fs.2018 <- list.files(here("data"), pattern = "2018_exp" , full.names = TRUE)
@@ -181,8 +184,6 @@ write_csv(sansomeana, path = here("output", "clean_data", "01_pathotype-psansome
 # Aggressiveness
 
 ```{r agg data}
-####### clean data from temperature of greenhouse
-
 emergence <- emergence.dampingoff %>% 
   select(names, pot, emergence, germination)
 
@@ -203,6 +204,9 @@ length_area <- length_area %>%
 
 write_csv(length_area, path = here("output", "clean_data",
                                    "01_agg_length-area_clean-data.csv"))
+
+# temperature of greenhouse
+
 ```
 
 
