@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis"))
+# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
 # devtools::install_github("yutannihilation/ggsflabel")
 library(here)
 library(tidyverse)
@@ -23,10 +23,17 @@ library(cowplot)
 library(ggsflabel)
 library(hagis)
 library(pander)
+library(lmerTest)
+library(ggResidpanel)
+library(emmeans)
+library(broom)
+library(Hmisc)
+library(corrplot)
+library(drc)
 ```
 
 # Import data
-
+ change the code, use list.files maybe is better
 ```{r data}
 # samples collection
 soil.samples <- read_csv(here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
@@ -39,6 +46,8 @@ sansomeana <- read_csv(here("output", "clean_data", "01_pathotype-psansomeana_cl
 #aggressiveness
 dry.weigth <- read_csv(here("output", "clean_data", "01_agg_germination-dry-weigth_clean-data.csv"))
 area.length <- read_csv(here("output", "clean_data", "01_agg_length-area_clean-data.csv"))
+# fungicide sensitivity 
+fun.sens <- read.csv(here("output", "clean_data", "01_fungicide-sensitivity-2019_clean-data.csv"))
 ```
 
 # Sample collection
@@ -88,7 +97,12 @@ counties <- counties %>%
 plant.samples <- plant.samples %>% 
   group_by(county) %>% 
   count() %>% 
-  rename(plant_samples = n)
+  mutate(samples = case_when(
+    n <= 5 ~ "1 - 5", 
+    n >= 6 & n <= 10 ~ "6 - 10",
+    n >= 11 & n <= 15 ~ "11 - 15", 
+    n >= 16 & n <= 20 ~ "16 - 20", 
+  ))
 
 plant.samples$county <- tolower(plant.samples$county)
 all_data <- left_join(counties, plant.samples, by = "county")
@@ -96,10 +110,10 @@ all_data <- left_join(counties, plant.samples, by = "county")
 # map 
 ggplot(data = world) +
   geom_sf(data = states, fill = NA) + 
-  geom_sf(data = all_data, aes(fill = plant_samples), color = "black") +
+  geom_sf(data = all_data, aes(fill = samples), color = "black", alpha = 0.8) +
   geom_sf(data = soil.samples, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  scale_fill_gradient(high = "#2171b5", low = "#bdd7e7", na.value = "white") +
+  scale_fill_manual(values = c("#a1dab4", "#41b6c4", "#225ea8", "#2c7fb8")) 
   theme_map()
 ```
 
@@ -169,8 +183,7 @@ isolates.summary %>%
   geom_col() +
   coord_flip() +
   theme_minimal_hgrid()+
-  labs(title = "Isolates recovered between 2016 - 2018 in Illinois", 
-       y = "Isolates (%)", 
+  labs(y = "Isolates (%)", 
        x = "Species") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05)))+
@@ -214,7 +227,8 @@ Rps.summary %>%
   ggplot(aes(x = gene, y = percent_pathogenic)) +
   geom_col(fill = "#FF7256", alpha = 0.5) +
   theme_minimal_hgrid() +
-  labs(x = "Rps gene", y = "Percent pathogenic") +
+  labs(x = "Rps gene", 
+       y = "Percent pathogenic") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05))) 
 ```
@@ -227,12 +241,15 @@ complexity.percent <- complexities$grouped_complexities %>%
   mutate(percent = (frequency/21)*100)
 
 complexity.percent$complexity <- as.numeric(complexity.percent$complexity)
+complexities$indvidual_complexities
+
 
 complexity.percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
   geom_col(fill = "#6495ED", alpha = 0.5) +
   theme_minimal_hgrid() +
-  labs(x = "Complexity", y = "Percent Isolates") +
+  labs(x = "Complexity", 
+       y = "Percent Isolates") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05))) +
   scale_x_continuous(limits = c(1, 12), breaks = 1:12)
@@ -266,25 +283,20 @@ sansomeana.rps %>%
   ggplot(aes(x = gene, y = percent_pathogenic)) +
   geom_col(fill = "#FF7256", alpha = 0.5) +
   theme_minimal_hgrid() +
-  labs(x = "Rps gene", y = "Percent pathogenic") +
+  labs(x = "Rps gene", 
+       y = "Percent pathogenic") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05))) 
 ```
 
 # Aggressiveness
 
-```{r area and legth}
-# root length in experiment 1 was measured by seedling, in 2 and 3 is the total length by pot
+```{r area and length}
+# some pots had two images in experiment 1 because they did it fit
 area.length <- area.length %>% 
-  group_by(experiment, sample) %>% 
+  group_by(experiment, pot) %>% 
   summarise(length_in = mean(length_in), 
             area_in.2 = mean(area_in.2))
-
-area.length <- area.length %>% # change this in data cleaning
-  rename(pot = sample)
-
-dry.weigth <- dry.weigth %>% 
-  rename(experiment = names)
 
 aggressiveness <- left_join(dry.weigth, area.length, 
                             by = c("experiment", "pot")) 
@@ -299,48 +311,227 @@ aggressiveness <- aggressiveness %>%
 
 ## Exploratory plots 
 
-```{r exploratory plots }
+```{r exp plot 1}
+aggressiveness$experiment <- as.factor(aggressiveness$experiment)
+aggressiveness$isolate <- as.factor(aggressiveness$isolate)
+aggressiveness$species <- as.factor(aggressiveness$species)
 
-# aggressiveness by species
 exp_plot <- function(y) {
-  ggplot(aggressiveness, aes(x = species, y = .data[[y]], fill = species)) +
+  ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
     geom_boxplot(alpha = 0.6) +
-    geom_point(position = position_jitterdodge()) +
+    geom_point(aes(color =  experiment), position = position_jitter()) +
     theme_bw() +
-    panel_border() +
-    theme(axis.text.x = element_blank(), 
-          axis.ticks.x = element_blank(), 
-          legend.position = "bottom") +
-    facet_grid(~ experiment, scales = "free") +
-    labs(x = "species", 
-         y = y) 
-}
+    labs(x = "experiment", 
+         y = y)
+  }
 
 exp_plot("shoot.mg")
 exp_plot("root.mg")
 exp_plot("length_in")
 exp_plot("area_in.2")
+```
 
-# aggressiveness by isolate
+```{r exp plot 2}
 exp_plot_2 <- function(y) {
-  ggplot(aggressiveness, aes(x = isolate_id, y = .data[[y]], color = species)) + 
-    geom_point(alpha = 0.2) +
-    geom_jitter(colour="gray50", alpha=0.3, width=0.1) +
-    stat_summary(fun.data = "mean_cl_boot", 
-                 position = position_dodge(width = 0.5), 
-                 alpha = 0.7) +
-    theme_bw() +
-    theme(axis.text.x=element_text(angle=45, hjust=1)) +
-    theme(legend.position = "bottom") +
-    facet_grid(experiment ~ ., scales = "free") +
-    labs(x = "Isolate ID", 
-         y = y) 
+  ggplot(aggressiveness, aes(x = experiment, y = .data[[y]])) +
+    geom_boxplot() +
+    geom_point(aes(color =  experiment), position = position_jitter()) +
+    facet_wrap(~species) +
+    theme_bw()
 }
 
-exp_plot_2("shoot.mg")
 exp_plot_2("root.mg")
+exp_plot_2("shoot.mg")
 exp_plot_2("length_in")
 exp_plot_2("area_in.2")
 ```
 
-## Linear models 
+```{r distribution}
+qplot(shoot.mg, data = aggressiveness) +
+  theme_bw()
+
+qplot(root.mg, data = aggressiveness) +
+  theme_bw()
+
+qplot(length_in, data = aggressiveness) +
+  theme_bw() # skew to the left, some transformation needed
+
+qplot(area_in.2, data = aggressiveness) +
+  theme_bw() # also skew
+```
+
+## Mix model and ANOVAs
+
+```{r nesting}
+aggressiveness <- aggressiveness %>% 
+  mutate(species_isolate = paste(isolate, species, sep = "_")) # nest isolate in species
+```
+
+```{r fm root dry }
+# experiment as random to account for variation between experiments 
+fm.root.dry <- lmer(root.mg ~ species + species_isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm.root.dry) # no assumptions violated 
+anova(fm.root.dry)
+```
+
+```{r fm shoot dry }
+fm.shoot.dry <- lmer(shoot.mg ~ species + species_isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm.shoot.dry) # most of the data points fall into the line 
+anova(fm.root.dry)
+```
+
+```{r fm root length }
+# log transformation for normality and slight difference in variances
+fm.root.length <- lmer(log(length_in) ~ species + species_isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm.root.length) # transformation worked 
+anova(fm.root.length)
+```
+
+```{r fm root area}
+fm.root.area <- lmer(log(area_in.2) ~ species + species_isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm.root.area) # transformation also worked 
+anova(fm.root.length)
+```
+
+## Differences between species 
+
+```{r mean separation species}
+emmeans(fm.root.dry, ~species) %>% 
+  cld.emmGrid()
+
+emmeans(fm.shoot.dry, ~species) %>% 
+  cld.emmGrid()
+
+emmeans(fm.root.length, ~species) %>% 
+  cld.emmGrid()
+
+emmeans(fm.root.area, ~species) %>% 
+  cld.emmGrid()
+```
+
+```{r plot species}
+species_plot <- function(y) {
+  ggplot(data = aggressiveness, aes(x = species, y = .data[[y]])) +
+    geom_boxplot(alpha = 0.6) +
+    geom_point(aes(color =  experiment), position = position_jitter()) +
+    theme_bw() +
+    labs(x = "experiment", 
+         y = y)
+}
+
+species_plot("root.mg")
+species_plot("shoot.mg")
+species_plot("length_in")
+species_plot("area_in.2")
+```
+
+## Differences within species (between isolates)
+
+```{r mean separation isolates}
+emmeans(fm.root.dry, ~species_isolate) %>% 
+  plot(comparisons = TRUE)
+
+emmeans(fm.shoot.dry, ~species_isolate) %>% 
+  plot(comparisons = TRUE)
+
+emmeans(fm.root.length, ~species_isolate) %>% 
+  plot(comparisons = TRUE)
+
+emmeans(fm.root.area, ~species_isolate) %>% 
+  plot(comparisons = TRUE)
+
+```
+
+```{r save means}
+
+m.root.dry <- emmeans(fm.root.dry, ~species_isolate) %>% 
+  tidy() %>% 
+  select(species_isolate, 
+         root.mg = estimate, 
+         r.low = conf.low, 
+         r.high = conf.high) 
+
+m.shoot.dry <- emmeans(fm.shoot.dry, ~species_isolate) %>% 
+  tidy()%>% 
+  select(species_isolate, 
+         shoot.mg = estimate, 
+         s.low = conf.low, 
+         s.high = conf.high) 
+
+m.root.length <- emmeans(fm.root.length, ~species_isolate) %>% 
+  tidy()%>% 
+  select(species_isolate, 
+         length.in = estimate, 
+         l.low = conf.low, 
+         l.high = conf.high) 
+
+m.root.area <- emmeans(fm.root.area, ~species_isolate) %>% 
+  tidy()%>% 
+  select(species_isolate, 
+         area.in2 = estimate, 
+         a.low = conf.low, 
+         a.high = conf.high) 
+
+m.dry <- left_join(m.root.dry , m.shoot.dry, by = c("species_isolate")) 
+m.scan <- left_join(m.root.length, m.root.area,by = c("species_isolate")) 
+
+means.aggressiveness <- left_join(m.dry, m.scan, by = c("species_isolate")) %>% 
+  separate(species_isolate, into = c("isolate", "species"), sep = "_")
+```
+
+```{r isolates plot}
+## add calculated CIs and means from emmeans 
+ggplot(aggressiveness, aes(x = reorder(isolate_id, root.mg), y = root.mg, color = species)) + 
+  geom_point(alpha = 0.2) +
+  geom_jitter(colour = "gray50", alpha = 0.3, width = 0.1) +
+  stat_summary(fun.data = "mean_cl_boot", 
+               position = position_dodge(width = 0.5), 
+               alpha = 0.7) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Isolate ID", 
+       y = "Mean root dry weigth (mg)") 
+
+```
+
+## Correlation between aggressiveness and complexity 
+
+```{r correlations}
+# add complexity results
+iso.complexity <- as.data.frame(complexities$indvidual_complexities) %>% 
+  rename(isolate = sample, complexity = N_samp)
+
+sojae.agg <- means.aggressiveness %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  select(isolate, root.mg, shoot.mg, length.in, area.in2) 
+
+sojae.all <- left_join(sojae.agg, iso.complexity, by = c("isolate"))
+
+sojae.corr <- sojae.all %>%
+  select(-isolate) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
+corrplot(sojae.corr$r, method = "number")
+```
+
+# Fungicide Sensitivity 
+
+```{r check variances}
+# remember to do some plots for the SHAM pilot
+fun.sens$experiment <- as.factor(fun.sens$experiment)
+fun.sens %>% 
+  ggplot(aes(x = experiment, y = length_a)) +
+  geom_boxplot() +
+  facet_wrap(~ fungicide) +
+  theme_bw()
+  
+fun.sens %>% 
+  ggplot(aes(x = fungicide, y = length_a)) +
+  geom_boxplot() +
+  facet_wrap(~ experiment) +
+  theme_bw()
+# variances look similar across experiments, azoxystrobin different from the rest of fungicides 
+```
+
