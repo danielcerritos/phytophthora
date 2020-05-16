@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("cowplot", "googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
 # devtools::install_github("yutannihilation/ggsflabel")
 library(here)
 library(tidyverse)
@@ -33,21 +33,22 @@ library(drc)
 ```
 
 # Import data
- change the code, use list.files maybe is better
+
 ```{r data}
+(all.data <- list.files(here("output", "clean_data"), full.names = TRUE))
 # samples collection
-soil.samples <- read_csv(here("output", "clean_data", "01_soil-samples-2016-2017_clean-data.csv"))
-plant.samples <- read_csv(here("output", "clean_data", "01_plant-samples-2018_clean-data.csv"))
+soil.samples <- read_csv(all.data[8])
+plant.samples <- read_csv(all.data[7])
 # identification of isolates
 isolates.recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
 # pathotype
-sojae <- read_csv(here("output", "clean_data", "01_pathotype-psojae_clean-data.csv"))
-sansomeana <- read_csv(here("output", "clean_data", "01_pathotype-psansomeana_clean-data.csv"))
+sojae <- read_csv(all.data[6])
+sansomeana <- read_csv(all.data[5])
 #aggressiveness
-dry.weigth <- read_csv(here("output", "clean_data", "01_agg_germination-dry-weigth_clean-data.csv"))
-area.length <- read_csv(here("output", "clean_data", "01_agg_length-area_clean-data.csv"))
+dry.weigth <- read_csv(all.data[1])
+area.length <- read_csv(all.data[2])
 # fungicide sensitivity 
-fun.sens <- read.csv(here("output", "clean_data", "01_fungicide-sensitivity-2019_clean-data.csv"))
+fun.sens <- read.csv(all.data[4])
 ```
 
 # Sample collection
@@ -368,8 +369,11 @@ aggressiveness <- aggressiveness %>%
 ```
 
 ```{r fm root dry }
+prueba <- aggressiveness %>% 
+  filter(!species == "Control Agar", 
+         !species == "Control None")
 # experiment as random to account for variation between experiments 
-fm.root.dry <- lmer(root.mg ~ species + species_isolate + (1|experiment), data = aggressiveness)
+fm.root.dry <- lmer(root.mg ~ species + species_isolate + (1|experiment), data = prueba)
 resid_panel(fm.root.dry) # no assumptions violated 
 anova(fm.root.dry)
 ```
@@ -533,5 +537,27 @@ fun.sens %>%
   facet_wrap(~ experiment) +
   theme_bw()
 # variances look similar across experiments, azoxystrobin different from the rest of fungicides 
+# look papers what they do to check variances 
+```
+
+```{r prepare fs data}
+fun.sens <- fun.sens %>% 
+  filter(!is.na(length_a)) %>%  # eliminate NAs
+  mutate(length.mm = (length_a + length_b)/2) # average the two colony measurements 
+
+fun.sens <- fun.sens %>% 
+  mutate(length.mm = case_when(
+    length.mm > 0 ~ length.mm - 4, # subtract the plug diameter
+    TRUE ~ length.mm - 0
+  ))
+
+# mean growth of control (dose 0)
+dose0 <- fun.sens %>% 
+  filter(dose == 0, 
+         !is.na(length.mm)) %>% 
+  group_by(fungicide, experiment, isolate) %>% 
+  summarise(dose0.mean = mean(length.mm))
+
+prueba <- left_join(fun.sens, dose0, by = c("fungicide", "experiment", "isolate"))
 ```
 
