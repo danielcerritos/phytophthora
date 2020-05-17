@@ -484,8 +484,11 @@ means.aggressiveness <- left_join(m.dry, m.scan, by = c("species_isolate")) %>%
   separate(species_isolate, into = c("isolate", "species"), sep = "_")
 ```
 
+https://ggplot2.tidyverse.org/reference/geom_linerange.html code from to 
+add calculated CIs and means from emmeans 
+
+
 ```{r isolates plot}
-## add calculated CIs and means from emmeans 
 ggplot(aggressiveness, aes(x = reorder(isolate_id, root.mg), y = root.mg, color = species)) + 
   geom_point(alpha = 0.2) +
   geom_jitter(colour = "gray50", alpha = 0.3, width = 0.1) +
@@ -576,6 +579,40 @@ no.EC50 <- fun.sens %>%
 hormesis <- fun.sens %>% 
   filter(rel.growth > 100) # multiple isolates with hormetic effect
 
-# fit a log-logistic model for comparison 
+```
+
+```{r fit log logistic models }
+# fit a log-logistic model with 3 and 4 parameters 
+nest_data <- fun.sens %>% 
+  group_by(fungicide, experiment, isolate) %>% 
+  nest()
+
+LL3_model <- function(dataset){
+  drm(length.mm ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
+}
+
+LL4_model <- function(dataset){
+  drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
+}
+
+prueba <- nest_data %>% 
+  mutate(ll3.model = purrr::map(data, LL3_model), 
+         ll4.model = purrr::map(data, LL4_model))
+
+# compare model lack of fit 
+mod_fit <- function(model){
+  p <- modelFit(model)
+  p$`p value`[2]
+}
+
+prueba <- prueba %>% 
+  mutate(ll3.fit = purrr::map(ll3.model, mod_fit), 
+         ll4.fit = purrr::map(ll4.model, mod_fit), 
+         ll3.aic = purrr::map(ll3.model, AIC), 
+         ll4.aic = purrr::map(ll4.model, AIC))
+
+prueba %>% 
+  unnest(c(ll4.aic, ll3.aic))
+
 ```
 
