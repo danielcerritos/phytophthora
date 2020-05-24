@@ -582,6 +582,57 @@ hormesis <- fun.sens %>%
 ```
 
 ```{r fit log logistic models }
+# eliminate NAs
+# average colony measurements 
+fun.sens <- fun.sens %>% 
+  filter(!is.na(length_a)) %>%  
+  mutate(length.mm = (length_a + length_b)/2) 
+
+# subtract the plug diameter
+fun.sens <- fun.sens %>% 
+  mutate(length.mm = case_when(
+    length.mm > 0 ~ length.mm - 4, 
+    TRUE ~ length.mm - 0
+  ))
+
+# mean growth of control plate (dose 0)
+control <- fun.sens %>% 
+  filter(dose == 0, 
+         !is.na(length.mm)) %>% 
+  group_by(fungicide, experiment, isolate) %>% 
+  summarise(dose0.mean = mean(length.mm)) 
+
+fun.sens <- left_join(fun.sens, control, by = c("fungicide", 
+                                              "experiment", 
+                                              "isolate"))
+
+
+
+
+combine <- lm(length.mm ~ experiment, data = fun.sens)
+summary(combine)
+
+plot(combine)
+
+
+# relative growth calculation
+fun.sens <- fun.sens %>% 
+  mutate(rel.growth = case_when(
+    dose == 0 ~ 100, 
+    TRUE ~ (length.mm/dose0.mean)*100, 
+  ))
+
+# check if there are isolates with no EC50
+# isolates with >50% rel growth in the higher dose 
+no.EC50 <- fun.sens %>% 
+  filter(fungicide %in% c("Mefenoxam", "Metalaxyl", "Ethaboxam") & dose == 1 & rel.growth >= 50, 
+         fungicide == "Azoxystrobin" & dose == 10 & rel.growth >= 50) # no insensitive isolates
+
+# check if there are isolates with hormetic effect
+# >100% rel growth at lower concentration 
+hormesis <- fun.sens %>% 
+  filter(rel.growth > 100) 
+  
 # fit a log-logistic model with 3 and 4 parameters 
 nest_data <- fun.sens %>% 
   group_by(fungicide, experiment, isolate) %>% 
@@ -592,27 +643,24 @@ LL3_model <- function(dataset){
 }
 
 LL4_model <- function(dataset){
-  drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
+  drm(length.mm ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
 }
 
 prueba <- nest_data %>% 
   mutate(ll3.model = purrr::map(data, LL3_model), 
-         ll4.model = purrr::map(data, LL4_model))
+         ll4.model = purrr::map(data, LL4_model), 
+         ll3.fit = purrr::map(ll3.model, mselect), 
+         ll4.fit = purrr::map(ll4.model, mselect)
+         )
 
-# compare model lack of fit 
-mod_fit <- function(model){
-  p <- modelFit(model)
-  p$`p value`[2]
-}
+select.model <- prueba %>% 
+  dplyr::select(ll3.fit, ll4.fit)
 
-prueba <- prueba %>% 
-  mutate(ll3.fit = purrr::map(ll3.model, mod_fit), 
-         ll4.fit = purrr::map(ll4.model, mod_fit), 
-         ll3.aic = purrr::map(ll3.model, AIC), 
-         ll4.aic = purrr::map(ll4.model, AIC))
+select.model <- select.model %>% 
+  gather(ll3.fit, ll4.fit, key = "model", value = "model.fit") %>%   
+  unnest_wider(model.fit)
 
-prueba %>% 
-  unnest(c(ll4.aic, ll3.aic))
-
+select.model %>% 
+  arrange(fungicide, isolate)
 ```
 
