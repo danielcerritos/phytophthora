@@ -605,16 +605,6 @@ control <- fun.sens %>%
 fun.sens <- left_join(fun.sens, control, by = c("fungicide", 
                                               "experiment", 
                                               "isolate"))
-
-
-
-
-combine <- lm(length.mm ~ experiment, data = fun.sens)
-summary(combine)
-
-plot(combine)
-
-
 # relative growth calculation
 fun.sens <- fun.sens %>% 
   mutate(rel.growth = case_when(
