@@ -557,6 +557,7 @@ fun.sens <- fun.sens %>%
     length.mm > 0 ~ length.mm - 4, 
     TRUE ~ length.mm - 0
   ))
+
 # mean growth of control plate (dose 0)
 control <- fun.sens %>% 
   filter(dose == 0, 
@@ -573,6 +574,7 @@ fun.sens <- fun.sens %>%
     dose == 0 ~ 100, 
     TRUE ~ (length.mm/dose0.mean)*100, 
   ))
+
 # check if there are isolates with no EC50
 # isolates with >50% rel growth in the higher dose 
 no.EC50 <- fun.sens %>% 
