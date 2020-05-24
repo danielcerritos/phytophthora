@@ -35,7 +35,7 @@ library(drc)
 # Import data
 
 ```{r data}
-(all.data <- list.files(here("output", "clean_data"), full.names = TRUE))
+all.data <- list.files(here("output", "clean_data"), full.names = TRUE)
 # samples collection
 soil.samples <- read_csv(all.data[8])
 plant.samples <- read_csv(all.data[7])
@@ -660,7 +660,7 @@ select.model <- select.model %>%
   gather(ll3.fit, ll4.fit, key = "model", value = "model.fit") %>%   
   unnest_wider(model.fit)
 
-select.model %>% 
-  arrange(fungicide, isolate)
+select.model <- select.model %>% 
+  arrange(logLik, IC, `Lack of fit`, `Res var`)
 ```
 
