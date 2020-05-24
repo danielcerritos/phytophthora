@@ -545,43 +545,6 @@ fun.sens %>%
 ```
 
 ```{r prepare fs data}
-fun.sens <- fun.sens %>% 
-  filter(!is.na(length_a)) %>%  # eliminate NAs
-  mutate(length.mm = (length_a + length_b)/2) # average colony measurements 
-
-fun.sens <- fun.sens %>% 
-  mutate(length.mm = case_when(
-    length.mm > 0 ~ length.mm - 4, # subtract the plug diameter
-    TRUE ~ length.mm - 0
-  ))
-
-# mean growth of control (dose 0)
-dose0 <- fun.sens %>% 
-  filter(dose == 0, 
-         !is.na(length.mm)) %>% 
-  group_by(fungicide, experiment, isolate) %>% 
-  summarise(dose0.mean = mean(length.mm)) 
-
-fun.sens <- left_join(fun.sens, dose0, by = c("fungicide", "experiment", "isolate"))
-
-# relative growth: growth/mean growth control 
-fun.sens <- fun.sens %>% 
-  mutate(rel.growth = case_when(
-    dose == 0 ~ 100, 
-    TRUE ~ (length.mm/dose0.mean)*100, 
-  ))
-
-# isolates with >50% growth in higher dose 
-no.EC50 <- fun.sens %>% 
-  filter(fungicide %in% c("Mefenoxam", "Metalaxyl", "Ethaboxam") & dose == 1 & rel.growth >= 50, 
-         fungicide == "Azoxystrobin" & dose == 10 & rel.growth >= 50) # no insensitive isolates
-
-hormesis <- fun.sens %>% 
-  filter(rel.growth > 100) # multiple isolates with hormetic effect
-
-```
-
-```{r fit log logistic models }
 # eliminate NAs
 # average colony measurements 
 fun.sens <- fun.sens %>% 
@@ -622,7 +585,9 @@ no.EC50 <- fun.sens %>%
 # >100% rel growth at lower concentration 
 hormesis <- fun.sens %>% 
   filter(rel.growth > 100) 
-  
+```
+
+```{r fit log logistic models }
 # fit a log-logistic model with 3 and 4 parameters 
 nest_data <- fun.sens %>% 
   group_by(fungicide, experiment, isolate) %>% 
