@@ -574,7 +574,7 @@ hormesis <- fun.sens %>%
 ```
 
 ```{r fit log logistic models }
-# fit a log-logistic model with 3 and 4 parameters 
+# fit log-logistic models with 3 and 4 parameters 
 nest.data <- fun.sens %>% 
   group_by(fungicide, experiment, isolate) %>% 
   nest()
