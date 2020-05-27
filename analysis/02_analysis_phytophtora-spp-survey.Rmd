@@ -552,15 +552,16 @@ fun.sens <- left_join(fun.sens, control, by = c("fungicide",
                                               "isolate"))
 # relative growth calculation
 fun.sens <- fun.sens %>% 
-  mutate(rel.growth = (length.mm/control.mean)*100, 
-  )
+  mutate(rel.growth = (length.mm/control.mean)*100)
 
 # check if there are isolates with no EC50
 # isolates with >50% rel growth in the higher dose 
 no.EC50 <- fun.sens %>% 
   group_by(fungicide, experiment, isolate, dose) %>% 
   summarise(rel.growth = mean(rel.growth)) %>% 
-  filter(fungicide %in% c("Mefenoxam", "Metalaxyl", "Ethaboxam") & dose == 1 & rel.growth > 50, 
+  filter(fungicide %in% c("Mefenoxam",
+                          "Metalaxyl", 
+                          "Ethaboxam") & dose == 1 & rel.growth > 50, 
          fungicide == "Azoxystrobin" & dose == 10 & rel.growth > 50)
 
 # check if there are isolates with hormetic effect
