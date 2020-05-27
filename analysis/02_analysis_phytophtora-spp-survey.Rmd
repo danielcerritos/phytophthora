@@ -570,11 +570,6 @@ hormesis <- fun.sens %>%
   summarise(rel.growth = mean(rel.growth)) %>% 
   filter(rel.growth > 100, 
          !dose == 0) 
-
-prueba <- fun.sens %>% 
-  group_by(fungicide, experiment, isolate, dose) %>% 
-  summarise(rel.growth = mean(rel.growth))
-
 ```
 
 ```{r fit log logistic models }
