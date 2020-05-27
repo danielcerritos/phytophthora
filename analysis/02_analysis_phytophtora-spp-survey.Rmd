@@ -20,7 +20,7 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(ggrepel)
 library(cowplot)
-library(ggsflabel)
+#library(ggsflabel)
 library(hagis)
 library(pander)
 library(lmerTest)
@@ -76,7 +76,7 @@ https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
 
 ```{r samples map}
 soil.samples <- soil.samples %>% 
-  select(year, long, lat) %>% 
+  dplyr::select(year, long, lat) %>% 
   filter(!is.na(long))
 
 # convert to sf object
@@ -526,24 +526,6 @@ corrplot(sojae.corr$r, method = "number")
 
 # Fungicide Sensitivity 
 
-```{r check variances}
-# remember to do some plots for the SHAM pilot
-fun.sens$experiment <- as.factor(fun.sens$experiment)
-fun.sens %>% 
-  ggplot(aes(x = experiment, y = length_a)) +
-  geom_boxplot() +
-  facet_wrap(~ fungicide) +
-  theme_bw()
-  
-fun.sens %>% 
-  ggplot(aes(x = fungicide, y = length_a)) +
-  geom_boxplot() +
-  facet_wrap(~ experiment) +
-  theme_bw()
-# variances look similar across experiments, azoxystrobin different from the rest of fungicides 
-# look papers what they do to check variances 
-```
-
 ```{r prepare fs data}
 # eliminate NAs
 # average colony measurements 
@@ -563,52 +545,61 @@ control <- fun.sens %>%
   filter(dose == 0, 
          !is.na(length.mm)) %>% 
   group_by(fungicide, experiment, isolate) %>% 
-  summarise(dose0.mean = mean(length.mm)) 
+  summarise(control.mean = mean(length.mm)) 
 
 fun.sens <- left_join(fun.sens, control, by = c("fungicide", 
                                               "experiment", 
                                               "isolate"))
 # relative growth calculation
 fun.sens <- fun.sens %>% 
-  mutate(rel.growth = case_when(
-    dose == 0 ~ 100, 
-    TRUE ~ (length.mm/dose0.mean)*100, 
-  ))
+  mutate(rel.growth = (length.mm/control.mean)*100, 
+  )
 
 # check if there are isolates with no EC50
 # isolates with >50% rel growth in the higher dose 
 no.EC50 <- fun.sens %>% 
-  filter(fungicide %in% c("Mefenoxam", "Metalaxyl", "Ethaboxam") & dose == 1 & rel.growth >= 50, 
-         fungicide == "Azoxystrobin" & dose == 10 & rel.growth >= 50) # no insensitive isolates
+  group_by(fungicide, experiment, isolate, dose) %>% 
+  summarise(rel.growth = mean(rel.growth)) %>% 
+  filter(fungicide %in% c("Mefenoxam", "Metalaxyl", "Ethaboxam") & dose == 1 & rel.growth > 50, 
+         fungicide == "Azoxystrobin" & dose == 10 & rel.growth > 50)
 
 # check if there are isolates with hormetic effect
-# >100% rel growth at lower concentration 
+# >100% rel growth at lower dose
 hormesis <- fun.sens %>% 
-  filter(rel.growth > 100) 
+  group_by(fungicide, experiment, isolate, dose) %>% 
+  summarise(rel.growth = mean(rel.growth)) %>% 
+  filter(rel.growth > 100, 
+         !dose == 0) 
+
+prueba <- fun.sens %>% 
+  group_by(fungicide, experiment, isolate, dose) %>% 
+  summarise(rel.growth = mean(rel.growth))
+
 ```
 
 ```{r fit log logistic models }
 # fit a log-logistic model with 3 and 4 parameters 
-nest_data <- fun.sens %>% 
+nest.data <- fun.sens %>% 
   group_by(fungicide, experiment, isolate) %>% 
   nest()
 
 LL3_model <- function(dataset){
-  drm(length.mm ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
 }
+
 
 LL4_model <- function(dataset){
-  drm(length.mm ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
 }
 
-prueba <- nest_data %>% 
+both.models <- nest.data %>% 
   mutate(ll3.model = purrr::map(data, LL3_model), 
          ll4.model = purrr::map(data, LL4_model), 
          ll3.fit = purrr::map(ll3.model, mselect), 
          ll4.fit = purrr::map(ll4.model, mselect)
          )
 
-select.model <- prueba %>% 
+select.model <- both.models %>% 
   dplyr::select(ll3.fit, ll4.fit)
 
 select.model <- select.model %>% 
@@ -617,5 +608,40 @@ select.model <- select.model %>%
 
 select.model <- select.model %>% 
   arrange(logLik, IC, `Lack of fit`, `Res var`)
-```
 
+# LL.3 model better fit for most isolates
+abs.EC50 <- function(models){
+  ED(models, respLev = c(50), type = "absolute", interval = "delta")
+}
+
+both.models <- both.models %>% 
+  mutate(ll3.EC50 = purrr::map(ll3.model, abs.EC50))
+
+EC50 <- both.models %>% 
+  dplyr::select(ll3.EC50) %>% 
+  unnest_wider(ll3.EC50) %>% 
+  rename(EC50 = ...1  , 
+         std.error = ...2 ,
+         lower = ...3, 
+         upper = ...4)
+
+# check if 95 CI of exp 1 includes EC50 of exp 2
+EC50$experiment <- as.factor(EC50$experiment)
+EC50$isolate <- as.factor(EC50$isolate)
+
+EC50 %>% 
+  ggplot(aes(x = isolate, y = EC50, color = experiment)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                  position = position_jitterdodge()) +
+  facet_wrap(~fungicide, scales = "free_y") +
+  theme_minimal() +
+  panel_border()
+
+# distribution of EC50s in each experiment 
+EC50 %>% 
+  ggplot(aes(x = experiment, y = EC50, color = experiment)) +
+  geom_boxplot() +
+  facet_wrap(~fungicide, scales = "free_y") +
+  theme_minimal() +
+  panel_border()
+```
