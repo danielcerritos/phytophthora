@@ -11,28 +11,19 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r library, message=FALSE}
+```{r library}
 # install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", 
 # "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
 # devtools::install_github("yutannihilation/ggsflabel")
-library(here)
-library(tidyverse)
-library(sf)
-library(maps)
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(ggrepel)
-library(cowplot)
+# install.packages("pacman")
+
+pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
+               cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
+               Hmisc, corrplot, drc)
+
+#library(ggrepel)
 #library(ggsflabel)
-library(hagis)
-library(pander)
-library(lmerTest)
-library(ggResidpanel)
-library(emmeans)
-library(broom)
-library(Hmisc)
-library(corrplot)
-library(drc)
+
 ```
 
 # Import data
@@ -652,7 +643,7 @@ EC50 %>%
   ggplot(aes(x = isolate, y = EC50, color = experiment)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
-  facet_wrap(~fungicide, scales = "free_y") +
+  facet_wrap(~ fungicide, scales = "free_y") +
   theme_minimal() +
   panel_border()
 
@@ -660,7 +651,7 @@ EC50 %>%
 EC50 %>% 
   ggplot(aes(x = experiment, y = EC50, color = experiment)) +
   geom_boxplot() +
-  facet_wrap(~fungicide, scales = "free_y") +
+  facet_wrap(~ fungicide, scales = "free_y") +
   theme_minimal() +
   panel_border()
 ```
