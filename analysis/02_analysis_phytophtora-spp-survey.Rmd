@@ -3,6 +3,8 @@ title: "Analysis Phytophthora spp. survey"
 author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", 
+# "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
 # devtools::install_github("yutannihilation/ggsflabel")
 library(here)
 library(tidyverse)
@@ -583,7 +586,6 @@ LL3_model <- function(dataset){
   drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
 }
 
-
 LL4_model <- function(dataset){
   drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
 }
@@ -594,7 +596,9 @@ both.models <- nest.data %>%
          ll3.fit = purrr::map(ll3.model, mselect), 
          ll4.fit = purrr::map(ll4.model, mselect)
          )
+```
 
+```{r select best model}
 select.model <- both.models %>% 
   dplyr::select(ll3.fit, ll4.fit)
 
@@ -605,7 +609,11 @@ select.model <- select.model %>%
 select.model <- select.model %>% 
   arrange(logLik, IC, `Lack of fit`, `Res var`)
 
+```
+
+```{r EC50s}
 # LL.3 model better fit for most isolates
+# extract EC50s from LL.3 model
 abs.EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
 }
@@ -620,7 +628,9 @@ EC50 <- both.models %>%
          std.error = ...2 ,
          lower = ...3, 
          upper = ...4)
+```
 
+```{r combine data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
 EC50$experiment <- as.factor(EC50$experiment)
 EC50$isolate <- as.factor(EC50$isolate)
