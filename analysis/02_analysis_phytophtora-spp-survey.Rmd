@@ -11,7 +11,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r library}
+```{r library, message=FALSE}
 # install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", 
 # "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
 # devtools::install_github("yutannihilation/ggsflabel")
@@ -604,26 +604,39 @@ select.model <- both.models %>%
 
 select.model <- select.model %>% 
   gather(ll3.fit, ll4.fit, key = "model", value = "model.fit") %>%   
-  unnest_wider(model.fit)
-
-select.model <- select.model %>% 
+  unnest_wider(model.fit) %>% 
   arrange(logLik, IC, `Lack of fit`, `Res var`)
 
+# select based on lower AIC
+aic.models <- model.selection %>% 
+  dplyr::select(fungicide, isolate, model, IC) %>% 
+  spread(model, IC)
+
+aic.models %>% 
+  filter(ll3.fit < ll4.fit) %>% 
+  n_distinct() # similar fit
+
+# lack of fit p-values 
+lack.of.fit <- model.selection %>% 
+  filter(`Lack of fit`  < 0.05)
+
+lack.of.fit %>% 
+  group_by(model)%>% 
+  count() # LL.4 model better fit for most isolates
 ```
 
 ```{r EC50s}
-# LL.3 model better fit for most isolates
-# extract EC50s from LL.3 model
+# extract EC50s from LL.4 model
 abs.EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
 }
 
 both.models <- both.models %>% 
-  mutate(ll3.EC50 = purrr::map(ll3.model, abs.EC50))
+  mutate(ll4.EC50 = purrr::map(ll4.model, abs.EC50))
 
 EC50 <- both.models %>% 
-  dplyr::select(ll3.EC50) %>% 
-  unnest_wider(ll3.EC50) %>% 
+  dplyr::select(ll4.EC50) %>% 
+  unnest_wider(ll4.EC50) %>% 
   rename(EC50 = ...1  , 
          std.error = ...2 ,
          lower = ...3, 
@@ -651,3 +664,8 @@ EC50 %>%
   theme_minimal() +
   panel_border()
 ```
+
+```{r LL.4 combine data }
+
+```
+
