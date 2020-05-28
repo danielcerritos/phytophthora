@@ -573,27 +573,27 @@ nest.data <- fun.sens %>%
   group_by(fungicide, experiment, isolate) %>% 
   nest()
 
-LL3_model <- function(dataset){
+fit_LL3 <- function(dataset){
   drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
 }
 
-LL4_model <- function(dataset){
+fit_LL4 <- function(dataset){
   drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
 }
 
 both.models <- nest.data %>% 
-  mutate(ll3.model = purrr::map(data, LL3_model), 
-         ll4.model = purrr::map(data, LL4_model), 
+  mutate(ll3.model = purrr::map(data, fit_LL3), 
+         ll4.model = purrr::map(data, fit_LL4), 
          ll3.fit = purrr::map(ll3.model, mselect), 
          ll4.fit = purrr::map(ll4.model, mselect)
          )
 ```
 
 ```{r select best model}
-select.model <- both.models %>% 
+model.selection <- both.models %>% 
   dplyr::select(ll3.fit, ll4.fit)
 
-select.model <- select.model %>% 
+model.selection <- model.selection %>% 
   gather(ll3.fit, ll4.fit, key = "model", value = "model.fit") %>%   
   unnest_wider(model.fit) %>% 
   arrange(logLik, IC, `Lack of fit`, `Res var`)
@@ -618,12 +618,12 @@ lack.of.fit %>%
 
 ```{r EC50s}
 # extract EC50s from LL.4 model
-abs.EC50 <- function(models){
+abs_EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
 }
 
 both.models <- both.models %>% 
-  mutate(ll4.EC50 = purrr::map(ll4.model, abs.EC50))
+  mutate(ll4.EC50 = purrr::map(ll4.model, abs_EC50))
 
 EC50 <- both.models %>% 
   dplyr::select(ll4.EC50) %>% 
@@ -657,6 +657,37 @@ EC50 %>%
 ```
 
 ```{r LL.4 combine data }
+# fit LL.4 model with pooled data
+nest.combined <- fun.sens %>% 
+  group_by(fungicide, isolate) %>% 
+  nest() 
 
+fm.combine <- nest.combined %>% 
+  mutate(ll4.model = purrr::map(data, fit_LL4),
+         ll4.fit = purrr::map(ll4.model, mselect), 
+         abs.EC50 = purrr::map(ll4.model, abs_EC50)
+         )
+
+combine.EC50 <- fm.combine %>% 
+  dplyr::select(abs.EC50) %>% 
+  unnest_wider(abs.EC50) %>% 
+  rename(EC50 = ...1  , 
+         std.error = ...2 ,
+         lower = ...3, 
+         upper = ...4)
+```
+
+```{r hormetic models}
+# fit hormetic models
+hormesis.combined <- fun.sens %>% 
+  group_by(fungicide, isolate, dose) %>% 
+  summarise(rel.growth = mean(rel.growth)) %>% 
+  filter(rel.growth > 100, 
+         !dose == 0) %>% 
+  dplyr::select(fungicide, isolate)
+
+hormetic.models <- semi_join(nest.combined, hormesis.combined)
+
+prueba
 ```
 
