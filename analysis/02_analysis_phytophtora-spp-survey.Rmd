@@ -533,7 +533,7 @@ clean_fungicide <- clean_fungicide %>%
     length.mm > 0 ~ length.mm - 4, 
     TRUE ~ length.mm - 0
     )) %>% 
-  filter(length.mm < 0) # eliminate any negative values 
+  filter(!length.mm < 0) # eliminate any negative values 
 
 # mean growth of control plate (dose 0)
 control_fungicide <- clean_fungicide %>% 
