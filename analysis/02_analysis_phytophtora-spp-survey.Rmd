@@ -42,7 +42,7 @@ sansomeana <- read_csv(all.data[5])
 dry.weigth <- read_csv(all.data[1])
 area.length <- read_csv(all.data[2])
 # fungicide sensitivity 
-fun.sens <- read.csv(all.data[4])
+fungicide <- read.csv(all.data[4])
 ```
 
 # Sample collection
@@ -523,34 +523,35 @@ corrplot(sojae.corr$r, method = "number")
 ```{r prepare fs data}
 # eliminate NAs
 # average colony measurements 
-fun.sens <- fun.sens %>% 
+clean_fungicide <- fungicide %>% 
   filter(!is.na(length_a)) %>%  
   mutate(length.mm = (length_a + length_b)/2) 
 
 # subtract the plug diameter
-fun.sens <- fun.sens %>% 
+clean_fungicide <- clean_fungicide %>% 
   mutate(length.mm = case_when(
     length.mm > 0 ~ length.mm - 4, 
     TRUE ~ length.mm - 0
-  ))
+    )) %>% 
+  filter(length.mm < 0) # eliminate any negative values 
 
 # mean growth of control plate (dose 0)
-control <- fun.sens %>% 
+control_fungicide <- clean_fungicide %>% 
   filter(dose == 0, 
          !is.na(length.mm)) %>% 
   group_by(fungicide, experiment, isolate) %>% 
   summarise(control.mean = mean(length.mm)) 
 
-fun.sens <- left_join(fun.sens, control, by = c("fungicide", 
+clean_fungicide <- left_join(clean_fungicide, control_fungicide, by = c("fungicide", 
                                               "experiment", 
                                               "isolate"))
 # relative growth calculation
-fun.sens <- fun.sens %>% 
+clean_fungicide <- clean_fungicide %>% 
   mutate(rel.growth = (length.mm/control.mean)*100)
 
 # check if there are isolates with no EC50
 # isolates with >50% rel growth in the higher dose 
-no.EC50 <- fun.sens %>% 
+no.EC50 <- clean_fungicide %>% 
   group_by(fungicide, experiment, isolate, dose) %>% 
   summarise(rel.growth = mean(rel.growth)) %>% 
   filter(fungicide %in% c("Mefenoxam",
@@ -560,7 +561,7 @@ no.EC50 <- fun.sens %>%
 
 # check if there are isolates with hormetic effect
 # >100% rel growth at lower dose
-hormesis <- fun.sens %>% 
+hormesis <- clean_fungicide %>% 
   group_by(fungicide, experiment, isolate, dose) %>% 
   summarise(rel.growth = mean(rel.growth)) %>% 
   filter(rel.growth > 100, 
@@ -569,49 +570,50 @@ hormesis <- fun.sens %>%
 
 ```{r fit log logistic models }
 # fit log-logistic models with 3 and 4 parameters 
-nest.data <- fun.sens %>% 
+nest_fungicide <- clean_fungicide %>% 
   group_by(fungicide, experiment, isolate) %>% 
   nest()
 
 fit_LL3 <- function(dataset){
-  drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.3(), data = dataset)
 }
 
 fit_LL4 <- function(dataset){
-  drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.4(), data = dataset)
 }
 
-both.models <- nest.data %>% 
+both_models <- nest_fungicide %>% 
   mutate(ll3.model = purrr::map(data, fit_LL3), 
          ll4.model = purrr::map(data, fit_LL4), 
          ll3.fit = purrr::map(ll3.model, mselect), 
-         ll4.fit = purrr::map(ll4.model, mselect)
+         ll4.fit = purrr::map(ll4.model, mselect) 
          )
+# mselect did not work inside function, use it individually to extract info
 ```
 
 ```{r select best model}
-model.selection <- both.models %>% 
+model_selection <- both_models %>% 
   dplyr::select(ll3.fit, ll4.fit)
 
-model.selection <- model.selection %>% 
+model_selection <- model_selection %>% 
   gather(ll3.fit, ll4.fit, key = "model", value = "model.fit") %>%   
   unnest_wider(model.fit) %>% 
   arrange(logLik, IC, `Lack of fit`, `Res var`)
 
 # select based on lower AIC
-aic.models <- model.selection %>% 
+aic_models <- model.selection %>% 
   dplyr::select(fungicide, isolate, model, IC) %>% 
   spread(model, IC)
 
-aic.models %>% 
+aic_models %>% 
   filter(ll3.fit < ll4.fit) %>% 
   n_distinct() # similar fit
 
 # lack of fit p-values 
-lack.of.fit <- model.selection %>% 
+lack_fit <- model.selection %>% 
   filter(`Lack of fit`  < 0.05)
 
-lack.of.fit %>% 
+lack_fit %>% 
   group_by(model)%>% 
   count() # LL.4 model better fit for most isolates
 ```
@@ -622,10 +624,10 @@ abs_EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
 }
 
-both.models <- both.models %>% 
+both_models <- both_models %>% 
   mutate(ll4.EC50 = purrr::map(ll4.model, abs_EC50))
 
-EC50 <- both.models %>% 
+both_EC50 <- both_models %>% 
   dplyr::select(ll4.EC50) %>% 
   unnest_wider(ll4.EC50) %>% 
   rename(EC50 = ...1  , 
@@ -636,10 +638,10 @@ EC50 <- both.models %>%
 
 ```{r combine data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
-EC50$experiment <- as.factor(EC50$experiment)
-EC50$isolate <- as.factor(EC50$isolate)
+both_EC50$experiment <- as.factor(both_EC50$experiment)
+both_EC50$isolate <- as.factor(both_EC50$isolate)
 
-EC50 %>% 
+both_EC50 %>% 
   ggplot(aes(x = isolate, y = EC50, color = experiment)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
@@ -648,7 +650,7 @@ EC50 %>%
   panel_border()
 
 # distribution of EC50s in each experiment 
-EC50 %>% 
+both_EC50 %>% 
   ggplot(aes(x = experiment, y = EC50, color = experiment)) +
   geom_boxplot() +
   facet_wrap(~ fungicide, scales = "free_y") +
@@ -658,17 +660,24 @@ EC50 %>%
 
 ```{r LL.4 combine data }
 # fit LL.4 model with pooled data
-nest.combined <- fun.sens %>% 
+nest_pooled <- fun.sens %>% 
   group_by(fungicide, isolate) %>% 
   nest() 
 
-fm.combine <- nest.combined %>% 
+pooled_model <- nest_pooled %>% 
   mutate(ll4.model = purrr::map(data, fit_LL4),
          ll4.fit = purrr::map(ll4.model, mselect), 
          abs.EC50 = purrr::map(ll4.model, abs_EC50)
          )
 
-combine.EC50 <- fm.combine %>% 
+selection <- fm.combine %>% 
+  dplyr::select(ll4.fit) %>% 
+  gather(ll4.fit, key = "model", value = "model.fit") %>%   
+  unnest_wider(model.fit) %>% 
+  arrange(desc(fungicide, isolate, logLik, IC, `Lack of fit`, `Res var`))
+
+
+pooled_EC50 <- fm.combine %>% 
   dplyr::select(abs.EC50) %>% 
   unnest_wider(abs.EC50) %>% 
   rename(EC50 = ...1  , 
@@ -678,16 +687,43 @@ combine.EC50 <- fm.combine %>%
 ```
 
 ```{r hormetic models}
-# fit hormetic models
-hormesis.combined <- fun.sens %>% 
+# select only isolates with hormetic effects
+hormesis <- fungicide %>% 
   group_by(fungicide, isolate, dose) %>% 
   summarise(rel.growth = mean(rel.growth)) %>% 
   filter(rel.growth > 100, 
          !dose == 0) %>% 
   dplyr::select(fungicide, isolate)
 
-hormetic.models <- semi_join(nest.combined, hormesis.combined)
+hormetic_models <- semi_join(nest_pooled, hormesis)
 
-prueba
+# fit hormetic models and compared it to LL.4
+fit_CRS <- function(dataset){
+  drm(rel.growth ~ dose, fct = CRS.4c(), data = dataset)
+}
+
+fit_BC4 <- function(dataset){
+  drm(rel.growth ~ dose, fct = BC.4(), data = dataset)
+}
+
+hormetic_models <- hormetic_models %>% 
+  mutate(ll4.model = purrr::map(data, fit_LL4),
+         ll4.fit = purrr::map(ll4.model, mselect), 
+         )
+
+hormetic_models <- hormetic_models %>% 
+  mutate(ll4.model = purrr::map(data, fit_LL4),
+         crs.model = purrr::map(data, fit_CRS),
+         bc4.model = purrr::map(data, fit_BC4 ),
+         ll4.fit = purrr::map(ll4.model, mselect), 
+         crs.fit = purrr::map(crs.model, mselect), 
+         bc4.fit = purrr::map(bc4.model, mselect)
+         )
+hormetic_selection <- hormetic_models %>% 
+  dplyr::select(ll4.fit, crs.fit, bc4.fit)
+
+hormetic_selection <- hormetic_selection %>% 
+  gather(ll4.fit,crs.fit, bc4.fit,  key = "model", value = "model.fit") %>%   
+  unnest_wider(model.fit) %>% 
+  arrange(fungicide, isolate, desc(IC))
 ```
-
