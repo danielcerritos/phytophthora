@@ -542,9 +542,8 @@ control_fungicide <- clean_fungicide %>%
   group_by(fungicide, experiment, isolate) %>% 
   summarise(control.mean = mean(length.mm)) 
 
-clean_fungicide <- left_join(clean_fungicide, control_fungicide, by = c("fungicide", 
-                                                                        "experiment", 
-                                                                        "isolate"))
+clean_fungicide <- left_join(clean_fungicide, control_fungicide)
+
 # relative growth calculation
 clean_fungicide <- clean_fungicide %>% 
   mutate(rel.growth = (length.mm/control.mean)*100)
