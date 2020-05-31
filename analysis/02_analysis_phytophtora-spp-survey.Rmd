@@ -542,8 +542,9 @@ control_fungicide <- clean_fungicide %>%
   group_by(fungicide, experiment, isolate) %>% 
   summarise(control.mean = mean(length.mm)) 
 
-clean_fungicide <- left_join(clean_fungicide, control_fungicide)
-
+clean_fungicide <- left_join(clean_fungicide, control_fungicide, by = c("fungicide",
+                                                                        "experiment", 
+                                                                        "isolate"))
 # relative growth calculation
 clean_fungicide <- clean_fungicide %>% 
   mutate(rel.growth = (length.mm/control.mean)*100)
@@ -680,13 +681,13 @@ hormetic_selection %>%
   filter(crs.fit > bc4.fit) %>% 
   n_distinct()
   
-hormetic_selection%>% 
+hormetic_selection %>% 
   dplyr::select(fungicide, experiment, isolate, model, IC) %>% 
   spread(model, IC) %>% 
   filter(ll4.fit > bc4.fit) %>% 
   n_distinct()
   
-prueba_join %>% 
+hormetic_selection %>% 
   filter(`Lack of fit` > 0.05) %>% 
   group_by(model) %>% 
   count() 
@@ -720,24 +721,23 @@ both_EC50 %>%
 
 ```{r LL.4 combine data }
 # fit LL.4 model with pooled data
-nest_pooled <- fun.sens %>% 
+nest_pooled <- clean_fungicide %>% 
   group_by(fungicide, isolate) %>% 
   nest() 
 
-log_pooled <- nest_log_pooled %>% 
+log_pooled <- nest_pooled %>% 
   mutate(ll4.model = purrr::map(data, fit_LL4),
          ll4.fit = purrr::map(ll4.model, mselect), 
          abs.EC50 = purrr::map(ll4.model, abs_EC50)
          ) 
 
-pooled_EC50 <- fm.combine %>% 
+pooled_EC50 <- log_pooled %>% 
   dplyr::select(abs.EC50) %>% 
   unnest_wider(abs.EC50) %>% 
   rename(EC50 = ...1  , 
          std.error = ...2 ,
          lower = ...3, 
-         upper = ...4) %>% 
-  mutate(model == "LL4")
+         upper = ...4) 
 ```
 
 ```{r pooled hormetic model}
@@ -747,10 +747,14 @@ nest_hormetic_pooled <- hormetic_data %>%
   nest() 
 
 hormetic_pooled <- nest_hormetic_pooled %>% 
+  filter(!fungicide == "ethaboxam") # not working abs_Ec50 come back
+
+hormetic_pooled <- hormetic_pooled %>% 
   mutate(bc4.model = purrr::map(data, fit_BC4),
-         bc4.fit = purrr::map(bc4.model, mselect), 
+         bc4.fit = purrr::map(bc4.model, mselect),
          abs.EC50 = purrr::map(bc4.model, abs_EC50)
          )
+
 hormetic_EC50 <- hormetic_pooled %>% 
   dplyr::select(abs.EC50) %>% 
   unnest_wider(abs.EC50) %>% 
@@ -763,21 +767,20 @@ hormetic_EC50 <- hormetic_pooled %>%
 
 ```{r compare EC50}
 # compare hormetic EC50 with LL4 
-# extract model fir 
-compare_EC50 <- semi_join(log_EC50, hormetic_isolates) %>% 
+compare_EC50 <- semi_join(pooled_EC50, hormetic_isolates) %>% 
   mutate(model = "LL4") 
 
 compare_EC50 <- bind_rows(compare_EC50, hormetic_EC50)
 
-compare_EC50$experiment <- as.factor(compare_EC50$experiment)
+
 compare_EC50$isolate <- as.factor(compare_EC50$isolate)
 
 compare_EC50 %>% 
-  filter(fungicide == "mefenoxam") %>% 
+  filter(!fungicide == "ethaboxam") %>% 
   ggplot(aes(x = isolate, y = EC50, color = model)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
-  facet_wrap(~ experiment, scales = "free_y") +
+  facet_wrap(~ fungicide, scales = "free") +
   theme_minimal() +
   panel_border()
 ```
