@@ -701,6 +701,7 @@ log_EC50$experiment <- as.factor(log_EC50$experiment)
 log_EC50$isolate <- as.factor(log_EC50$isolate)
 
 log_EC50 %>% 
+  filter(!isolate == "13") %>% 
   ggplot(aes(x = isolate, y = EC50, color = experiment)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
@@ -723,18 +724,11 @@ nest_pooled <- fun.sens %>%
   group_by(fungicide, isolate) %>% 
   nest() 
 
-pooled_model <- nest_pooled %>% 
+log_pooled <- nest_log_pooled %>% 
   mutate(ll4.model = purrr::map(data, fit_LL4),
          ll4.fit = purrr::map(ll4.model, mselect), 
          abs.EC50 = purrr::map(ll4.model, abs_EC50)
-         )
-
-selection <- fm.combine %>% 
-  dplyr::select(ll4.fit) %>% 
-  gather(ll4.fit, key = "model", value = "model.fit") %>%   
-  unnest_wider(model.fit) %>% 
-  arrange(desc(fungicide, isolate, logLik, IC, `Lack of fit`, `Res var`))
-
+         ) 
 
 pooled_EC50 <- fm.combine %>% 
   dplyr::select(abs.EC50) %>% 
@@ -742,18 +736,24 @@ pooled_EC50 <- fm.combine %>%
   rename(EC50 = ...1  , 
          std.error = ...2 ,
          lower = ...3, 
-         upper = ...4)
+         upper = ...4) %>% 
+  mutate(model == "LL4")
 ```
 
-```{r EC50 hormetic models}
-# on isolate I can calculate an EC50 look why after
-hormetic_models <- hormetic_models %>% 
-  filter(!(fungicide == "ethaboxam" & experiment == 1 & isolate == 12)) %>% 
-  mutate(bc4.EC50 = purrr::map(crs.model, abs_EC50))
+```{r pooled hormetic model}
+# fit pool hormetic model
+nest_hormetic_pooled <- hormetic_data %>% 
+  group_by(fungicide, isolate) %>% 
+  nest() 
 
-hormetic_EC50 <- hormetic_models %>% 
-  dplyr::select(bc4.EC50) %>% 
-  unnest_wider(bc4.EC50) %>% 
+hormetic_pooled <- nest_hormetic_pooled %>% 
+  mutate(bc4.model = purrr::map(data, fit_BC4),
+         bc4.fit = purrr::map(bc4.model, mselect), 
+         abs.EC50 = purrr::map(bc4.model, abs_EC50)
+         )
+hormetic_EC50 <- hormetic_pooled %>% 
+  dplyr::select(abs.EC50) %>% 
+  unnest_wider(abs.EC50) %>% 
   rename(EC50 = ...1  , 
          std.error = ...2 ,
          lower = ...3, 
@@ -763,6 +763,7 @@ hormetic_EC50 <- hormetic_models %>%
 
 ```{r compare EC50}
 # compare hormetic EC50 with LL4 
+# extract model fir 
 compare_EC50 <- semi_join(log_EC50, hormetic_isolates) %>% 
   mutate(model = "LL4") 
 
@@ -779,10 +780,4 @@ compare_EC50 %>%
   facet_wrap(~ experiment, scales = "free_y") +
   theme_minimal() +
   panel_border()
-
-
 ```
-
-
-
-
