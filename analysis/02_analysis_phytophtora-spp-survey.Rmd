@@ -637,7 +637,6 @@ log_EC50 <- log_models %>%
          upper = ...4)
 ```
 
-
 ```{r fit hormetic models}
 nest_hormetic <- hormetic_data %>% 
   group_by(fungicide, experiment, isolate) %>% 
@@ -669,27 +668,39 @@ hormetic_selection <- hormetic_selection %>%
   unnest_wider(model.fit)
 
 # add LL4 fit 
-prueba_join <- semi_join(log_selection, hormetic_isolates) %>% 
+hormetic_selection <- semi_join(log_selection, hormetic_isolates) %>% 
   filter(model == "ll4.fit") %>% 
   bind_rows(hormetic_selection) %>% 
   arrange(isolate, IC)
 
 # best hormetic model
-prueba_join %>% 
-  dplyr::select(fungicide, isolate, model, IC) %>% 
+hormetic_selection %>% 
+  dplyr::select(fungicide, experiment, isolate, model, IC) %>% 
   spread(model, IC) %>% 
-  filter(crs.fit < bc4.fit) %>% 
+  filter(crs.fit > bc4.fit) %>% 
   n_distinct()
   
-
+hormetic_selection%>% 
+  dplyr::select(fungicide, experiment, isolate, model, IC) %>% 
+  spread(model, IC) %>% 
+  filter(ll4.fit > bc4.fit) %>% 
+  n_distinct()
+  
+prueba_join %>% 
+  filter(`Lack of fit` > 0.05) %>% 
+  group_by(model) %>% 
+  count() 
+# overall bc4 better fit based on lower AIC
+# no lack of fit for ll4 for most isolates with hormetic effect
+# decide if its better to look > 0.05 or < 0.05
 ```
 
 ```{r combine data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
-both_EC50$experiment <- as.factor(both_EC50$experiment)
-both_EC50$isolate <- as.factor(both_EC50$isolate)
+log_EC50$experiment <- as.factor(log_EC50$experiment)
+log_EC50$isolate <- as.factor(log_EC50$isolate)
 
-both_EC50 %>% 
+log_EC50 %>% 
   ggplot(aes(x = isolate, y = EC50, color = experiment)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
@@ -733,3 +744,45 @@ pooled_EC50 <- fm.combine %>%
          lower = ...3, 
          upper = ...4)
 ```
+
+```{r EC50 hormetic models}
+# on isolate I can calculate an EC50 look why after
+hormetic_models <- hormetic_models %>% 
+  filter(!(fungicide == "ethaboxam" & experiment == 1 & isolate == 12)) %>% 
+  mutate(bc4.EC50 = purrr::map(crs.model, abs_EC50))
+
+hormetic_EC50 <- hormetic_models %>% 
+  dplyr::select(bc4.EC50) %>% 
+  unnest_wider(bc4.EC50) %>% 
+  rename(EC50 = ...1  , 
+         std.error = ...2 ,
+         lower = ...3, 
+         upper = ...4) %>% 
+  mutate(model = "BC4")
+```
+
+```{r compare EC50}
+# compare hormetic EC50 with LL4 
+compare_EC50 <- semi_join(log_EC50, hormetic_isolates) %>% 
+  mutate(model = "LL4") 
+
+compare_EC50 <- bind_rows(compare_EC50, hormetic_EC50)
+
+compare_EC50$experiment <- as.factor(compare_EC50$experiment)
+compare_EC50$isolate <- as.factor(compare_EC50$isolate)
+
+compare_EC50 %>% 
+  filter(fungicide == "mefenoxam") %>% 
+  ggplot(aes(x = isolate, y = EC50, color = model)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                  position = position_jitterdodge()) +
+  facet_wrap(~ experiment, scales = "free_y") +
+  theme_minimal() +
+  panel_border()
+
+
+```
+
+
+
+
