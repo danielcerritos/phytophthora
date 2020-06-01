@@ -51,12 +51,12 @@ soil_samples %>%
   group_by(year) %>% 
   count(county) %>% 
   ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(color = "white", alpha = 0.8) +
+  geom_col(color = "white", alpha = 0.7) +
   coord_flip() +
-  labs(x = "", y ="Soil samples") +
-  scale_fill_discrete(name = "Year") +
-  scale_fill_manual(values =  c("#33a02c", "#1f78b4")) +
-  theme_minimal()
+  labs(x = "", y ="Soil samples", fill = "Year") +
+  scale_fill_manual(values =  c("#ff7f00", "#1f78b4")) +
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
 ```{r plant samples}
@@ -67,10 +67,11 @@ plant_samples %>%
 plant_samples %>%
   count(county) %>% 
   ggplot(aes(x = fct_reorder(county, n), y = n)) +
-  geom_col(fill = "steelblue", alpha = 0.8) +
+  geom_col(fill = "#1f78b4", alpha = 0.7) +
   coord_flip() +
   labs(x = "", y ="Plant samples") +
-  theme_minimal()
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
 ## Map
@@ -111,10 +112,11 @@ map_plant <- left_join(counties, map_plant, by = "county")
 
 # as factor for plotting
 map_plant$samples_categ <- as.factor(map_plant$samples_categ)
-map_plant$samples_categ <- factor(map_plant$samples_categ, levels = c("1-5", 
-                                                                      "6-10",
-                                                                      "11-15",
-                                                                      "16-20" ))
+map_plant$samples_categ <- factor(map_plant$samples_categ, 
+                                  levels = c("1-5", 
+                                             "6-10",                                                      
+                                             "11-15",
+                                             "16-20" ))
 map_soil$year <- as.factor(map_soil$year)
 map_plant <- map_plant %>% 
   filter(!is.na(samples_categ))
@@ -122,13 +124,13 @@ map_plant <- map_plant %>%
 
 ```{r sample map}
 # samples collection map  
-ggplot(data = world) +
+ggplot() +
   geom_sf(data = states, fill = NA) +
   geom_sf(data = counties, fill = NA) +
-  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.8) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  scale_fill_manual(values = c("#a1dab4", "#41b6c4", "#2c7fb8", "#253494"), 
+  scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
                     name = "Plant samples") +
   scale_shape_discrete(name = "Year") +
   theme_map()
@@ -137,19 +139,32 @@ ggplot(data = world) +
 # Identification of isolates
 
 ```{r exp isolates}
-isolates.recovered %>% 
-  group_by(year, source) %>% 
-  count()
-
-isolates.recovered %>% 
+isolates_recovered %>% 
   group_by(identification) %>% 
   count() 
+
+isolates_recovered %>% 
+  group_by(source) %>% 
+  count()
+
+isolates_recovered %>% 
+  filter(!is.na(county)) %>% 
+  group_by(year, county) %>% 
+  count() %>% 
+  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
+  geom_col(alpha = 0.7) +
+  coord_flip() +
+  labs(x = "", y = "Isolates recovered", fill ="Year") +
+  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4")) +
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
+## Identified species
 
-```{r figure species collected}
-isolates.summary <- isolates.recovered %>% 
-  select(species) %>%
+```{r species collected}
+isolates_species <- isolates_recovered %>% 
+  dplyr::select(species) %>%
   group_by(species) %>% 
   count() %>%  
   mutate(genus = case_when(
@@ -157,21 +172,18 @@ isolates.summary <- isolates.recovered %>%
     grepl("Pyth", species) ~"Pythium spp.")) %>% 
   mutate(percentage = (n/182)*100)
 
-isolates.summary %>% 
+isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus))+
-  geom_col() +
+  geom_col(alpha = 0.7) +
   coord_flip() +
   theme_minimal_hgrid()+
-  labs(y = "Isolates (%)", 
-       x = "Species") +
-  scale_y_continuous(
-    expand = expansion(mult = c(0, 0.05)))+
-  theme_minimal_hgrid()+
-  panel_border() +
-  theme(legend.position = "none", 
-        panel.grid.major.y = element_line(linetype = "dotted", 
-                                          color = "grey80")) +
-  scale_fill_manual(values = c("#FF6A6A", "#BEBEBE"))
+  labs(y = "Isolates revovered (%)", 
+       x = "") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  theme_minimal_vgrid() +
+  theme(legend.position = "none",
+        axis.text.y  = element_text(face = "italic")) +
+  scale_fill_manual(values = c("#e31a1c", "#BEBEBE")) 
 ```
 
 # Pathotype
