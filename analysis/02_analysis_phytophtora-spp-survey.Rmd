@@ -86,6 +86,7 @@ https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
 
 ```{r samples data map}
 map_soil <- soil_samples %>% 
+  filter(!sample_id == "16PR012") %>% # not from IL
   dplyr::select(year, long, lat) %>% 
   filter(!is.na(long))
 
@@ -143,8 +144,6 @@ ggplot(data = world) +
   theme_map()
 ```
 
-
-
 # Identification of isolates
 
 ```{r exp isolates}
@@ -157,44 +156,6 @@ isolates.recovered %>%
   count() 
 ```
 
-##  Map
-
-```{r map isolates}
-# I added the coordinates manually, change code 
-isolates <- isolates.recovered %>% 
-  select(county, species) %>%  
-  mutate(genus = case_when(
-    grepl("Phyto", species) ~ "Phytophthora spp.",
-    grepl("Pyth", species) ~"Pythium spp."))
-
-isolates <- isolates %>% 
-  filter(!is.na(county)) %>% 
-  group_by(county, genus) %>% 
-  count()
-
-isolates <- isolates %>%  
-  mutate(genus = case_when(
-    grepl("Phyto", species) ~ "Phytophthora spp.",
-    grepl("Pyth", species) ~ "Pythium spp."))
-
-write.csv(isolates, here("output", "isolates-count-genus.csv"))
-
-collection.map <- read_csv(here("output", "isolates-count-genus.csv"))
-il_counties <- map_data("county", "illinois")
-
-#counties labels 
-phyto.conties <- collection.map %>% 
-  filter(genus == "Phytophthora spp.")
-
-ggplot() +
-  geom_polygon(data = il_counties, aes(x = long, y = lat, group = group), 
-               fill = "white", color = "grey50") +
-  geom_point(data = collection.map, aes(x = long, y = lat, size = isolates, 
-                                        color = genus)) +
-  geom_text_repel(data=phyto.conties, aes(x=long, y=lat, label= county), size=5) +
-  coord_map() +
-  theme_map() 
-```
 
 ```{r figure species collected}
 isolates.summary <- isolates.recovered %>% 
