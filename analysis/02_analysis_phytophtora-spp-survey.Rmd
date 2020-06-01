@@ -12,8 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", 
-# "rnaturalearth", "rnaturalearthdata", "hagis", "corrplot", "Hmisc", "drc"))
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", # "hagis", "corrplot", "Hmisc", "drc", "rgeos"))
 # devtools::install_github("yutannihilation/ggsflabel")
 # install.packages("pacman")
 
@@ -29,37 +28,54 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
 # Import data
 
 ```{r data}
-all.data <- list.files(here("output", "clean_data"), full.names = TRUE)
+all_data <- list.files(here("output", "clean_data"), full.names = TRUE)
 # samples collection
-soil.samples <- read_csv(all.data[8])
-plant.samples <- read_csv(all.data[7])
+soil_samples <- read_csv(all_data[8])
+plant_samples <- read_csv(all_data[7])
 # identification of isolates
-isolates.recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
+isolates_recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
 # pathotype
-sojae <- read_csv(all.data[6])
-sansomeana <- read_csv(all.data[5])
+sojae <- read_csv(all_data[6])
+sansomeana <- read_csv(all_data[5])
 #aggressiveness
-dry.weigth <- read_csv(all.data[1])
-area.length <- read_csv(all.data[2])
+dry_weigth <- read_csv(all_data[1])
+area_length <- read_csv(all_data[2])
 # fungicide sensitivity 
-fungicide <- read.csv(all.data[4])
+fungicide <- read.csv(all_data[4])
 ```
 
 # Sample collection
 
-```{r exp analysis}
+```{r soil samples}
 # 2016-2017
-soil.samples %>%
+soil_samples %>%
   group_by(year) %>% 
   count() 
-soil.samples$county %>% 
-  n_distinct() 
 
+soil_samples %>%
+  group_by(year) %>% 
+  count(county) %>% 
+  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
+  geom_col(color = "white", alpha = 0.8) +
+  coord_flip() +
+  labs(x = "", y ="Soil samples") +
+  scale_fill_discrete(name = "Year") +
+  scale_fill_manual(values =  c("#33a02c", "#1f78b4")) +
+  theme_minimal()
+```
+
+```{r plant samples}
 # 2018
-plant.samples %>%
-  count() 
-plant.samples$county %>%
-  n_distinct()
+plant_samples %>%
+  count() # just included positive samples 
+
+plant_samples %>%
+  count(county) %>% 
+  ggplot(aes(x = fct_reorder(county, n), y = n)) +
+  geom_col(fill = "steelblue", alpha = 0.8) +
+  coord_flip() +
+  labs(x = "", y ="Plant samples") +
+  theme_minimal()
 ```
 
 ## Map
@@ -68,16 +84,14 @@ I use code from here:
 https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html 
 https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
 
-```{r samples map}
-soil.samples <- soil.samples %>% 
+```{r samples data map}
+map_soil <- soil_samples %>% 
   dplyr::select(year, long, lat) %>% 
   filter(!is.na(long))
 
 # convert to sf object
-soil.samples <- st_as_sf(soil.samples, coords = c("long", "lat"), 
+map_soil <- st_as_sf(map_soil, coords = c("long", "lat"), 
                    crs = 4326, agr = "constant")
-
-soil.samples$year <- as.factor(soil.samples$year)
 
 # subset county data 
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -90,28 +104,46 @@ counties <- counties %>%
   separate(ID, into = c("state", "county"), sep = ",")
 
 # change continous data into categories 
-plant.samples <- plant.samples %>% 
+map_plant <- plant_samples %>% 
   group_by(county) %>% 
   count() %>% 
-  mutate(samples = case_when(
-    n <= 5 ~ "1 - 5", 
-    n >= 6 & n <= 10 ~ "6 - 10",
-    n >= 11 & n <= 15 ~ "11 - 15", 
-    n >= 16 & n <= 20 ~ "16 - 20", 
+  mutate(samples_categ = case_when(
+    n <= 5 ~ "1-5", 
+    n >= 6 & n <= 10 ~ "6-10",
+    n >= 11 & n <= 15 ~ "11-15", 
+    n >= 16 & n <= 20 ~ "16-20", 
   ))
 
-plant.samples$county <- tolower(plant.samples$county)
-all_data <- left_join(counties, plant.samples, by = "county")
+map_plant$county <- tolower(map_plant$county)
+map_plant <- left_join(counties, map_plant, by = "county")
 
+map_plant$samples_categ <- as.factor(map_plant$samples_categ)
+map_plant$samples_categ <- factor(map_plant$samples_categ, 
+                                 levels = c("1-5", 
+                                            "6-10",
+                                            "11-15",
+                                            "16-20" ))
+
+map_soil$year <- as.factor(map_soil$year)
+map_plant <- map_plant %>% 
+  filter(!is.na(samples_categ))
+```
+
+```{r sample map}
 # map 
 ggplot(data = world) +
-  geom_sf(data = states, fill = NA) + 
-  geom_sf(data = all_data, aes(fill = samples), color = "black", alpha = 0.8) +
-  geom_sf(data = soil.samples, aes(shape = year),  size = 2) +
+  geom_sf(data = states, fill = NA) +
+  geom_sf(data = counties, fill = NA) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.8) +
+  geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  scale_fill_manual(values = c("#a1dab4", "#41b6c4", "#225ea8", "#2c7fb8")) 
+  scale_fill_manual(values = c("#a1dab4", "#41b6c4", "#2c7fb8", "#253494"), 
+                    name = "Plant samples") +
+  scale_shape_discrete(name = "Year") +
   theme_map()
 ```
+
+
 
 # Identification of isolates
 
@@ -517,6 +549,8 @@ sojae.corr <- sojae.all %>%
 
 corrplot(sojae.corr$r, method = "number")
 ```
+
+Make some plots for the temperature data, to see why the experiments are different or to validate the reason they are not
 
 # Fungicide Sensitivity 
 
