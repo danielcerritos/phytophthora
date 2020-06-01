@@ -12,17 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", # "hagis", "corrplot", "Hmisc", "drc", "rgeos"))
-# devtools::install_github("yutannihilation/ggsflabel")
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata",
+# "hagis", "corrplot", "Hmisc", "drc", "rgeos"))
 # install.packages("pacman")
-
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
                Hmisc, corrplot, drc)
-
-#library(ggrepel)
-#library(ggsflabel)
-
 ```
 
 # Import data
