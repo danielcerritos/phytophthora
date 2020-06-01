@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata",
-# "hagis", "corrplot", "Hmisc", "drc", "rgeos"))
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", 
+# "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos"))
 # install.packages("pacman")
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
@@ -75,31 +75,23 @@ plant_samples %>%
 
 ## Map
 
-I use code from here: 
-https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-2.html 
-https://www.r-graph-gallery.com/330-bubble-map-with-ggplot2.html
-
 ```{r samples data map}
-map_soil <- soil_samples %>% 
-  filter(!sample_id == "16PR012") %>% # not from IL
-  dplyr::select(year, long, lat) %>% 
-  filter(!is.na(long))
-
-# convert to sf object
-map_soil <- st_as_sf(map_soil, coords = c("long", "lat"), 
-                   crs = 4326, agr = "constant")
-
 # subset county data 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
 counties <- st_as_sf(map("county", plot = FALSE, fill = TRUE))
 counties <- subset(counties, grepl("illinois", counties$ID))
 
-# add plant samples data
-counties <- counties %>% 
-  separate(ID, into = c("state", "county"), sep = ",")
+# convert to sf object
+map_soil <- soil_samples %>% 
+  filter(!sample_id == "16PR012") %>% # not from IL
+  dplyr::select(year, long, lat) %>% 
+  filter(!is.na(long))
 
-# change continous data into categories 
+map_soil <- st_as_sf(map_soil, coords = c("long", "lat"), 
+                   crs = 4326, agr = "constant")
+
+# change continuous data (plant samples) into categories 
 map_plant <- plant_samples %>% 
   group_by(county) %>% 
   count() %>% 
@@ -110,23 +102,26 @@ map_plant <- plant_samples %>%
     n >= 16 & n <= 20 ~ "16-20", 
   ))
 
+# add counties coordinates to plant samples data
+counties <- counties %>% 
+  separate(ID, into = c("state", "county"), sep = ",")
+
 map_plant$county <- tolower(map_plant$county)
 map_plant <- left_join(counties, map_plant, by = "county")
 
+# as factor for plotting
 map_plant$samples_categ <- as.factor(map_plant$samples_categ)
-map_plant$samples_categ <- factor(map_plant$samples_categ, 
-                                 levels = c("1-5", 
-                                            "6-10",
-                                            "11-15",
-                                            "16-20" ))
-
+map_plant$samples_categ <- factor(map_plant$samples_categ, levels = c("1-5", 
+                                                                      "6-10",
+                                                                      "11-15",
+                                                                      "16-20" ))
 map_soil$year <- as.factor(map_soil$year)
 map_plant <- map_plant %>% 
   filter(!is.na(samples_categ))
 ```
 
 ```{r sample map}
-# map 
+# samples collection map  
 ggplot(data = world) +
   geom_sf(data = states, fill = NA) +
   geom_sf(data = counties, fill = NA) +
