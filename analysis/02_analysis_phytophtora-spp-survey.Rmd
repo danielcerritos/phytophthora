@@ -12,12 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r library}
-# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", 
-# "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos"))
 # install.packages("pacman")
+# install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", 
+# "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"  ))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
-               Hmisc, corrplot, drc)
+               Hmisc, corrplot, drc, scales)
 ```
 
 # Import data
@@ -170,16 +170,17 @@ isolates_species <- isolates_recovered %>%
   mutate(genus = case_when(
     grepl("Phyto", species) ~ "Phytophthora spp.",
     grepl("Pyth", species) ~"Pythium spp.")) %>% 
-  mutate(percentage = (n/182)*100)
+  mutate(percentage = (n/180))
 
 isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus))+
   geom_col(alpha = 0.7) +
   coord_flip() +
-  theme_minimal_hgrid()+
-  labs(y = "Isolates revovered (%)", 
+  theme_minimal_hgrid() +
+  labs(y = "Isolates recovered", 
        x = "") +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) +
   theme_minimal_vgrid() +
   theme(legend.position = "none",
         axis.text.y  = element_text(face = "italic")) +
