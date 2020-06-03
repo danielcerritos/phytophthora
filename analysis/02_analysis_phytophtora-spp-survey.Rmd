@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -47,16 +47,8 @@ soil_samples %>%
   group_by(year) %>% 
   count() 
 
-soil_samples %>%
-  group_by(year) %>% 
-  count(county) %>% 
-  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(color = "white", alpha = 0.7) +
-  coord_flip() +
-  labs(x = "", y ="Soil samples", fill = "Year") +
-  scale_fill_manual(values =  c("#ff7f00", "#1f78b4")) +
-  theme_minimal_vgrid() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+soil_samples$county %>%
+  n_distinct()
 ```
 
 ```{r plant samples}
@@ -64,17 +56,9 @@ soil_samples %>%
 plant_samples %>%
   count() # just included positive samples 
 
-plant_samples %>%
-  count(county) %>% 
-  ggplot(aes(x = fct_reorder(county, n), y = n)) +
-  geom_col(fill = "#1f78b4", alpha = 0.7) +
-  coord_flip() +
-  labs(x = "", y ="Plant samples") +
-  theme_minimal_vgrid() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+plant_samples$county %>%
+  n_distinct()
 ```
-
-## Map
 
 ```{r samples data map}
 # subset county data 
@@ -122,12 +106,14 @@ map_plant <- map_plant %>%
   filter(!is.na(samples_categ))
 ```
 
+## Figure 1
+
 ```{r sample map}
 # samples collection map  
 ggplot() +
   geom_sf(data = states, fill = NA) +
   geom_sf(data = counties, fill = NA) +
-  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.5) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
   scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
@@ -152,7 +138,7 @@ isolates_recovered %>%
   group_by(year, county) %>% 
   count() %>% 
   ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(alpha = 0.7) +
+  geom_col(alpha = 0.5) +
   coord_flip() +
   labs(x = "", y = "Isolates recovered", fill ="Year") +
   scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4")) +
@@ -160,7 +146,7 @@ isolates_recovered %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
-## Identified species
+## Figure 2
 
 ```{r species collected}
 isolates_species <- isolates_recovered %>% 
@@ -173,8 +159,8 @@ isolates_species <- isolates_recovered %>%
   mutate(percentage = (n/180))
 
 isolates_species %>% 
-  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus))+
-  geom_col(alpha = 0.7) +
+  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
+  geom_col(alpha = 0.5) +
   coord_flip() +
   theme_minimal_hgrid() +
   labs(y = "Isolates recovered", 
@@ -187,13 +173,21 @@ isolates_species %>%
   scale_fill_manual(values = c("#e31a1c", "#BEBEBE")) 
 ```
 
+```{r phytophthora county}
+isolates_recovered %>% 
+  filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
+  group_by(year, county) %>% 
+  count(species) %>% 
+  arrange(desc(n))
+```
+
 # Pathotype
 
 ## Phytophthora sojae
 
 ```{r effective Rps}
 # two susceptible controls
-williams <- sojae %>% 
+sojae_control <- sojae %>% 
   filter(differential == "Williams") %>% 
   group_by(isolate_number, isolate_id, isolate_name, county, differential, gene) %>% 
   summarise(dead = sum(dead), 
@@ -201,9 +195,11 @@ williams <- sojae %>%
 
 sojae <- sojae %>% 
   filter(!differential == "Williams")
-sojae <- bind_rows(williams, sojae)
+
+sojae <- bind_rows(sojae_control, sojae)
+
 sojae <- sojae %>% 
-  mutate(percent.susceptible = round((dead/total)*100))
+  mutate(percent.susceptible = (dead/total)*100)
 
 hagis_args <- list(
   x = sojae,
@@ -213,45 +209,62 @@ hagis_args <- list(
   gene = "gene",
   perc_susc = "percent.susceptible"
 )
+
 # effective Rps
-Rps.summary <- do.call(summarize_gene, hagis_args)
-Rps.summary %>% 
+sojae_rps <- do.call(summarize_gene, hagis_args)
+
+(effective_rps <- sojae_rps %>% 
+  mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(fill = "#FF7256", alpha = 0.5) +
+  geom_col(fill = "#ff7f00", alpha = 0.5) +
   theme_minimal_hgrid() +
   labs(x = "Rps gene", 
-       y = "Percent pathogenic") +
+       y = "Percnet pathogenic") +
   scale_y_continuous(
-    expand = expansion(mult = c(0, 0.05))) 
+    expand = expansion(mult = c(0, 0.05)), 
+    labels = percent_format()) 
+  )
 ```
 
 ```{r complexity}
 # mean complexity
 complexities <- do.call(calculate_complexities, hagis_args)
 
-complexity.percent <- complexities$grouped_complexities %>% 
-  mutate(percent = (frequency/21)*100)
+complexity_percent <- complexities$grouped_complexities %>% 
+  mutate(percent = (frequency/21))
 
-complexity.percent$complexity <- as.numeric(complexity.percent$complexity)
+complexity_percent$complexity <- as.numeric(complexity_percent$complexity)
 complexities$indvidual_complexities
 
 
-complexity.percent %>% 
+(complexity_mean <- complexity_percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
-  geom_col(fill = "#6495ED", alpha = 0.5) +
+  geom_col(fill = "#1f78b4", alpha = 0.5) + 
+  geom_vline(xintercept = 6, linetype="dashed",  size = 1) +
   theme_minimal_hgrid() +
   labs(x = "Complexity", 
        y = "Percent Isolates") +
-  scale_y_continuous(
-    expand = expansion(mult = c(0, 0.05))) +
-  scale_x_continuous(limits = c(1, 12), breaks = 1:12)
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) +
+  scale_x_continuous(limits = c(1, 12), breaks = 1:12) 
+)
 
 pander(summary(complexities))
 ```
 
+## Figure 3
+
+```{r fig 3}
+
+plot_grid(effective_rps, complexity_mean, labels = "AUTO",ncol = 1)
+
+```
+
+## Table 1
+
 ```{r pathotype}
 # diversity
-do.call(calculate_diversities, hagis_args)
+diversity <- do.call(calculate_diversities, hagis_args)
 # pathotypes
 diversities_table(diversity)
 ```
@@ -262,7 +275,7 @@ diversities_table(diversity)
 sansomeana <- sansomeana %>% 
   mutate(percent.susceptible = round((dead/total)*100))
 
-sansomeana.rps <- summarize_gene(
+sansomeana_rps <- summarize_gene(
   x = sansomeana,
   cutoff = 75,
   control = "rps",
@@ -271,9 +284,9 @@ sansomeana.rps <- summarize_gene(
   perc_susc = "percent.susceptible"
 )
 
-sansomeana.rps %>% 
+sansomeana_rps %>% 
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(fill = "#FF7256", alpha = 0.5) +
+  geom_col(fill = "#ff7f00", alpha = 0.5) +
   theme_minimal_hgrid() +
   labs(x = "Rps gene", 
        y = "Percent pathogenic") +
@@ -285,18 +298,18 @@ sansomeana.rps %>%
 
 ```{r area and length}
 # some pots had two images in experiment 1 because they did it fit
-area.length <- area.length %>% 
+area_length <- area_length %>% 
   group_by(experiment, pot) %>% 
   summarise(length_in = mean(length_in), 
             area_in.2 = mean(area_in.2))
 
-aggressiveness <- left_join(dry.weigth, area.length, 
+aggressiveness <- left_join(dry_weigth, area_length, 
                             by = c("experiment", "pot")) 
 
 # results  are by pot, divide by germination to get mean by seedling
 aggressiveness <- aggressiveness %>% 
-  mutate(shoot.mg = shoot.mg/germination, 
-         root.mg = root.mg/germination, 
+  mutate(shoot_mg = shoot.mg/germination, 
+         root_mg = root.mg/germination, 
          length_in = length_in/germination, 
          area_in.2 = area_in.2/germination)
 ```
@@ -312,7 +325,7 @@ exp_plot <- function(y) {
   ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
     geom_boxplot(alpha = 0.6) +
     geom_point(aes(color =  experiment), position = position_jitter()) +
-    theme_bw() +
+    theme_minimal() +
     labs(x = "experiment", 
          y = y)
   }
@@ -328,8 +341,8 @@ exp_plot_2 <- function(y) {
   ggplot(aggressiveness, aes(x = experiment, y = .data[[y]])) +
     geom_boxplot() +
     geom_point(aes(color =  experiment), position = position_jitter()) +
-    facet_wrap(~species) +
-    theme_bw()
+    facet_wrap(~ species) +
+    theme_minimal()
 }
 
 exp_plot_2("root.mg")
@@ -340,53 +353,66 @@ exp_plot_2("area_in.2")
 
 ```{r distribution}
 qplot(shoot.mg, data = aggressiveness) +
-  theme_bw()
+  theme_minimal()
 
 qplot(root.mg, data = aggressiveness) +
-  theme_bw()
+    theme_minimal()
 
 qplot(length_in, data = aggressiveness) +
-  theme_bw() # skew to the left, some transformation needed
+  theme_minimal() # skew to the left, some transformation needed
 
 qplot(area_in.2, data = aggressiveness) +
-  theme_bw() # also skew
+  theme_minimal() # also skew
 ```
 
 ## Mix model and ANOVAs
 
-```{r nesting}
-aggressiveness <- aggressiveness %>% 
-  mutate(species_isolate = paste(isolate, species, sep = "_")) # nest isolate in species
-```
-
 ```{r fm root dry }
-prueba <- aggressiveness %>% 
-  filter(!species == "Control Agar", 
-         !species == "Control None")
+# not nesting isolate:species, isolates coded in a way there is no redundancy
+# same coefficient estimates and p values without nesting
 # experiment as random to account for variation between experiments 
-fm.root.dry <- lmer(root.mg ~ species + species_isolate + (1|experiment), data = prueba)
-resid_panel(fm.root.dry) # no assumptions violated 
+fm_dry_root <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_dry_root) 
 anova(fm.root.dry)
 ```
 
 ```{r fm shoot dry }
-fm.shoot.dry <- lmer(shoot.mg ~ species + species_isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm.shoot.dry) # most of the data points fall into the line 
-anova(fm.root.dry)
+fm_shoot_dry <- lmer(shoot.mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_shoot_dry) 
+anova(fm_shoot_dry)
 ```
 
 ```{r fm root length }
 # log transformation for normality and slight difference in variances
-fm.root.length <- lmer(log(length_in) ~ species + species_isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm.root.length) # transformation worked 
-anova(fm.root.length)
+fm_root_length <- lm(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_length) # transformation worked 
+anova(fm_root_length)
+
+emmeans(fm_root_length, ~ species, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+
+emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+  
+  
+  plot(comparisons = TRUE)
+
+
+
 ```
 
 ```{r fm root area}
-fm.root.area <- lmer(log(area_in.2) ~ species + species_isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm.root.area) # transformation also worked 
-anova(fm.root.length)
+fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_area) # transformation also worked 
+anova(fm_root_area)
+
+
+emmeans(fm_root_area, ~ species, type = "response") # back-transform estimates
+
 ```
+
+
+
 
 ## Differences between species 
 
