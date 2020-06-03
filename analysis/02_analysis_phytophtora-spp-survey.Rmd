@@ -392,13 +392,7 @@ emmeans(fm_root_length, ~ species, type = "response") %>% # back-transform estim
   cld.emmGrid()
 
 emmeans(fm_root_length, ~ isolate, type = "response") %>% 
-  cld.emmGrid()
-  
-  
   plot(comparisons = TRUE)
-
-
-
 ```
 
 ```{r fm root area}
