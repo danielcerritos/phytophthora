@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r library}
 # install.packages("pacman")
 # install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", 
-# "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"  ))
+# "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
                Hmisc, corrplot, drc, scales)
@@ -109,11 +109,11 @@ map_plant <- map_plant %>%
 ## Figure 1
 
 ```{r sample map}
-# samples collection map  
+# samples collection map 
 ggplot() +
   geom_sf(data = states, fill = NA) +
   geom_sf(data = counties, fill = NA) +
-  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.5) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.6) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
   scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
@@ -146,7 +146,7 @@ isolates_recovered %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
-## Figure 2
+## Figure 2 
 
 ```{r species collected}
 isolates_species <- isolates_recovered %>% 
@@ -160,17 +160,15 @@ isolates_species <- isolates_recovered %>%
 
 isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.5) +
+  geom_col(alpha = 0.6) +
   coord_flip() +
-  theme_minimal_hgrid() +
-  labs(y = "Isolates recovered", 
-       x = "") +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
-                     labels = percent_format()) +
+  labs(x = "", y = "Percent isolates recovered") +
   theme_minimal_vgrid() +
   theme(legend.position = "none",
         axis.text.y  = element_text(face = "italic")) +
-  scale_fill_manual(values = c("#e31a1c", "#BEBEBE")) 
+  scale_fill_manual(values = c("#e31a1c", "#BEBEBE")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) 
 ```
 
 ```{r phytophthora county}
@@ -205,7 +203,7 @@ hagis_args <- list(
   x = sojae,
   cutoff = 75,
   control = "rps",
-  sample = "isolate_id",
+  sample = "isolate_number",
   gene = "gene",
   perc_susc = "percent.susceptible"
 )
@@ -213,51 +211,45 @@ hagis_args <- list(
 # effective Rps
 sojae_rps <- do.call(summarize_gene, hagis_args)
 
-(effective_rps <- sojae_rps %>% 
+effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(fill = "#ff7f00", alpha = 0.5) +
-  theme_minimal_hgrid() +
+  geom_col(fill = "#ff7f00", alpha = 0.6) +
   labs(x = "Rps gene", 
        y = "Percnet pathogenic") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05)), 
-    labels = percent_format()) 
-  )
+    labels = percent_format()) +
+    theme_minimal_hgrid()
 ```
 
 ```{r complexity}
-# mean complexity
 complexities <- do.call(calculate_complexities, hagis_args)
 
 complexity_percent <- complexities$grouped_complexities %>% 
   mutate(percent = (frequency/21))
 
 complexity_percent$complexity <- as.numeric(complexity_percent$complexity)
-complexities$indvidual_complexities
 
+# mean complexity
+pander(summary(complexities))
 
-(complexity_mean <- complexity_percent %>% 
+complexity_mean <- complexity_percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
-  geom_col(fill = "#1f78b4", alpha = 0.5) + 
+  geom_col(fill = "#1f78b4", alpha = 0.6) + 
   geom_vline(xintercept = 6, linetype="dashed",  size = 1) +
-  theme_minimal_hgrid() +
   labs(x = "Complexity", 
        y = "Percent Isolates") +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
                      labels = percent_format()) +
-  scale_x_continuous(limits = c(1, 12), breaks = 1:12) 
-)
-
-pander(summary(complexities))
+  scale_x_continuous(limits = c(1, 12), breaks = 1:12) +
+  theme_minimal_hgrid() 
 ```
 
 ## Figure 3
 
 ```{r fig 3}
-
-plot_grid(effective_rps, complexity_mean, labels = "AUTO",ncol = 1)
-
+plot_grid(effective_rps, complexity_mean, labels = "AUTO", ncol = 1)
 ```
 
 ## Table 1
@@ -294,10 +286,27 @@ sansomeana_rps %>%
     expand = expansion(mult = c(0, 0.05))) 
 ```
 
+```{r save pathotype data}
+# combine all data
+isolates_complexity <- complexities$indvidual_complexities %>% 
+  rename(isolate_number = sample, complexity = N_samp)
+
+isolates_pathotypes <- diversity$individual_pathotypes %>% 
+  rename(isolate_number = Sample)
+
+isolates_complexity$isolate_number <- as.numeric(isolates_complexity$isolate_number)
+sojae_all <- left_join(isolates_complexity, isolates_pathotypes)
+
+add_isolate_id <- sojae[1:24, ]
+
+sojae_pathotype <- left_join(sojae_all, add_isolate_id, by = "isolate_number") %>% 
+  dplyr::select(isolate_number, isolate_id, complexity, Pathotype)
+```
+
 # Aggressiveness
 
 ```{r area and length}
-# some pots had two images in experiment 1 because they did it fit
+# some pots had two images in experiment 1 because they did not fit
 area_length <- area_length %>% 
   group_by(experiment, pot) %>% 
   summarise(length_in = mean(length_in), 
@@ -323,214 +332,190 @@ aggressiveness$species <- as.factor(aggressiveness$species)
 
 exp_plot <- function(y) {
   ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
-    geom_boxplot(alpha = 0.6) +
-    geom_point(aes(color =  experiment), position = position_jitter()) +
+    geom_boxplot() +
     theme_minimal() +
-    labs(x = "experiment", 
-         y = y)
+    labs(x = "", 
+         y = y) +
+    theme(legend.position = "none")
   }
 
-exp_plot("shoot.mg")
-exp_plot("root.mg")
-exp_plot("length_in")
-exp_plot("area_in.2")
-```
+by_exp_shoot <- exp_plot("shoot_mg")
+by_exp_dry <- exp_plot("root_mg")
+by_exp_length <- exp_plot("length_in")
+by_exp_area <- exp_plot("area_in.2")
 
-```{r exp plot 2}
-exp_plot_2 <- function(y) {
-  ggplot(aggressiveness, aes(x = experiment, y = .data[[y]])) +
-    geom_boxplot() +
-    geom_point(aes(color =  experiment), position = position_jitter()) +
-    facet_wrap(~ species) +
-    theme_minimal()
-}
-
-exp_plot_2("root.mg")
-exp_plot_2("shoot.mg")
-exp_plot_2("length_in")
-exp_plot_2("area_in.2")
+plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)
 ```
 
 ```{r distribution}
-qplot(shoot.mg, data = aggressiveness) +
+dis_shoot <- qplot(shoot_mg, data = aggressiveness) +
   theme_minimal()
-
-qplot(root.mg, data = aggressiveness) +
+dis_dry <- qplot(root_mg, data = aggressiveness) +
     theme_minimal()
-
-qplot(length_in, data = aggressiveness) +
+dis_length <- qplot(length_in, data = aggressiveness) +
   theme_minimal() # skew to the left, some transformation needed
-
-qplot(area_in.2, data = aggressiveness) +
+dis_area <- qplot(area_in.2, data = aggressiveness) +
   theme_minimal() # also skew
+
+plot_grid(dis_shoot, dis_dry, dis_length, dis_area)
 ```
 
-## Mix model and ANOVAs
+```{r log transform}
+dis_length_log <- qplot(log(length_in), data = aggressiveness) +
+  theme_minimal() 
+dis_area_log <- qplot(log(area_in.2), data = aggressiveness) +
+  theme_minimal() 
+
+plot_grid(dis_length_log, dis_area_log) #improves
+```
+
+## Fit mixed model
 
 ```{r fm root dry }
 # not nesting isolate:species, isolates coded in a way there is no redundancy
 # same coefficient estimates and p values without nesting
-# experiment as random to account for variation between experiments 
-fm_dry_root <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_dry_root) 
-anova(fm.root.dry)
+fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_dry) 
+anova(fm_root_dry)
+emmeans(fm_root_dry, ~ species) %>% 
+  cld.emmGrid()
 ```
 
 ```{r fm shoot dry }
-fm_shoot_dry <- lmer(shoot.mg ~ species + isolate + (1|experiment), data = aggressiveness)
+fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(fm_shoot_dry) 
 anova(fm_shoot_dry)
+emmeans(fm_shoot_dry, ~ species) %>% 
+  cld.emmGrid()
 ```
 
 ```{r fm root length }
 # log transformation for normality and slight difference in variances
-fm_root_length <- lm(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_length) # transformation worked 
+fm_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_length) # diagnostic plots look fine
 anova(fm_root_length)
-
 emmeans(fm_root_length, ~ species, type = "response") %>% # back-transform estimates
   cld.emmGrid()
-
-emmeans(fm_root_length, ~ isolate, type = "response") %>% 
-  plot(comparisons = TRUE)
 ```
 
 ```{r fm root area}
 fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(fm_root_area) # transformation also worked 
 anova(fm_root_area)
-
-
-emmeans(fm_root_area, ~ species, type = "response") # back-transform estimates
-
-```
-
-
-
-
-## Differences between species 
-
-```{r mean separation species}
-emmeans(fm.root.dry, ~species) %>% 
+emmeans(fm_root_area, ~ species, type = "response") %>% 
   cld.emmGrid()
-
-emmeans(fm.shoot.dry, ~species) %>% 
-  cld.emmGrid()
-
-emmeans(fm.root.length, ~species) %>% 
-  cld.emmGrid()
-
-emmeans(fm.root.area, ~species) %>% 
-  cld.emmGrid()
-```
-
-```{r plot species}
-species_plot <- function(y) {
-  ggplot(data = aggressiveness, aes(x = species, y = .data[[y]])) +
-    geom_boxplot(alpha = 0.6) +
-    geom_point(aes(color =  experiment), position = position_jitter()) +
-    theme_bw() +
-    labs(x = "experiment", 
-         y = y)
-}
-
-species_plot("root.mg")
-species_plot("shoot.mg")
-species_plot("length_in")
-species_plot("area_in.2")
 ```
 
 ## Differences within species (between isolates)
 
 ```{r mean separation isolates}
-emmeans(fm.root.dry, ~species_isolate) %>% 
-  plot(comparisons = TRUE)
+emmeans(fm_root_dry, ~ isolate) %>% 
+  cld.emmGrid()
+emmeans(fm_shoot_dry, ~ isolate) %>% 
+  cld.emmGrid()
+emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+emmeans(fm_root_area, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+```
+## Figure 4
 
-emmeans(fm.shoot.dry, ~species_isolate) %>% 
-  plot(comparisons = TRUE)
+```{r fig 4 AB}
+fig_length <- ggplot(data = plot_data, aes(x = species, y = length_in, fill = species)) +
+  geom_boxplot(alpha = 0.4) +
+  geom_point(position = position_jitter(), alpha = 0.3) +
+  labs(x = "", 
+         y = "Root length (in)") +
+  theme_cowplot() +
+  theme(panel.grid.major.y = element_line(color = "grey85"), 
+        legend.position = "none") +
+  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4"))
 
-emmeans(fm.root.length, ~species_isolate) %>% 
-  plot(comparisons = TRUE)
-
-emmeans(fm.root.area, ~species_isolate) %>% 
-  plot(comparisons = TRUE)
-
+fig_length <- ggplot(data = plot_data, aes(x = species, y = length_in, fill = species)) +
+  geom_boxplot(alpha = 0.4) +
+  geom_point(position = position_jitter(), alpha = 0.3) +
+  labs(x = "", 
+         y = "Root length (in)") +
+  theme_cowplot() +
+  theme(panel.grid.major.y = element_line(color = "grey85"), 
+        legend.position = "none") +
+  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4"))
 ```
 
 ```{r save means}
-
-m.root.dry <- emmeans(fm.root.dry, ~species_isolate) %>% 
+m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
   tidy() %>% 
-  select(species_isolate, 
-         root.mg = estimate, 
-         r.low = conf.low, 
-         r.high = conf.high) 
+  mutate(measurement = "dry_root")
 
-m.shoot.dry <- emmeans(fm.shoot.dry, ~species_isolate) %>% 
+m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(measurement = "dry_shoot")
+
+m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(measurement = "root_length")
+
+m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
   tidy()%>% 
-  select(species_isolate, 
-         shoot.mg = estimate, 
-         s.low = conf.low, 
-         s.high = conf.high) 
+  mutate(measurement = "root_area")
 
-m.root.length <- emmeans(fm.root.length, ~species_isolate) %>% 
-  tidy()%>% 
-  select(species_isolate, 
-         length.in = estimate, 
-         l.low = conf.low, 
-         l.high = conf.high) 
-
-m.root.area <- emmeans(fm.root.area, ~species_isolate) %>% 
-  tidy()%>% 
-  select(species_isolate, 
-         area.in2 = estimate, 
-         a.low = conf.low, 
-         a.high = conf.high) 
-
-m.dry <- left_join(m.root.dry , m.shoot.dry, by = c("species_isolate")) 
-m.scan <- left_join(m.root.length, m.root.area,by = c("species_isolate")) 
-
-means.aggressiveness <- left_join(m.dry, m.scan, by = c("species_isolate")) %>% 
-  separate(species_isolate, into = c("isolate", "species"), sep = "_")
+means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
 ```
-
-https://ggplot2.tidyverse.org/reference/geom_linerange.html code from to 
-add calculated CIs and means from emmeans 
-
 
 ```{r isolates plot}
-ggplot(aggressiveness, aes(x = reorder(isolate_id, root.mg), y = root.mg, color = species)) + 
-  geom_point(alpha = 0.2) +
-  geom_jitter(colour = "gray50", alpha = 0.3, width = 0.1) +
-  stat_summary(fun.data = "mean_cl_boot", 
-               position = position_dodge(width = 0.5), 
-               alpha = 0.7) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(legend.position = "bottom") +
-  labs(x = "Isolate ID", 
-       y = "Mean root dry weigth (mg)") 
+dry_root <- means_aggressiveness %>% 
+  filter(measurement == "dry_root", 
+         !species == "Control None") 
+
+root_length <- means_aggressiveness %>% 
+  filter(measurement == "root_length",
+         !species == "Control None")
+
+a <- ggplot(data = root_length, mapping = aes(x = reorder(isolate, response), y = response)) + 
+  geom_point(size = 3, aes(color = species)) +
+  coord_flip() +
+  theme_minimal() +
+  geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
+  scale_color_manual(values = c("#ff7f00", "#a6cee3", "#1f78b4")) +
+  theme(legend.position = "none") +
+  labs(x = "Isolate ID",
+       y = "Root length (in)",
+       color = "")
+  
+b <- ggplot(data = dry_root, mapping = aes(x = reorder(isolate, estimate), y = estimate)) + 
+  geom_point(size = 3, aes(color = species)) +
+  coord_flip() +
+  theme_minimal() +
+  geom_hline(yintercept = 22.5, linetype="dashed",  size = 0.7) +
+  scale_color_manual(values = c("#ff7f00", "#a6cee3", "#1f78b4")) +
+  theme(legend.position = "none") +
+  labs(x = "",
+       y = "Root length (in)",
+       color = "")
+
+plot_grid(a, b, labels = "AUTO")
 
 ```
+
+
+
+
+
+
 
 ## Correlation between aggressiveness and complexity 
 
-```{r correlations}
-# add complexity results
-iso.complexity <- as.data.frame(complexities$indvidual_complexities) %>% 
-  rename(isolate = sample, complexity = N_samp)
-
-sojae.agg <- means.aggressiveness %>% 
+```{r commbine sojae data}
+sojae_aggressiveness <- means_aggressiveness %>% 
   filter(species == "Phytophthora sojae") %>% 
-  select(isolate, root.mg, shoot.mg, length.in, area.in2) 
+  select(measurement, isolate) 
+```
 
-sojae.all <- left_join(sojae.agg, iso.complexity, by = c("isolate"))
-
+```{r correlation}
 sojae.corr <- sojae.all %>%
   select(-isolate) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
-
 corrplot(sojae.corr$r, method = "number")
 ```
 
