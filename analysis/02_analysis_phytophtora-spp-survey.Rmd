@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -98,7 +98,7 @@ map_plant <- left_join(counties, map_plant, by = "county")
 map_plant$samples_categ <- as.factor(map_plant$samples_categ)
 map_plant$samples_categ <- factor(map_plant$samples_categ, 
                                   levels = c("1-5", 
-                                             "6-10",                                                      
+                                             "6-10",                                  
                                              "11-15",
                                              "16-20" ))
 map_soil$year <- as.factor(map_soil$year)
@@ -111,7 +111,6 @@ map_plant <- map_plant %>%
 ```{r sample map}
 # samples collection map 
 ggplot() +
-  geom_sf(data = states, fill = NA) +
   geom_sf(data = counties, fill = NA) +
   geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.6) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
@@ -255,10 +254,12 @@ plot_grid(effective_rps, complexity_mean, labels = "AUTO", ncol = 1)
 ## Table 1
 
 ```{r pathotype}
-# diversity
-diversity <- do.call(calculate_diversities, hagis_args)
 # pathotypes
-diversities_table(diversity)
+diversity <- do.call(calculate_diversities, hagis_args)
+diversities_table(diversity) 
+
+pathotype_frequency <- diversity$table_of_pathotypes
+# write_csv(pathotype_frequency, here("output", "results", "02_pathotype-psojae_frequency-table.csv"))
 ```
 
 ## Phytophthora sansomeana
@@ -287,7 +288,7 @@ sansomeana_rps %>%
 ```
 
 ```{r save pathotype data}
-# combine all data
+# combine pathtoyping results
 isolates_complexity <- complexities$indvidual_complexities %>% 
   rename(isolate_number = sample, complexity = N_samp)
 
@@ -301,6 +302,8 @@ add_isolate_id <- sojae[1:24, ]
 
 sojae_pathotype <- left_join(sojae_all, add_isolate_id, by = "isolate_number") %>% 
   dplyr::select(isolate_number, isolate_id, complexity, Pathotype)
+
+# write_csv(sojae_pathotype, here("output", "results", "02_pathotype-psojae_results.csv"))
 ```
 
 # Aggressiveness
@@ -321,6 +324,8 @@ aggressiveness <- aggressiveness %>%
          root_mg = root.mg/germination, 
          length_in = length_in/germination, 
          area_in.2 = area_in.2/germination)
+
+# write_csv(aggressiveness, here("output", "transform_data", "02_aggressiveness_transform.csv"))
 ```
 
 ## Exploratory plots 
@@ -421,87 +426,64 @@ emmeans(fm_root_area, ~ isolate, type = "response") %>%
 ## Figure 4
 
 ```{r fig 4 AB}
-fig_length <- ggplot(data = plot_data, aes(x = species, y = length_in, fill = species)) +
-  geom_boxplot(alpha = 0.4) +
-  geom_point(position = position_jitter(), alpha = 0.3) +
+# combine the two controls for plotting
+aggressiveness_plots <- aggressiveness
+
+aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species, 
+                                          c("Control Agar" = "Control", 
+                                            "Control None" = "Control", 
+                                            "Phytophthora sojae" = "P. sojae", 
+                                            "Phytophthora sansomeana" = "P. sansomeana")
+                                          )
+
+fig_length <- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
-         y = "Root length (in)") +
-  theme_cowplot() +
-  theme(panel.grid.major.y = element_line(color = "grey85"), 
-        legend.position = "none") +
-  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4"))
-
-fig_length <- ggplot(data = plot_data, aes(x = species, y = length_in, fill = species)) +
-  geom_boxplot(alpha = 0.4) +
-  geom_point(position = position_jitter(), alpha = 0.3) +
-  labs(x = "", 
-         y = "Root length (in)") +
-  theme_cowplot() +
-  theme(panel.grid.major.y = element_line(color = "grey85"), 
-        legend.position = "none") +
-  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4"))
-```
-
-```{r save means}
-m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(measurement = "dry_root")
-
-m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(measurement = "dry_shoot")
-
-m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
-  tidy() %>% 
-  mutate(measurement = "root_length")
-
-m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
-  tidy()%>% 
-  mutate(measurement = "root_area")
-
-means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
-```
-
-```{r isolates plot}
-dry_root <- means_aggressiveness %>% 
-  filter(measurement == "dry_root", 
-         !species == "Control None") 
-
-root_length <- means_aggressiveness %>% 
-  filter(measurement == "root_length",
-         !species == "Control None")
-
-a <- ggplot(data = root_length, mapping = aes(x = reorder(isolate, response), y = response)) + 
-  geom_point(size = 3, aes(color = species)) +
-  coord_flip() +
+         y = "Root length (in)") + 
   theme_minimal() +
+  theme(legend.position = "none")  
+
+fig_dry <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
+  labs(x = "", 
+       y = "Root dry weigth (mg)") + 
+  theme_minimal() +
+  theme(legend.position = "none") 
+
+plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
+```
+
+## Figure 5
+
+```{r}
+
+fig_5A <- aggressiveness_plots %>% 
+ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = "mean_se", aes(colour = species)) +
   geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
-  scale_color_manual(values = c("#ff7f00", "#a6cee3", "#1f78b4")) +
-  theme(legend.position = "none") +
-  labs(x = "Isolate ID",
-       y = "Root length (in)",
-       color = "")
-  
-b <- ggplot(data = dry_root, mapping = aes(x = reorder(isolate, estimate), y = estimate)) + 
-  geom_point(size = 3, aes(color = species)) +
-  coord_flip() +
   theme_minimal() +
-  geom_hline(yintercept = 22.5, linetype="dashed",  size = 0.7) +
-  scale_color_manual(values = c("#ff7f00", "#a6cee3", "#1f78b4")) +
-  theme(legend.position = "none") +
+  theme(legend.position = "bottom") +
+  labs(x = "",
+       y = "Root dry weigth (mg)",
+       color = "") 
+
+fig_5B <- aggressiveness_plots %>% 
+  filter(!is.na(length_in)) %>% 
+ggplot(aes(x = reorder (isolate,length_in), y = length_in, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = "mean_se", aes(colour = species)) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
   labs(x = "",
        y = "Root length (in)",
-       color = "")
+       color = "") 
 
-plot_grid(a, b, labels = "AUTO")
+plot_grid(fig_5A, fig_5B, labels = "AUTO")
 
 ```
-
-
-
-
-
-
 
 ## Correlation between aggressiveness and complexity 
 
