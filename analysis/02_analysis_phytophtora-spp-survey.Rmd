@@ -425,7 +425,7 @@ emmeans(fm_root_area, ~ isolate, type = "response") %>%
 ```
 ## Figure 4
 
-```{r fig 4 AB}
+```{r fig 4}
 # combine the two controls for plotting
 aggressiveness_plots <- aggressiveness
 
@@ -437,7 +437,7 @@ aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species,
                                           )
 
 fig_length <- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
-  geom_boxplot() +
+  geom_boxplot(alpha = 0.8) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
          y = "Root length (in)") + 
@@ -445,7 +445,7 @@ fig_length <- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in
   theme(legend.position = "none")  
 
 fig_dry <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
-  geom_boxplot() +
+  geom_boxplot(alpha = 0.8) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
        y = "Root dry weigth (mg)") + 
@@ -457,15 +457,13 @@ plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
 
 ## Figure 5
 
-```{r}
-
-fig_5A <- aggressiveness_plots %>% 
-ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+```{r figure 5}
+fig_5A <-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
-  stat_summary(fun.data = "mean_se", aes(colour = species)) +
+  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.8) +
   geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
   theme_minimal() +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "none") +
   labs(x = "",
        y = "Root dry weigth (mg)",
        color = "") 
@@ -474,27 +472,63 @@ fig_5B <- aggressiveness_plots %>%
   filter(!is.na(length_in)) %>% 
 ggplot(aes(x = reorder (isolate,length_in), y = length_in, color = species)) + 
   coord_flip() +
-  stat_summary(fun.data = "mean_se", aes(colour = species)) +
+  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.8) +
+  geom_hline(yintercept = 25, linetype="dashed",  size = 0.7) +
   theme_minimal() +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "none") +
   labs(x = "",
        y = "Root length (in)",
        color = "") 
 
-plot_grid(fig_5A, fig_5B, labels = "AUTO")
+legend <- get_legend(fig_5A + theme(legend.position = "bottom"))
 
+plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c("A", "B", ""))
+```
+
+```{r save agg means}
+m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(measurement = "dry_root")
+
+m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(measurement = "dry_shoot")
+
+m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(measurement = "root_length")
+
+m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
+  tidy()%>% 
+  mutate(measurement = "root_area")
+
+means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
+
+# estimate and response (back-transform means) in same column
+back_transform_means <- means_aggressiveness %>% 
+  filter(measurement %in% c("root_length", "root_area")) %>% 
+  dplyr::select(-estimate) %>% 
+  rename(estimate = response)
+
+means_aggressiveness <- means_aggressiveness %>% 
+  filter(!(measurement %in% c("root_length", "root_area"))) %>% 
+  dplyr::select(-response)
+
+means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
 ```
 
 ## Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data}
+sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
+
 sojae_aggressiveness <- means_aggressiveness %>% 
   filter(species == "Phytophthora sojae") %>% 
-  select(measurement, isolate) 
+
 ```
 
 ```{r correlation}
-sojae.corr <- sojae.all %>%
+sojae_corr <- sojae.all %>%
   select(-isolate) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
