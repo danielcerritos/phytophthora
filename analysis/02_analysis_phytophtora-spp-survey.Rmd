@@ -485,6 +485,8 @@ legend <- get_legend(fig_5A + theme(legend.position = "bottom"))
 plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c("A", "B", ""))
 ```
 
+## Save results  
+
 ```{r save agg means}
 m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
   tidy() %>% 
@@ -515,24 +517,32 @@ means_aggressiveness <- means_aggressiveness %>%
   dplyr::select(-response)
 
 means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
+# write_csv(means_aggressiveness , here("output", "results", "02_aggressiveness_results-means.csv"))
 ```
 
 ## Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data}
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
+
+sojae_complexity <- sojae_pathotype %>% 
+  dplyr::select(isolate_id, complexity)
 
 sojae_aggressiveness <- means_aggressiveness %>% 
   filter(species == "Phytophthora sojae") %>% 
+  dplyr::select(isolate_id = isolate, estimate, measurement) %>% 
+  spread(measurement, estimate)
 
+sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
 ```
 
 ```{r correlation}
-sojae_corr <- sojae.all %>%
-  select(-isolate) %>%
+sojae_corr <- sojae_all_data %>%
+  dplyr::select(-isolate_id) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
-corrplot(sojae.corr$r, method = "number")
+corrplot(sojae_corr$r, method = "number")
 ```
 
 Make some plots for the temperature data, to see why the experiments are different or to validate the reason they are not
