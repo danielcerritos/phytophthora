@@ -159,7 +159,7 @@ isolates_species <- isolates_recovered %>%
 
 isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.6) +
+  geom_col(alpha = 0.6, color = "gray68") +
   coord_flip() +
   labs(x = "", y = "Percent isolates recovered") +
   theme_minimal_vgrid() +
@@ -209,11 +209,10 @@ hagis_args <- list(
 
 # effective Rps
 sojae_rps <- do.call(summarize_gene, hagis_args)
-
 effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(fill = "#ff7f00", alpha = 0.6) +
+  geom_col(alpha = 0.6, fill =  "#529EFF", color = "gray68") +
   labs(x = "Rps gene", 
        y = "Percnet pathogenic") +
   scale_y_continuous(
@@ -235,7 +234,7 @@ pander(summary(complexities))
 
 complexity_mean <- complexity_percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
-  geom_col(fill = "#1f78b4", alpha = 0.6) + 
+  geom_col(alpha = 0.6, fill = "#F37B59", color = "gray68") + 
   geom_vline(xintercept = 6, linetype="dashed",  size = 1) +
   labs(x = "Complexity", 
        y = "Percent Isolates") +
@@ -243,6 +242,8 @@ complexity_mean <- complexity_percent %>%
                      labels = percent_format()) +
   scale_x_continuous(limits = c(1, 12), breaks = 1:12) +
   theme_minimal_hgrid() 
+
+complexity_mean
 ```
 
 ## Figure 3
@@ -281,7 +282,7 @@ sansomeana_rps <- summarize_gene(
 
 sansomeana_rps %>% 
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(fill = "#ff7f00", alpha = 0.5) +
+  geom_col(alpha = 0.5) +
   theme_minimal_hgrid() +
   labs(x = "Rps gene", 
        y = "Percent pathogenic") +
@@ -830,15 +831,25 @@ EC50_plot <- pooled_EC50 %>%
     TRUE ~ "P. sansomeana"
   ))
 
+EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide, 
+                                       c("azoxystrobin" = "Azoxystrobin", 
+                                         "ethaboxam" = "Ethaboxam", 
+                                         "mefenoxam" = "Mefenoxam", 
+                                         "metalaxyl" = "Metalaxyl")
+                                       )
+
 ggplot(EC50_plot, aes(x = EC50, fill = species)) +
   geom_histogram(alpha = 0.6, color = "white", bins = 10) +
   facet_wrap(~ fungicide, scales = "free_x") +
-  labs(x = expression(bold('EC'[50]*' (μg ml'^-1*')')), 
+  labs(x = expression('EC'[50]*' (μg ml'^-1*')'), 
        y = "Frequency", 
        fill = "") +
   theme_minimal() +
   panel_border() +
-  theme(strip.text = element_text(face = "bold"), 
-        axis.title.y = element_text(face = "bold"), 
-        legend.position = "bottom") 
+  theme(legend.position = "bottom", 
+        strip.text = element_text(face = "bold"), 
+        panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(), 
+        panel.grid.minor.y = element_blank()) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) 
 ```
