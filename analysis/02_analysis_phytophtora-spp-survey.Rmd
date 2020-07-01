@@ -247,6 +247,8 @@ complexity_mean <- complexity_percent %>%
 
 ## Figure 3
 
+change the colors of this graphs to match the rest of the figures
+
 ```{r fig 3}
 plot_grid(effective_rps, complexity_mean, labels = "AUTO", ncol = 1)
 ```
@@ -437,7 +439,7 @@ aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species,
                                           )
 
 fig_length <- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
-  geom_boxplot(alpha = 0.8) +
+  geom_boxplot(alpha = 0.6) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
          y = "Root length (in)") + 
@@ -460,7 +462,7 @@ plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
 ```{r figure 5}
 fig_5A <-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
-  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.8) +
+  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
   geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
   theme_minimal() +
   theme(legend.position = "none") +
@@ -545,9 +547,18 @@ sojae_corr <- sojae_all_data %>%
 corrplot(sojae_corr$r, method = "number")
 ```
 
+## Table 2
+
+```{r table 2}
+sojae_corr
+```
+
 Make some plots for the temperature data, to see why the experiments are different or to validate the reason they are not
 
 # Fungicide Sensitivity 
+
+look the papers to see what graphs/table to do, distribution of EC50s based on color of species seems ok
+look the book of agriculture stats with R, too see if add something for model fitting 
 
 ```{r prepare fs data}
 # eliminate NAs
@@ -577,6 +588,8 @@ clean_fungicide <- left_join(clean_fungicide, control_fungicide, by = c("fungici
 # relative growth calculation
 clean_fungicide <- clean_fungicide %>% 
   mutate(rel.growth = (length.mm/control.mean)*100)
+
+# write_csv(clean_fungicide, here("output", "transform_data", "02_fungicide-sensitivity_transform.csv"))
 ```
 
 ```{r filter fungicide}
@@ -612,12 +625,13 @@ nest_fungicide <- clean_fungicide %>%
   group_by(fungicide, experiment, isolate) %>% 
   nest()
 
+# lower limit fit at zero in LL.3
 fit_LL3 <- function(dataset){
-  drm(rel.growth ~ dose, fct = LL.3(), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
 }
 
 fit_LL4 <- function(dataset){
-  drm(rel.growth ~ dose, fct = LL.4(), data = dataset)
+  drm(rel.growth ~ dose, fct = LL.4(names = c("slope", "lower", "upper", "EC50")), data = dataset)
 }
 
 log_models <- nest_fungicide %>% 
@@ -722,7 +736,6 @@ hormetic_selection %>%
   count() 
 # overall bc4 better fit based on lower AIC
 # no lack of fit for ll4 for most isolates with hormetic effect
-# decide if its better to look > 0.05 or < 0.05
 ```
 
 ```{r combine data}
@@ -731,22 +744,16 @@ log_EC50$experiment <- as.factor(log_EC50$experiment)
 log_EC50$isolate <- as.factor(log_EC50$isolate)
 
 log_EC50 %>% 
-  filter(!isolate == "13") %>% 
+  filter(!isolate == "13") %>% # 95% CI too large for plotting
   ggplot(aes(x = isolate, y = EC50, color = experiment)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
   facet_wrap(~ fungicide, scales = "free_y") +
   theme_minimal() +
   panel_border()
-
-# distribution of EC50s in each experiment 
-both_EC50 %>% 
-  ggplot(aes(x = experiment, y = EC50, color = experiment)) +
-  geom_boxplot() +
-  facet_wrap(~ fungicide, scales = "free_y") +
-  theme_minimal() +
-  panel_border()
 ```
+
+Overall most EC50 of second experiment fall into the 95% CI of EC50 first. Experiment is repoducible so combine the data of both experiments. 
 
 ```{r LL.4 combine data }
 # fit LL.4 model with pooled data
@@ -764,7 +771,7 @@ pooled_EC50 <- log_pooled %>%
   dplyr::select(abs.EC50) %>% 
   unnest_wider(abs.EC50) %>% 
   rename(EC50 = ...1  , 
-         std.error = ...2 ,
+         std_error = ...2 ,
          lower = ...3, 
          upper = ...4) 
 ```
@@ -805,11 +812,33 @@ compare_EC50 <- bind_rows(compare_EC50, hormetic_EC50)
 compare_EC50$isolate <- as.factor(compare_EC50$isolate)
 
 compare_EC50 %>% 
-  filter(!fungicide == "ethaboxam") %>% 
+  filter(!fungicide == "ethaboxam") %>% # problem calculating EC50
   ggplot(aes(x = isolate, y = EC50, color = model)) +
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                   position = position_jitterdodge()) +
   facet_wrap(~ fungicide, scales = "free") +
   theme_minimal() +
   panel_border()
+```
+
+## Figure 6
+
+```{r figure 6}
+EC50_plot <- pooled_EC50 %>% 
+  mutate(species = case_when(
+    isolate %in% c(1, 5, 7:10, 14:16) ~ "P. sojae",
+    TRUE ~ "P. sansomeana"
+  ))
+
+ggplot(EC50_plot, aes(x = EC50, fill = species)) +
+  geom_histogram(alpha = 0.6, color = "white", bins = 10) +
+  facet_wrap(~ fungicide, scales = "free_x") +
+  labs(x = expression(bold('EC'[50]*' (μg ml'^-1*')')), 
+       y = "Frequency", 
+       fill = "") +
+  theme_minimal() +
+  panel_border() +
+  theme(strip.text = element_text(face = "bold"), 
+        axis.title.y = element_text(face = "bold"), 
+        legend.position = "bottom") 
 ```
