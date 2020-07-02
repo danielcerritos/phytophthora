@@ -1,0 +1,4427 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Daniel Cerritos" />
+
+
+<title>Analysis Phytophthora spp. survey</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">phytophthora</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Analysis Phytophthora spp. survey</h1>
+<h4 class="author">Daniel Cerritos</h4>
+<h4 class="date">4/24/2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-07-02
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>phytophthora/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200422code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200422)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200422code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200422)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree3921e414732603c7a25eebbc84f588fa30a06c42targetblank3921e41a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/3921e414732603c7a25eebbc84f588fa30a06c42" target="_blank">3921e41</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree3921e414732603c7a25eebbc84f588fa30a06c42targetblank3921e41a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/3921e414732603c7a25eebbc84f588fa30a06c42" target="_blank">3921e41</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    scripts/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/02_analysis_phytophtora-spp-survey.Rmd</code>) and HTML (<code>docs/02_analysis_phytophtora-spp-survey.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/3921e414732603c7a25eebbc84f588fa30a06c42/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">3921e41</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-02
+</td>
+<td>
+final figures
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/74aaa15da631793422764890c7dd609c07418c97/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">74aaa15</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-01
+</td>
+<td>
+change color of figures to same palette
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/1b2b094d160fe355d6458935f885bb2b9bc5099d/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">1b2b094</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-01
+</td>
+<td>
+finish figure 6
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/59bb92d78f30d9796c9c825d51395483f3108f31/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">59bb92d</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-29
+</td>
+<td>
+correlations
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/f621f597866cb8e8818feb630e7821a39b20e6ce/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">f621f59</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-29
+</td>
+<td>
+save aggressiveness means resuslts
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/de74cdfb3849f9107acf00c3b5ea6a314860e177/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">de74cdf</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-27
+</td>
+<td>
+new aggressiveness plots
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/9372aa7b8741ea9dde6613ec94da7b892c43ee86/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">9372aa7</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-09
+</td>
+<td>
+figure differences with isolates
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/eddafb9926185bb232a903fb0b9b382bacd3e968/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">eddafb9</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-02
+</td>
+<td>
+continue with aggressiveness analysis, no nesting
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ddadb27ab3ece959e2bccc116600bb3127cbc20c/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ddadb27</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-02
+</td>
+<td>
+finish figures 1-3
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/29a2402a389d2cfbc55a48d0f76a59289b46b6f8/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">29a2402</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+use scales package
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a60f2e9779b9c131d2faeadef41c8dfa36065e66/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a60f2e9</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+finish identified species
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/dfbd6260732aa4227d4c67830a41dd7641cc243e/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">dfbd626</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+correct code order for map
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a77b6fa7f7a228340291f3c904b35d82b41e5eeb/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a77b6fa</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+correct library
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/32f4a2f6b5e7000c54421fa0cb94870e4fa522ac/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">32f4a2f</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+elimante output files not needed
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/1fef0284bce215d5a6db5a348bf31149cecab74f/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">1fef028</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+finish map
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/289194129faa4385fd3e79859283ee0ef70a4525/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">2891941</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-31
+</td>
+<td>
+finish FS analysis, comeback for problem with ethaboxam hormetic isolates
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/79b3ab32c43e760939378f7470bbecad3d9b383a/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">79b3ab3</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-30
+</td>
+<td>
+continue FS analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/19f2eef12fa2cfa4ee3521cf77e847e50b4c3e87/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">19f2eef</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-30
+</td>
+<td>
+continue FS analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ed20b5bad4741399441f9d1e2f9733e969de276b/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ed20b5b</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-30
+</td>
+<td>
+cleand FS data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/fbb6ef2e4b3c35fbc12a613ebdf3342a158c9768/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">fbb6ef2</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-30
+</td>
+<td>
+update: fit hormetic models
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/df3a70a6c82053b31f7b4a8c85a8bba045ca89a8/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">df3a70a</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-29
+</td>
+<td>
+eliminate negative length mm values
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a56b4d76a14b3f3a7b215107a7a30f6b502319e5/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a56b4d7</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-29
+</td>
+<td>
+fit hormetic models
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/f52841ab1b347707ff9bba7fce3ea93354255c20/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">f52841a</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-28
+</td>
+<td>
+LL4 with pool data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/c84afc2edd279e64ebab005d0f70792164fd424b/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">c84afc2</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-28
+</td>
+<td>
+packages
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/96bec37bf75d51d464f111252256c1d2fa297fbf/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">96bec37</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-28
+</td>
+<td>
+model selection AIC and lack of fit
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/892c9afff3b6cb19ffa29fa7cecae21b3ae11562/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">892c9af</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-28
+</td>
+<td>
+organize chuncks
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/afb0d117982064b273d8351c4d300dfc212dc281/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">afb0d11</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-26
+</td>
+<td>
+add comments FS analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/91aa132be194058278d57949a6c5f9581c4637a1/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">91aa132</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-26
+</td>
+<td>
+clean code
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/80cae66fed31f8e77ffb69afcaadaf58ac3d8c84/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">80cae66</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-26
+</td>
+<td>
+eliminate prueba in FS analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/7a5252318239fb1f9bc023ce2586c9cade7e8480/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">7a52523</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-26
+</td>
+<td>
+correct filtering for no EC50 and hormetic effect
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/b62cab1b2884611a0b1833bc795ffce8253e71c3/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">b62cab1</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+comments FS
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/803db09b93f15aad8391ea48dab03cb0c21a0420/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">803db09</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+FS comments
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/4699f0b9e784d1053a219b8be383a5cd95715294/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">4699f0b</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+correct filter FS data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/e10fb69b86610228e9f832c58cce6839759e923b/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">e10fb69</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+correct model selection FS
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/cafef6e6f69267abed7613f11ac3e9eb317d2a7c/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">cafef6e</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+select LL.3 model
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/3f0bbcc57e22edc78fc5274921f7b1caa44ed18f/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">3f0bbcc</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-24
+</td>
+<td>
+model selection LL.3 or LL.4
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/bad384afe839d0b708eaf856b0eccd8452d66bed/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">bad384a</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-17
+</td>
+<td>
+fit LL3 and LL4 models to FS data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ed06e2eb8aa34d330eef032d91a48a5e0f603a3b/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ed06e2e</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-16
+</td>
+<td>
+calculate relative growth
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ba8b0039f7334949e59a5c2247aded5a5534bd8c/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ba8b003</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-16
+</td>
+<td>
+start Fungicide S analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/46bf9abf57c72bcbc9918c01cc0a7fe11e3292a5/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">46bf9ab</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-15
+</td>
+<td>
+add first aggressiveness analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/982abdaa48ff29e1dd479739240e171c2c93094a/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">982abda</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-03
+</td>
+<td>
+exploratory plots aggressivenesss
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/d7512ae28f33f93d6bf3e122f5103efa0ce72581/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">d7512ae</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-01
+</td>
+<td>
+pathotype figures
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/9f825be8d5007b2d2dcd5f045e56b63f0f3ec400/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">9f825be</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-05-01
+</td>
+<td>
+pathotype data
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/8731e6e230c37c929dd87eaa540dc93a8e3a6bd7/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">8731e6e</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-27
+</td>
+<td>
+clean map 2 code
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/2fb3d385b7ac3545275d0ca770d2b24ef1cdb5b9/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">2fb3d38</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-27
+</td>
+<td>
+map 2 isolates collected
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/97751d7523034042f135a1108f0d2cb1b154c279/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">97751d7</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-27
+</td>
+<td>
+isolates data base to .csv
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/d39ecc3fb070a3f384fc3b05c5666f7a0c5c67b2/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">d39ecc3</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-27
+</td>
+<td>
+add plant samples data to map
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/affe5f0bd817442428606c357cb0625e0163469a/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">affe5f0</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-26
+</td>
+<td>
+labels to samples map
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/bc200c7bb2981905dde476de89ce51b8fd30997c/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">bc200c7</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-26
+</td>
+<td>
+sample collection map
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/12adede72d524a5f67d2df054bb38ef5d41b8976/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">12adede</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-04-24
+</td>
+<td>
+start analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code># install.packages(&quot;pacman&quot;)
+# install.packages(c(&quot;googleway&quot;, &quot;ggrepel&quot;,&quot;ggspatial&quot;, &quot;libwgeom&quot;, &quot;sf&quot;, &quot;rnaturalearth&quot;, 
+# &quot;rnaturalearthdata&quot;,&quot;hagis&quot;, &quot;corrplot&quot;, &quot;Hmisc&quot;, &quot;drc&quot;, &quot;rgeos&quot;, &quot;scales&quot;))
+pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
+               cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
+               Hmisc, corrplot, drc, scales)</code></pre>
+<div id="import-data" class="section level1">
+<h1>Import data</h1>
+<pre class="r"><code>all_data &lt;- list.files(here(&quot;output&quot;, &quot;clean_data&quot;), full.names = TRUE)
+# samples collection
+soil_samples &lt;- read_csv(all_data[8])
+plant_samples &lt;- read_csv(all_data[7])
+# identification of isolates
+isolates_recovered &lt;- read_csv(here(&quot;data&quot;, &quot;all-isolates-in-data-base.csv&quot;))
+# pathotype
+sojae &lt;- read_csv(all_data[6])
+sansomeana &lt;- read_csv(all_data[5])
+#aggressiveness
+dry_weigth &lt;- read_csv(all_data[1])
+area_length &lt;- read_csv(all_data[2])
+# fungicide sensitivity 
+fungicide &lt;- read.csv(all_data[4])</code></pre>
+</div>
+<div id="sample-collection" class="section level1">
+<h1>Sample collection</h1>
+<pre class="r"><code># 2016-2017
+soil_samples %&gt;%
+  group_by(year) %&gt;% 
+  count() </code></pre>
+<pre><code># A tibble: 2 x 2
+# Groups:   year [2]
+   year     n
+  &lt;dbl&gt; &lt;int&gt;
+1  2016    28
+2  2017    22</code></pre>
+<pre class="r"><code>soil_samples$county %&gt;%
+  n_distinct()</code></pre>
+<pre><code>[1] 26</code></pre>
+<pre class="r"><code># 2018
+plant_samples %&gt;%
+  count() # just included positive samples </code></pre>
+<pre><code># A tibble: 1 x 1
+      n
+  &lt;int&gt;
+1    96</code></pre>
+<pre class="r"><code>plant_samples$county %&gt;%
+  n_distinct()</code></pre>
+<pre><code>[1] 26</code></pre>
+<pre class="r"><code># subset county data 
+world &lt;- ne_countries(scale = &quot;medium&quot;, returnclass = &quot;sf&quot;)
+states &lt;- st_as_sf(map(&quot;state&quot;, plot = FALSE, fill = TRUE))
+counties &lt;- st_as_sf(map(&quot;county&quot;, plot = FALSE, fill = TRUE))
+counties &lt;- subset(counties, grepl(&quot;illinois&quot;, counties$ID))
+
+# convert to sf object
+map_soil &lt;- soil_samples %&gt;% 
+  filter(!sample_id == &quot;16PR012&quot;) %&gt;% # not from IL
+  dplyr::select(year, long, lat) %&gt;% 
+  filter(!is.na(long))
+
+map_soil &lt;- st_as_sf(map_soil, coords = c(&quot;long&quot;, &quot;lat&quot;), 
+                   crs = 4326, agr = &quot;constant&quot;)
+
+# change continuous data (plant samples) into categories 
+map_plant &lt;- plant_samples %&gt;% 
+  group_by(county) %&gt;% 
+  count() %&gt;% 
+  mutate(samples_categ = case_when(
+    n &lt;= 5 ~ &quot;1-5&quot;, 
+    n &gt;= 6 &amp; n &lt;= 10 ~ &quot;6-10&quot;,
+    n &gt;= 11 &amp; n &lt;= 15 ~ &quot;11-15&quot;, 
+    n &gt;= 16 &amp; n &lt;= 20 ~ &quot;16-20&quot;, 
+  ))
+
+# add counties coordinates to plant samples data
+counties &lt;- counties %&gt;% 
+  separate(ID, into = c(&quot;state&quot;, &quot;county&quot;), sep = &quot;,&quot;)
+
+map_plant$county &lt;- tolower(map_plant$county)
+map_plant &lt;- left_join(counties, map_plant, by = &quot;county&quot;)
+
+# as factor for plotting
+map_plant$samples_categ &lt;- as.factor(map_plant$samples_categ)
+map_plant$samples_categ &lt;- factor(map_plant$samples_categ, 
+                                  levels = c(&quot;1-5&quot;, 
+                                             &quot;6-10&quot;,                                  
+                                             &quot;11-15&quot;,
+                                             &quot;16-20&quot; ))
+map_soil$year &lt;- as.factor(map_soil$year)
+map_plant &lt;- map_plant %&gt;% 
+  filter(!is.na(samples_categ))</code></pre>
+<div id="figure-1" class="section level2">
+<h2>Figure 1</h2>
+<pre class="r"><code># samples collection map 
+ggplot() +
+  geom_sf(data = counties, fill = NA) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.6) +
+  geom_sf(data = map_soil, aes(shape = year),  size = 2) +
+  coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
+  scale_fill_manual(values = c(&quot;#a6cee3&quot;, &quot;#1f78b4&quot;, &quot;#b2df8a&quot;, &quot;#33a02c&quot;), 
+                    name = &quot;Plant samples&quot;) +
+  scale_shape_discrete(name = &quot;Year&quot;) +
+  theme_map()</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sample%20map-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="identification-of-isolates" class="section level1">
+<h1>Identification of isolates</h1>
+<pre class="r"><code>isolates_recovered %&gt;% 
+  group_by(identification) %&gt;% 
+  count() </code></pre>
+<pre><code># A tibble: 3 x 2
+# Groups:   identification [3]
+  identification     n
+  &lt;chr&gt;          &lt;int&gt;
+1 morpholgy         49
+2 PCR               37
+3 sequence          96</code></pre>
+<pre class="r"><code>isolates_recovered %&gt;% 
+  group_by(source) %&gt;% 
+  count()</code></pre>
+<pre><code># A tibble: 7 x 2
+# Groups:   source [7]
+  source           n
+  &lt;chr&gt;        &lt;int&gt;
+1 17SR             3
+2 18SU            19
+3 Bowen CFAR       4
+4 kurt varland     5
+5 plant clinic    37
+6 soil samples    77
+7 syngenta        37</code></pre>
+<pre class="r"><code>isolates_recovered %&gt;% 
+  filter(!is.na(county)) %&gt;% 
+  group_by(year, county) %&gt;% 
+  count() %&gt;% 
+  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
+  geom_col(alpha = 0.6) +
+  coord_flip() +
+  labs(x = &quot;&quot;, y = &quot;Isolates recovered&quot;, fill =&quot;Year&quot;) +
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/exp%20isolates-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="figure-2" class="section level2">
+<h2>Figure 2</h2>
+<pre class="r"><code>isolates_species &lt;- isolates_recovered %&gt;% 
+  dplyr::select(species) %&gt;%
+  group_by(species) %&gt;% 
+  count() %&gt;%  
+  mutate(genus = case_when(
+    grepl(&quot;Phyto&quot;, species) ~ &quot;Phytophthora spp.&quot;,
+    grepl(&quot;Pyth&quot;, species) ~&quot;Pythium spp.&quot;)) %&gt;% 
+  mutate(percentage = (n/180))
+
+isolates_species %&gt;% 
+  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
+  geom_col(alpha = 0.6, color = &quot;gray68&quot;) +
+  coord_flip() +
+  labs(x = &quot;&quot;, y = &quot;Percent isolates recovered&quot;) +
+  theme_minimal_vgrid() +
+  theme(legend.position = &quot;none&quot;,
+        axis.text.y  = element_text(face = &quot;italic&quot;)) +
+  scale_fill_manual(values = c(&quot;#e31a1c&quot;, &quot;#BEBEBE&quot;)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20collected-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>isolates_recovered %&gt;% 
+  filter(species %in% c(&quot;Phytophthora sansomeana&quot;, &quot;Phytophthora sojae&quot;)) %&gt;% 
+  group_by(year, county) %&gt;% 
+  count(species) %&gt;% 
+  arrange(desc(n))</code></pre>
+<pre><code># A tibble: 13 x 4
+# Groups:   year, county [13]
+    year county     species                     n
+   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;                   &lt;int&gt;
+ 1  2018 Jefferson  Phytophthora sojae          5
+ 2  2018 Knox       Phytophthora sojae          5
+ 3  2017 Boone      Phytophthora sojae          4
+ 4  2018 Champaign  Phytophthora sansomeana     3
+ 5  2016 Champaign  Phytophthora sojae          2
+ 6  2016 Grundy     Phytophthora sansomeana     2
+ 7  2016 Livingston Phytophthora sojae          2
+ 8  2017 Franklin   Phytophthora sojae          2
+ 9  2018 Massac     Phytophthora sojae          2
+10  2016 Kankakee   Phytophthora sansomeana     1
+11  2017 Crawford   Phytophthora sojae          1
+12  2017 Macon      Phytophthora sansomeana     1
+13  2018 Vermilion  Phytophthora sojae          1</code></pre>
+</div>
+</div>
+<div id="pathotype" class="section level1">
+<h1>Pathotype</h1>
+<div id="phytophthora-sojae" class="section level2">
+<h2>Phytophthora sojae</h2>
+<pre class="r"><code># two susceptible controls
+sojae_control &lt;- sojae %&gt;% 
+  filter(differential == &quot;Williams&quot;) %&gt;% 
+  group_by(isolate_number, isolate_id, isolate_name, county, differential, gene) %&gt;% 
+  summarise(dead = sum(dead), 
+            total = sum(total))
+
+sojae &lt;- sojae %&gt;% 
+  filter(!differential == &quot;Williams&quot;)
+
+sojae &lt;- bind_rows(sojae_control, sojae)
+
+sojae &lt;- sojae %&gt;% 
+  mutate(percent.susceptible = (dead/total)*100)
+
+hagis_args &lt;- list(
+  x = sojae,
+  cutoff = 75,
+  control = &quot;rps&quot;,
+  sample = &quot;isolate_number&quot;,
+  gene = &quot;gene&quot;,
+  perc_susc = &quot;percent.susceptible&quot;
+)
+
+# effective Rps Fig 3A
+sojae_rps &lt;- do.call(summarize_gene, hagis_args)
+effective_rps &lt;- sojae_rps %&gt;% 
+  mutate(percent_pathogenic = percent_pathogenic/100) %&gt;% # to use the scales format
+  ggplot(aes(x = gene, y = percent_pathogenic)) +
+  geom_col(alpha = 0.6, fill =  &quot;#529EFF&quot;, color = &quot;gray68&quot;) +
+  labs(x = &quot;Rps gene&quot;, 
+       y = &quot;Percnet pathogenic&quot;) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05)), 
+    labels = percent_format()) +
+    theme_minimal_hgrid()</code></pre>
+<pre class="r"><code>complexities &lt;- do.call(calculate_complexities, hagis_args)
+
+complexity_percent &lt;- complexities$grouped_complexities %&gt;% 
+  mutate(percent = (frequency/21))
+
+complexity_percent$complexity &lt;- as.numeric(complexity_percent$complexity)
+
+# mean complexity
+pander(summary(complexities))</code></pre>
+<table style="width:32%;">
+<colgroup>
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Mean</th>
+<th align="center">SD</th>
+<th align="center">SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">6</td>
+<td align="center">1.719</td>
+<td align="center">0.351</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Fig 3B
+complexity_mean &lt;- complexity_percent %&gt;% 
+  ggplot(aes(x = complexity, y = percent)) +
+  geom_col(alpha = 0.6, fill = &quot;#F37B59&quot;, color = &quot;gray68&quot;) + 
+  geom_vline(xintercept = 6, linetype=&quot;dashed&quot;,  size = 1) +
+  labs(x = &quot;Complexity&quot;, 
+       y = &quot;Percent Isolates&quot;) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) +
+  scale_x_continuous(limits = c(1, 12), breaks = 1:12) +
+  theme_minimal_hgrid() </code></pre>
+</div>
+<div id="figure-3" class="section level2">
+<h2>Figure 3</h2>
+<pre class="r"><code>plot_grid(effective_rps, complexity_mean, labels = &quot;AUTO&quot;, ncol = 1)</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_col).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%203-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-1" class="section level2">
+<h2>Table 1</h2>
+<pre class="r"><code># pathotypes
+diversity &lt;- do.call(calculate_diversities, hagis_args)
+diversities_table(diversity) </code></pre>
+<table style="width:62%;">
+<colgroup>
+<col width="16%" />
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Frequency</th>
+<th align="center">Pathotype</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1a, 1b, 1c, 1k, 2, 3a, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1a, 1b, 1c, 1k, 3c, 4, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1a, 1b, 1c, 1k, 7, 2, 3a, 5</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">1a, 1b, 1c, 1k, 7, 2, 3b, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1a, 1b, 1c, 1k, 7, 3a, 3b, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1a, 1b, 1c, 1k, 7, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1b, 1k, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">1b, 1k, 7, 2, 3a, 3b, 3c, 4, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1b, 1k, 7, 2, 3a, 3b, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">1b, 1k, 7, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1b, 3a, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1b, 6, 7, 3c, 4, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1b, 7, 2, 3a, 3b, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">1b, 7, 2, 3b, 3c, 5</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">1b, 7, 3a, 3c, 5</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">1b, 7, 3a, 5</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>pathotype_frequency &lt;- diversity$table_of_pathotypes
+# write_csv(pathotype_frequency, here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_frequency-table.csv&quot;))</code></pre>
+</div>
+<div id="phytophthora-sansomeana" class="section level2">
+<h2>Phytophthora sansomeana</h2>
+<pre class="r"><code>sansomeana &lt;- sansomeana %&gt;% 
+  mutate(percent.susceptible = round((dead/total)*100))
+
+sansomeana_rps &lt;- summarize_gene(
+  x = sansomeana,
+  cutoff = 75,
+  control = &quot;rps&quot;,
+  sample = &quot;isolate_id&quot;,
+  gene = &quot;gene&quot;,
+  perc_susc = &quot;percent.susceptible&quot;
+)
+
+sansomeana_rps %&gt;% 
+  ggplot(aes(x = gene, y = percent_pathogenic)) +
+  geom_col(alpha = 0.5) +
+  theme_minimal_hgrid() +
+  labs(x = &quot;Rps gene&quot;, 
+       y = &quot;Percent pathogenic&quot;) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05))) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sansomena%20effective%20genes-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># combine pathtoyping results
+isolates_complexity &lt;- complexities$indvidual_complexities %&gt;% 
+  rename(isolate_number = sample, complexity = N_samp)
+
+isolates_pathotypes &lt;- diversity$individual_pathotypes %&gt;% 
+  rename(isolate_number = Sample)
+
+isolates_complexity$isolate_number &lt;- as.numeric(isolates_complexity$isolate_number)
+sojae_all &lt;- left_join(isolates_complexity, isolates_pathotypes)</code></pre>
+<pre><code>Joining, by = &quot;isolate_number&quot;</code></pre>
+<pre class="r"><code>add_isolate_id &lt;- sojae[1:24, ]
+
+sojae_pathotype &lt;- left_join(sojae_all, add_isolate_id, by = &quot;isolate_number&quot;) %&gt;% 
+  dplyr::select(isolate_number, isolate_id, complexity, Pathotype)
+
+# write_csv(sojae_pathotype, here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))</code></pre>
+</div>
+</div>
+<div id="aggressiveness" class="section level1">
+<h1>Aggressiveness</h1>
+<pre class="r"><code># some pots had two images in experiment 1 because they did not fit
+area_length &lt;- area_length %&gt;% 
+  group_by(experiment, pot) %&gt;% 
+  summarise(length_in = mean(length_in), 
+            area_in.2 = mean(area_in.2))
+
+aggressiveness &lt;- left_join(dry_weigth, area_length, 
+                            by = c(&quot;experiment&quot;, &quot;pot&quot;)) 
+
+# results  are by pot, divide by germination to get mean by seedling
+aggressiveness &lt;- aggressiveness %&gt;% 
+  mutate(shoot_mg = shoot.mg/germination, 
+         root_mg = root.mg/germination, 
+         length_in = length_in/germination, 
+         area_in.2 = area_in.2/germination)
+
+# write_csv(aggressiveness, here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_aggressiveness_transform.csv&quot;))</code></pre>
+<div id="exploratory-plots" class="section level2">
+<h2>Exploratory plots</h2>
+<pre class="r"><code>aggressiveness$experiment &lt;- as.factor(aggressiveness$experiment)
+aggressiveness$isolate &lt;- as.factor(aggressiveness$isolate)
+aggressiveness$species &lt;- as.factor(aggressiveness$species)
+
+exp_plot &lt;- function(y) {
+  ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = &quot;&quot;, 
+         y = y) +
+    theme(legend.position = &quot;none&quot;)
+  }
+
+by_exp_shoot &lt;- exp_plot(&quot;shoot_mg&quot;)
+by_exp_dry &lt;- exp_plot(&quot;root_mg&quot;)
+by_exp_length &lt;- exp_plot(&quot;length_in&quot;)
+by_exp_area &lt;- exp_plot(&quot;area_in.2&quot;)
+
+plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).
+
+Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/exp%20plot%201-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dis_shoot &lt;- qplot(shoot_mg, data = aggressiveness) +
+  theme_minimal()
+dis_dry &lt;- qplot(root_mg, data = aggressiveness) +
+    theme_minimal()
+dis_length &lt;- qplot(length_in, data = aggressiveness) +
+  theme_minimal() # skew to the left, some transformation needed
+dis_area &lt;- qplot(area_in.2, data = aggressiveness) +
+  theme_minimal() # also skew
+
+plot_grid(dis_shoot, dis_dry, dis_length, dis_area)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dis_length_log &lt;- qplot(log(length_in), data = aggressiveness) +
+  theme_minimal() 
+dis_area_log &lt;- qplot(log(area_in.2), data = aggressiveness) +
+  theme_minimal() 
+
+plot_grid(dis_length_log, dis_area_log) #improves</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/log%20transform-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="fit-mixed-model" class="section level2">
+<h2>Fit mixed model</h2>
+<pre class="r"><code># not nesting isolate:species, isolates coded in a way there is no redundancy
+# same coefficient estimates and p values without nesting
+fm_root_dry &lt;- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code>resid_panel(fm_root_dry) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_dry)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+        Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
+species 2553.3  851.10     3   262 21.5413 1.676e-12 ***
+isolate 3095.1  106.73    29   262  2.7013 1.629e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_dry, ~ species) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE   df lower.CL upper.CL .group
+ Phytophthora sojae        15.6 2.42 2.03      5.4     25.9  1    
+ Control None              28.3 3.17 5.99     20.5     36.1   2   
+ Phytophthora sansomeana   30.5 2.51 2.36     21.1     39.9   2   
+ Control Agar              34.0 3.17 5.99     26.2     41.7   2   
+
+Results are averaged over the levels of: isolate 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_shoot_dry &lt;- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code>resid_panel(fm_shoot_dry) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20shoot%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_shoot_dry)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+         Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
+species  7171.1 2390.38     3   262  8.4322 2.275e-05 ***
+isolate 13225.6  456.06    29   262  1.6088   0.02879 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry, ~ species) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE   df lower.CL upper.CL .group
+ Phytophthora sojae        43.8 5.69 2.05     19.8     67.7  1    
+ Control None              61.0 7.91 7.60     42.6     79.4   2   
+ Phytophthora sansomeana   70.9 5.96 2.47     49.4     92.4   23  
+ Control Agar              83.5 7.91 7.60     65.1    101.9    3  
+
+Results are averaged over the levels of: isolate 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># log transformation for normality and slight difference in variances
+fm_root_length &lt;- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code>resid_panel(fm_root_length) # diagnostic plots look fine</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20length-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_length)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
+species 12.687  4.2288     3 254.01 15.2707 3.638e-09 ***
+isolate 22.764  0.7850    29 254.00  2.8346 6.339e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_length, ~ species, type = &quot;response&quot;) %&gt;% # back-transform estimates
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 response   SE   df lower.CL upper.CL .group
+ Phytophthora sojae          11.3  4.2 2.01     2.31     55.4  1    
+ Control None                25.0 10.2 2.96     6.74     92.4   2   
+ Phytophthora sansomeana     31.0 11.6 2.11     6.68    144.1   2   
+ Control Agar                33.3 14.0 3.29     9.36    118.8   2   
+
+Results are averaged over the levels of: isolate 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_root_area &lt;- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code>resid_panel(fm_root_area) # transformation also worked </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20area-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_area)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
+species  12.83  4.2768     3 254.01 16.0131 1.449e-09 ***
+isolate  21.89  0.7548    29 254.00  2.8262 6.752e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_area, ~ species, type = &quot;response&quot;) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 response     SE   df lower.CL upper.CL .group
+ Phytophthora sojae         0.227 0.0797 2.01   0.0506     1.02  1    
+ Control None               0.537 0.2089 3.05   0.1571     1.83   2   
+ Phytophthora sansomeana    0.609 0.2163 2.12   0.1428     2.59   2   
+ Control Agar               0.723 0.2891 3.40   0.2192     2.38   2   
+
+Results are averaged over the levels of: isolate 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+</div>
+<div id="differences-within-species-between-isolates" class="section level2">
+<h2>Differences within species (between isolates)</h2>
+<pre class="r"><code>emmeans(fm_root_dry, ~ isolate) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE   df lower.CL upper.CL
+ 18PR017      Phytophthora sojae        9.32 3.17 5.99     1.55     17.1
+ 18PR010      Phytophthora sojae        9.66 3.17 5.99     1.90     17.4
+ 18PR009      Phytophthora sojae       10.87 3.17 5.99     3.10     18.6
+ 16PR009.1    Phytophthora sojae       12.15 3.17 5.99     4.39     19.9
+ 16PR009.2    Phytophthora sojae       12.77 3.17 5.99     5.01     20.5
+ 18PR008      Phytophthora sojae       13.26 3.17 5.99     5.50     21.0
+ 18PR011      Phytophthora sojae       13.70 3.17 5.99     5.94     21.5
+ 18PR012      Phytophthora sojae       13.93 3.17 5.99     6.17     21.7
+ 18PR016      Phytophthora sojae       14.04 3.17 5.99     6.27     21.8
+ 18PR013      Phytophthora sojae       14.16 3.17 5.99     6.39     21.9
+ 18PR007      Phytophthora sojae       14.33 3.17 5.99     6.56     22.1
+ 17PR018F.1   Phytophthora sojae       15.08 3.17 5.99     7.31     22.8
+ 17PR009A.2   Phytophthora sojae       15.60 3.17 5.99     7.84     23.4
+ 17PR009A.1   Phytophthora sojae       15.73 3.17 5.99     7.96     23.5
+ 18PR006      Phytophthora sojae       15.89 3.17 5.99     8.13     23.7
+ 18PR014      Phytophthora sojae       16.18 3.17 5.99     8.41     23.9
+ 17PR018H.1   Phytophthora sojae       16.75 3.17 5.99     8.99     24.5
+ 17PR018F.2   Phytophthora sojae       17.48 3.17 5.99     9.72     25.2
+ 17PR018J.3   Phytophthora sojae       17.93 3.17 5.99    10.16     25.7
+ 18PR015      Phytophthora sojae       18.28 3.17 5.99    10.51     26.0
+ 16PR027C.2   Phytophthora sojae       20.26 3.17 5.99    12.49     28.0
+ 18PR001      Phytophthora sojae       20.87 3.17 5.99    13.10     28.6
+ 16PR027C.1   Phytophthora sojae       22.10 3.17 5.99    14.33     29.9
+ 17PR013G.3   Phytophthora sojae       24.96 3.17 5.99    17.20     32.7
+ Control None Control None             28.31 3.17 5.99    20.54     36.1
+ 18PR004      Phytophthora sansomeana  29.00 3.17 5.99    21.24     36.8
+ 16PR018B.1   Phytophthora sansomeana  29.25 3.17 5.99    21.48     37.0
+ 18PR003      Phytophthora sansomeana  29.81 3.17 5.99    22.05     37.6
+ 16PR024C.1   Phytophthora sansomeana  29.85 3.17 5.99    22.08     37.6
+ 18PR005      Phytophthora sansomeana  30.89 3.17 5.99    23.12     38.7
+ 16PR024C.2   Phytophthora sansomeana  32.02 3.17 5.99    24.25     39.8
+ 17PR006L.1   Phytophthora sansomeana  32.57 3.17 5.99    24.80     40.3
+ Control Agar Control Agar             33.95 3.17 5.99    26.19     41.7
+ .group     
+  1         
+  12        
+  123       
+  123       
+  123       
+  123       
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  1234      
+  12345     
+  123456    
+  123456    
+  1234567   
+   2345678  
+    3456789 
+     4567890
+      567890
+       67890
+       67890
+        7890
+        7890
+        7890
+         890
+          90
+           0
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry, ~ isolate) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE  df lower.CL upper.CL
+ 18PR013      Phytophthora sojae        33.9 7.91 7.6     15.5     52.3
+ 18PR017      Phytophthora sojae        34.8 7.91 7.6     16.4     53.2
+ 18PR011      Phytophthora sojae        36.1 7.91 7.6     17.7     54.5
+ 18PR016      Phytophthora sojae        36.8 7.91 7.6     18.4     55.2
+ 17PR018F.1   Phytophthora sojae        37.0 7.91 7.6     18.6     55.4
+ 17PR018J.3   Phytophthora sojae        37.8 7.91 7.6     19.4     56.2
+ 18PR010      Phytophthora sojae        38.2 7.91 7.6     19.8     56.6
+ 18PR009      Phytophthora sojae        39.2 7.91 7.6     20.8     57.6
+ 18PR006      Phytophthora sojae        40.9 7.91 7.6     22.5     59.3
+ 16PR027C.2   Phytophthora sojae        41.2 7.91 7.6     22.8     59.6
+ 18PR008      Phytophthora sojae        42.7 7.91 7.6     24.2     61.1
+ 17PR009A.2   Phytophthora sojae        42.9 7.91 7.6     24.5     61.3
+ 16PR009.1    Phytophthora sojae        43.9 7.91 7.6     25.5     62.3
+ 18PR014      Phytophthora sojae        44.8 7.91 7.6     26.4     63.2
+ 18PR012      Phytophthora sojae        45.4 7.91 7.6     27.0     63.8
+ 18PR007      Phytophthora sojae        45.4 7.91 7.6     27.0     63.9
+ 17PR009A.1   Phytophthora sojae        46.0 7.91 7.6     27.6     64.4
+ 18PR001      Phytophthora sojae        47.2 7.91 7.6     28.7     65.6
+ 16PR009.2    Phytophthora sojae        47.2 7.91 7.6     28.8     65.6
+ 17PR018H.1   Phytophthora sojae        47.8 7.91 7.6     29.4     66.2
+ 18PR015      Phytophthora sojae        48.4 7.91 7.6     30.0     66.8
+ 17PR018F.2   Phytophthora sojae        48.9 7.91 7.6     30.5     67.3
+ 16PR027C.1   Phytophthora sojae        53.3 7.91 7.6     34.9     71.7
+ Control None Control None              61.0 7.91 7.6     42.6     79.4
+ 18PR005      Phytophthora sansomeana   66.3 7.91 7.6     47.9     84.7
+ 18PR004      Phytophthora sansomeana   67.3 7.91 7.6     48.9     85.7
+ 17PR006L.1   Phytophthora sansomeana   68.7 7.91 7.6     50.3     87.1
+ 16PR018B.1   Phytophthora sansomeana   70.8 7.91 7.6     52.4     89.2
+ 17PR013G.3   Phytophthora sojae        71.2 7.91 7.6     52.8     89.6
+ 16PR024C.1   Phytophthora sansomeana   72.4 7.91 7.6     54.0     90.8
+ 16PR024C.2   Phytophthora sansomeana   73.5 7.91 7.6     55.0     91.9
+ 18PR003      Phytophthora sansomeana   77.6 7.91 7.6     59.2     96.0
+ Control Agar Control Agar              83.5 7.91 7.6     65.1    101.9
+ .group    
+  1        
+  1        
+  12       
+  12       
+  123      
+  123      
+  123      
+  1234     
+  12345    
+  12345    
+  123456   
+  123456   
+  1234567  
+  1234567  
+  1234567  
+  1234567  
+  1234567  
+  1234567  
+  12345678 
+  12345678 
+  12345678 
+  12345678 
+  123456789
+  123456789
+   23456789
+    3456789
+     456789
+      56789
+      56789
+       6789
+        789
+         89
+          9
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_length, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 response    SE   df lower.CL upper.CL
+ 18PR009      Phytophthora sojae          6.73  2.75 2.96     1.82     24.9
+ 16PR009.1    Phytophthora sojae          7.03  2.87 2.96     1.90     26.0
+ 18PR017      Phytophthora sojae          7.38  3.01 2.96     1.99     27.3
+ 18PR011      Phytophthora sojae          7.68  3.14 2.96     2.07     28.5
+ 18PR013      Phytophthora sojae          8.11  3.31 2.96     2.19     30.0
+ 18PR016      Phytophthora sojae          8.80  3.59 2.96     2.38     32.6
+ 16PR009.2    Phytophthora sojae          9.25  3.78 2.96     2.50     34.3
+ 18PR010      Phytophthora sojae          9.32  3.85 3.10     2.56     33.9
+ 17PR009A.2   Phytophthora sojae          9.44  3.86 2.96     2.55     35.0
+ 18PR008      Phytophthora sojae         10.11  4.13 2.96     2.73     37.4
+ 18PR007      Phytophthora sojae         11.42  4.67 2.96     3.08     42.3
+ 17PR018F.1   Phytophthora sojae         11.49  4.69 2.96     3.10     42.6
+ 17PR009A.1   Phytophthora sojae         11.73  4.79 2.96     3.17     43.4
+ 18PR006      Phytophthora sojae         11.92  4.87 2.96     3.22     44.1
+ 17PR018J.3   Phytophthora sojae         11.92  4.87 2.96     3.22     44.2
+ 18PR012      Phytophthora sojae         12.37  5.05 2.96     3.34     45.8
+ 18PR014      Phytophthora sojae         12.61  5.15 2.96     3.41     46.7
+ 17PR018H.1   Phytophthora sojae         13.16  5.38 2.96     3.55     48.8
+ 18PR015      Phytophthora sojae         14.00  5.72 2.96     3.78     51.8
+ 17PR018F.2   Phytophthora sojae         14.19  5.80 2.96     3.83     52.6
+ 16PR027C.2   Phytophthora sojae         15.85  6.47 2.96     4.28     58.7
+ 18PR001      Phytophthora sojae         18.01  7.44 3.10     4.95     65.5
+ 16PR027C.1   Phytophthora sojae         21.97  8.98 2.96     5.93     81.4
+ 17PR013G.3   Phytophthora sojae         22.44  9.17 2.96     6.06     83.1
+ Control None Control None               24.96 10.20 2.96     6.74     92.4
+ 18PR005      Phytophthora sansomeana    27.28 11.44 3.29     7.66     97.2
+ 16PR018B.1   Phytophthora sansomeana    28.38 11.59 2.96     7.66    105.1
+ 16PR024C.2   Phytophthora sansomeana    30.16 12.46 3.10     8.29    109.7
+ 16PR024C.1   Phytophthora sansomeana    30.24 12.35 2.96     8.17    112.0
+ Control Agar Control Agar               33.35 13.98 3.29     9.36    118.8
+ 18PR003      Phytophthora sansomeana    33.81 13.81 2.96     9.13    125.2
+ 18PR004      Phytophthora sansomeana    33.97 14.04 3.10     9.34    123.5
+ 17PR006L.1   Phytophthora sansomeana    34.10 13.93 2.96     9.21    126.3
+ .group   
+  1       
+  12      
+  12      
+  12      
+  12      
+  123     
+  123     
+  123     
+  123     
+  1234    
+  12345   
+  12345   
+  123456  
+  123456  
+  123456  
+  1234567 
+  1234567 
+  12345678
+  12345678
+  12345678
+  12345678
+   2345678
+    345678
+    345678
+     45678
+     45678
+      5678
+      5678
+       678
+        78
+         8
+         8
+         8
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_area, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  cld.emmGrid()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 response     SE   df lower.CL upper.CL
+ 18PR009      Phytophthora sojae         0.137 0.0535 3.05   0.0402    0.469
+ 16PR009.1    Phytophthora sojae         0.150 0.0583 3.05   0.0439    0.512
+ 18PR017      Phytophthora sojae         0.152 0.0593 3.05   0.0446    0.520
+ 18PR011      Phytophthora sojae         0.161 0.0627 3.05   0.0471    0.550
+ 18PR013      Phytophthora sojae         0.164 0.0637 3.05   0.0479    0.559
+ 16PR009.2    Phytophthora sojae         0.170 0.0663 3.05   0.0499    0.582
+ 18PR016      Phytophthora sojae         0.175 0.0683 3.05   0.0514    0.599
+ 18PR010      Phytophthora sojae         0.177 0.0696 3.20   0.0526    0.593
+ 17PR009A.2   Phytophthora sojae         0.182 0.0708 3.05   0.0532    0.621
+ 17PR018F.1   Phytophthora sojae         0.222 0.0862 3.05   0.0649    0.757
+ 17PR018J.3   Phytophthora sojae         0.223 0.0866 3.05   0.0652    0.760
+ 18PR007      Phytophthora sojae         0.225 0.0875 3.05   0.0659    0.768
+ 18PR008      Phytophthora sojae         0.231 0.0899 3.05   0.0676    0.789
+ 17PR009A.1   Phytophthora sojae         0.236 0.0919 3.05   0.0692    0.807
+ 18PR006      Phytophthora sojae         0.243 0.0947 3.05   0.0712    0.831
+ 18PR014      Phytophthora sojae         0.251 0.0979 3.05   0.0736    0.859
+ 18PR012      Phytophthora sojae         0.254 0.0987 3.05   0.0742    0.866
+ 17PR018F.2   Phytophthora sojae         0.270 0.1049 3.05   0.0789    0.920
+ 17PR018H.1   Phytophthora sojae         0.274 0.1068 3.05   0.0803    0.937
+ 18PR015      Phytophthora sojae         0.302 0.1175 3.05   0.0884    1.031
+ 16PR027C.2   Phytophthora sojae         0.306 0.1191 3.05   0.0896    1.045
+ 18PR001      Phytophthora sojae         0.361 0.1422 3.20   0.1075    1.212
+ 16PR027C.1   Phytophthora sojae         0.410 0.1596 3.05   0.1201    1.401
+ 17PR013G.3   Phytophthora sojae         0.470 0.1829 3.05   0.1376    1.605
+ Control None Control None               0.537 0.2089 3.05   0.1571    1.833
+ 16PR018B.1   Phytophthora sansomeana    0.556 0.2165 3.05   0.1629    1.900
+ 16PR024C.1   Phytophthora sansomeana    0.565 0.2199 3.05   0.1655    1.930
+ 18PR005      Phytophthora sansomeana    0.579 0.2315 3.40   0.1756    1.907
+ 16PR024C.2   Phytophthora sansomeana    0.605 0.2385 3.20   0.1803    2.033
+ 18PR003      Phytophthora sansomeana    0.635 0.2470 3.05   0.1858    2.167
+ 17PR006L.1   Phytophthora sansomeana    0.664 0.2584 3.05   0.1944    2.268
+ 18PR004      Phytophthora sansomeana    0.666 0.2625 3.20   0.1984    2.237
+ Control Agar Control Agar               0.723 0.2891 3.40   0.2192    2.381
+ .group   
+  1       
+  12      
+  12      
+  123     
+  123     
+  123     
+  123     
+  123     
+  123     
+  1234    
+  12345   
+  12345   
+  123456  
+  123456  
+  123456  
+  1234567 
+  1234567 
+  12345678
+  12345678
+  12345678
+  12345678
+   2345678
+    345678
+     45678
+     45678
+     45678
+      5678
+     45678
+       678
+        78
+         8
+         8
+         8
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+</div>
+<div id="figure-4" class="section level2">
+<h2>Figure 4</h2>
+<pre class="r"><code># combine the two controls for plotting
+aggressiveness_plots &lt;- aggressiveness
+
+aggressiveness_plots$species &lt;- str_replace_all(aggressiveness_plots$species, 
+                                          c(&quot;Control Agar&quot; = &quot;Control&quot;, 
+                                            &quot;Control None&quot; = &quot;Control&quot;, 
+                                            &quot;Phytophthora sojae&quot; = &quot;P. sojae&quot;, 
+                                            &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)
+                                          )
+
+fig_length &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
+  geom_boxplot(alpha = 0.6) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+         y = &quot;Root length (in)&quot;) + 
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;)  
+
+fig_dry &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
+  geom_boxplot(alpha = 0.8) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+       y = &quot;Root dry weigth (mg)&quot;) + 
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;) 
+
+plot_grid(fig_dry, fig_length, ncol = 1, labels = &quot;AUTO&quot; )</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 8 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%204-1.png" width="307.2" style="display: block; margin: auto;" /></p>
+</div>
+<div id="figure-5" class="section level2">
+<h2>Figure 5</h2>
+<pre class="r"><code>fig_5A &lt;-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = &quot;mean_se&quot;, aes(colour = species), alpha = 0.6) +
+  geom_hline(yintercept = 20, linetype=&quot;dashed&quot;,  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = &quot;&quot;,
+       y = &quot;Root dry weigth (mg)&quot;,
+       color = &quot;&quot;) 
+
+fig_5B &lt;- aggressiveness_plots %&gt;% 
+  filter(!is.na(length_in)) %&gt;% 
+ggplot(aes(x = reorder (isolate,length_in), y = length_in, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = &quot;mean_se&quot;, aes(colour = species), alpha = 0.8) +
+  geom_hline(yintercept = 25, linetype=&quot;dashed&quot;,  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = &quot;&quot;,
+       y = &quot;Root length (in)&quot;,
+       color = &quot;&quot;) 
+
+legend &lt;- get_legend(fig_5A + theme(legend.position = &quot;bottom&quot;))
+
+plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c(&quot;A&quot;, &quot;B&quot;, &quot;&quot;))</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/figure%205-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="save-results" class="section level2">
+<h2>Save results</h2>
+<pre class="r"><code>m_root_dry &lt;- emmeans(fm_root_dry, ~ isolate) %&gt;% 
+  tidy() %&gt;% 
+  mutate(measurement = &quot;dry_root&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>m_shoot_dry &lt;- emmeans(fm_shoot_dry, ~ isolate) %&gt;% 
+  tidy() %&gt;% 
+  mutate(measurement = &quot;dry_shoot&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>m_root_length &lt;- emmeans(fm_root_length, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  tidy() %&gt;% 
+  mutate(measurement = &quot;root_length&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>m_root_area &lt;- emmeans(fm_root_area, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  tidy()%&gt;% 
+  mutate(measurement = &quot;root_area&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>means_aggressiveness &lt;- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
+
+# estimate and response (back-transform means) in same column
+back_transform_means &lt;- means_aggressiveness %&gt;% 
+  filter(measurement %in% c(&quot;root_length&quot;, &quot;root_area&quot;)) %&gt;% 
+  dplyr::select(-estimate) %&gt;% 
+  rename(estimate = response)
+
+means_aggressiveness &lt;- means_aggressiveness %&gt;% 
+  filter(!(measurement %in% c(&quot;root_length&quot;, &quot;root_area&quot;))) %&gt;% 
+  dplyr::select(-response)
+
+means_aggressiveness &lt;- bind_rows(means_aggressiveness, back_transform_means)
+# write_csv(means_aggressiveness , here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_results-means.csv&quot;))</code></pre>
+</div>
+<div id="correlation-between-aggressiveness-and-complexity" class="section level2">
+<h2>Correlation between aggressiveness and complexity</h2>
+<pre class="r"><code>sojae_pathotype &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))
+means_aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_results-means.csv&quot;))
+
+sojae_complexity &lt;- sojae_pathotype %&gt;% 
+  dplyr::select(isolate_id, complexity)
+
+sojae_aggressiveness &lt;- means_aggressiveness %&gt;% 
+  filter(species == &quot;Phytophthora sojae&quot;) %&gt;% 
+  dplyr::select(isolate_id = isolate, estimate, measurement) %&gt;% 
+  spread(measurement, estimate)
+
+sojae_all_data &lt;- left_join(sojae_complexity, sojae_aggressiveness, by = c(&quot;isolate_id&quot;)) </code></pre>
+<pre class="r"><code>sojae_corr &lt;- sojae_all_data %&gt;%
+  dplyr::select(-isolate_id) %&gt;%
+  as.matrix() %&gt;%
+  rcorr(type = &quot;pearson&quot;)
+corrplot(sojae_corr$r, method = &quot;number&quot;)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/correlation-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-2" class="section level2">
+<h2>Table 2</h2>
+<pre class="r"><code>sojae_corr</code></pre>
+<pre><code>            complexity dry_root dry_shoot root_area root_length
+complexity        1.00     0.35      0.43      0.44        0.41
+dry_root          0.35     1.00      0.71      0.92        0.92
+dry_shoot         0.43     0.71      1.00      0.81        0.78
+root_area         0.44     0.92      0.81      1.00        0.99
+root_length       0.41     0.92      0.78      0.99        1.00
+
+n= 24 
+
+
+P
+            complexity dry_root dry_shoot root_area root_length
+complexity             0.0939   0.0362    0.0316    0.0475     
+dry_root    0.0939              0.0001    0.0000    0.0000     
+dry_shoot   0.0362     0.0001             0.0000    0.0000     
+root_area   0.0316     0.0000   0.0000              0.0000     
+root_length 0.0475     0.0000   0.0000    0.0000               </code></pre>
+<p>Make some plots for the temperature data</p>
+</div>
+</div>
+<div id="fungicide-sensitivity" class="section level1">
+<h1>Fungicide Sensitivity</h1>
+<p>Make some plots for the SHAM data</p>
+<pre class="r"><code># eliminate NAs
+# average colony measurements 
+clean_fungicide &lt;- fungicide %&gt;% 
+  filter(!is.na(length_a)) %&gt;%  
+  mutate(length.mm = (length_a + length_b)/2) 
+
+# subtract the plug diameter
+clean_fungicide &lt;- clean_fungicide %&gt;% 
+  mutate(length.mm = case_when(
+    length.mm &gt; 0 ~ length.mm - 4, 
+    TRUE ~ length.mm - 0
+    )) %&gt;% 
+  filter(!length.mm &lt; 0) # eliminate any negative values 
+
+# mean growth of control plate (dose 0)
+control_fungicide &lt;- clean_fungicide %&gt;% 
+  filter(dose == 0, 
+         !is.na(length.mm)) %&gt;% 
+  group_by(fungicide, experiment, isolate) %&gt;% 
+  summarise(control.mean = mean(length.mm)) 
+
+clean_fungicide &lt;- left_join(clean_fungicide, control_fungicide, by = c(&quot;fungicide&quot;,
+                                                                        &quot;experiment&quot;, 
+                                                                        &quot;isolate&quot;))
+# relative growth calculation
+clean_fungicide &lt;- clean_fungicide %&gt;% 
+  mutate(rel.growth = (length.mm/control.mean)*100)
+
+# write_csv(clean_fungicide, here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_fungicide-sensitivity_transform.csv&quot;))</code></pre>
+<pre class="r"><code># check if there are isolates with no EC50
+# isolates with &gt;50% rel growth in the higher dose 
+no_EC50 &lt;- clean_fungicide %&gt;% 
+  group_by(fungicide, experiment, isolate, dose) %&gt;% 
+  summarise(rel.growth = mean(rel.growth)) %&gt;% 
+  filter(fungicide %in% c(&quot;Mefenoxam&quot;,
+                          &quot;Metalaxyl&quot;, 
+                          &quot;Ethaboxam&quot;) &amp; dose == 1 &amp; rel.growth &gt; 50, 
+         fungicide == &quot;Azoxystrobin&quot; &amp; dose == 10 &amp; rel.growth &gt; 50)
+
+# check if there are isolates with hormetic effect
+# &gt;100% rel growth at lower dose
+hormetic_isolates &lt;- clean_fungicide %&gt;% 
+  group_by(fungicide, experiment, isolate, dose) %&gt;% 
+  summarise(rel.growth = mean(rel.growth)) %&gt;% 
+  filter(rel.growth &gt; 100, 
+         !dose == 0) %&gt;% 
+  dplyr::select(fungicide, experiment, isolate)
+
+hormetic_isolates %&gt;% 
+  group_by(fungicide, experiment, isolate) %&gt;% 
+  n_distinct()</code></pre>
+<pre><code>[1] 37</code></pre>
+<pre class="r"><code>hormetic_data &lt;- semi_join(clean_fungicide, hormetic_isolates)</code></pre>
+<pre><code>Joining, by = c(&quot;fungicide&quot;, &quot;experiment&quot;, &quot;isolate&quot;)</code></pre>
+<pre class="r"><code># fit log-logistic models with 3 and 4 parameters 
+nest_fungicide &lt;- clean_fungicide %&gt;% 
+  group_by(fungicide, experiment, isolate) %&gt;% 
+  nest()
+
+# lower limit fit at zero in LL.3
+fit_LL3 &lt;- function(dataset){
+  drm(rel.growth ~ dose, fct = LL.3(names = c(&quot;slope&quot;, &quot;upper&quot;, &quot;EC50&quot;)), data = dataset)
+}
+
+fit_LL4 &lt;- function(dataset){
+  drm(rel.growth ~ dose, fct = LL.4(names = c(&quot;slope&quot;, &quot;lower&quot;, &quot;upper&quot;, &quot;EC50&quot;)), data = dataset)
+}
+
+log_models &lt;- nest_fungicide %&gt;% 
+  mutate(ll3.model = purrr::map(data, fit_LL3), 
+         ll4.model = purrr::map(data, fit_LL4), 
+         ll3.fit = purrr::map(ll3.model, mselect), 
+         ll4.fit = purrr::map(ll4.model, mselect) 
+         )
+# mselect did not work inside function, use it individually to extract model fit info</code></pre>
+<pre class="r"><code>log_selection &lt;- log_models %&gt;% 
+  dplyr::select(ll3.fit, ll4.fit) %&gt;% 
+  gather(ll3.fit, ll4.fit, key = &quot;model&quot;, value = &quot;model.fit&quot;) %&gt;%   
+  unnest_wider(model.fit)</code></pre>
+<pre><code>Adding missing grouping variables: `fungicide`, `experiment`, `isolate`</code></pre>
+<pre class="r"><code># select based on lower AIC
+log_selection %&gt;% 
+  dplyr::select(fungicide, isolate, model, IC) %&gt;% 
+  spread(model, IC) %&gt;% 
+  filter(ll3.fit &lt; ll4.fit) %&gt;% 
+  n_distinct()</code></pre>
+<pre><code>Adding missing grouping variables: `experiment`</code></pre>
+<pre><code>[1] 66</code></pre>
+<pre class="r"><code># lack of fit p-values 
+log_selection %&gt;% 
+  filter(`Lack of fit`  &lt; 0.05) %&gt;% 
+  group_by(model)%&gt;% 
+  count() # LL.4 model better fit for most isolates</code></pre>
+<pre><code># A tibble: 2 x 2
+# Groups:   model [2]
+  model       n
+  &lt;chr&gt;   &lt;int&gt;
+1 ll3.fit    48
+2 ll4.fit    32</code></pre>
+<pre class="r"><code># extract EC50s from LL.4 model
+abs_EC50 &lt;- function(models){
+  ED(models, respLev = c(50), type = &quot;absolute&quot;, interval = &quot;delta&quot;)
+}
+
+log_models &lt;- log_models %&gt;% 
+  mutate(ll4.EC50 = purrr::map(ll4.model, abs_EC50))</code></pre>
+<pre><code>
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.8620     1.6419 -1.6851  5.4092
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50  1.09604    0.32397 0.40121 1.79088
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.5830     1.3360 -1.2824  4.4485
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.86161    0.73900 -0.72338  2.44660
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50   1.0335     6.4544 -12.8097  14.8768
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   2.0975     2.5048 -3.2748  7.4698
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.88713    1.16364 -1.60863  3.38288
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.6707     2.0271 -2.6770  6.0184
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.98985    1.01246 -1.18166  3.16137
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.4127     1.1426 -1.0378  3.8633
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.8594     1.6245 -1.6501  5.3688
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.96430    1.35549 -0.94292  4.87153
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.8831     5.1534 -9.1698 12.9361
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.77736    1.56256 -2.59835  4.15306
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.69081    0.83586 -1.10193  2.48355
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.90763    0.95842 -1.14799  2.96324
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   2.1007     2.6137 -3.5459  7.7472
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   2.1055     2.8243 -3.9520  8.1630
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.6326     1.6505 -1.9331  5.1983
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.5211     1.5833 -1.8747  4.9170
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.45719    0.81048 -1.28112  2.19550
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50  1.23646    0.51635 0.12901 2.34391
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.42717    1.16682 -2.07541  2.92974
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.6176     1.7905 -2.2228  5.4579
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.7842     2.1013 -2.7227  6.2911
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.8619     2.1135 -2.6712  6.3950
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.7265     1.4804 -1.4486  4.9017
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.9445     2.4902 -3.3964  7.2853</code></pre>
+<pre><code>Warning in sqrt(dEDval %*% varCov %*% dEDval): NaNs produced
+
+Warning in sqrt(dEDval %*% varCov %*% dEDval): NaNs produced</code></pre>
+<pre><code>
+Estimated effective doses
+
+       Estimate Std. Error Lower Upper
+e:1:50    4.168         NA    NA    NA
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.2272     1.2040 -1.3551  3.8095
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.82229    0.87803 -1.06089  2.70548
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   0.9853     1.3278 -1.8626  3.8332
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0100725  0.0003341 0.0093559 0.0107890
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0204129  0.0014198 0.0173678 0.0234581
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0251356  0.0020528 0.0207328 0.0295384
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.023833   0.001543 0.020523 0.027142
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00505644 0.00040679 0.00418395 0.00592892
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0211920  0.0010065 0.0190333 0.0233507
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.01065477 0.00098487 0.00854243 0.01276711
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00658958 0.00049225 0.00553382 0.00764535
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0093144  0.0022898 0.0044032 0.0142257
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00861074 0.00087428 0.00673560 0.01048589
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0207035  0.0012257 0.0180748 0.0233323
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50  0.0201750  0.0125083 -0.0066525  0.0470026
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0281551  0.0025797 0.0226222 0.0336880
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0094597  0.0005992 0.0081745 0.0107448
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00947447 0.00071093 0.00794967 0.01099926
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00730574 0.00032636 0.00660577 0.00800571
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00711743 0.00045084 0.00615046 0.00808439
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0208421  0.0016479 0.0173077 0.0243765
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0277638  0.0015804 0.0243742 0.0311533
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0212322  0.0017159 0.0175519 0.0249125
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50  0.0087908  0.0073417 -0.0069555  0.0245371
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.01831063 0.00094409 0.01628576 0.02033550
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0104374  0.0015537 0.0071051 0.0137698
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00804681 0.00071575 0.00651167 0.00958195
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00579834 0.00027378 0.00521114 0.00638554
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0092976  0.0013193 0.0064681 0.0121271
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0247568  0.0014493 0.0216483 0.0278652
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0213856  0.0010913 0.0190449 0.0237263
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.035457   0.003872 0.027152 0.043761
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00860716 0.00070853 0.00707646 0.01013785
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00778171 0.00049234 0.00672575 0.00883768
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0073337  0.0012813 0.0045855 0.0100819
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0572386  0.0032781 0.0502077 0.0642694
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0468538  0.0018736 0.0428354 0.0508723
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0475481  0.0016298 0.0440526 0.0510437
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.040571   0.001269 0.037850 0.043293
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0661600  0.0072665 0.0505748 0.0817451
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0501995  0.0013707 0.0472596 0.0531393
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0367048  0.0043778 0.0273154 0.0460942
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.03168587 0.00076009 0.03005563 0.03331610
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.075614   0.004052 0.066924 0.084305
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.1051807  0.0084947 0.0869613 0.1234001
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0453417  0.0016763 0.0417465 0.0489369
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0510706  0.0016336 0.0475669 0.0545743
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.132683   0.029959 0.068428 0.196938
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0539292  0.0026814 0.0481782 0.0596802
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0535498  0.0020983 0.0490493 0.0580503
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0473487  0.0026395 0.0416876 0.0530098
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0674807  0.0073665 0.0516811 0.0832802
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0427850  0.0023361 0.0377382 0.0478318
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0473827  0.0011921 0.0448258 0.0499395
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0452811  0.0016559 0.0417037 0.0488585
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0662488  0.0060545 0.0531689 0.0793287
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0388019  0.0027402 0.0328314 0.0447724
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0507498  0.0067704 0.0362287 0.0652709
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.028007   0.002195 0.023299 0.032714
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0795384  0.0077322 0.0628339 0.0962429
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.1020593  0.0077812 0.0853703 0.1187483
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0461020  0.0014392 0.0429928 0.0492112
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0452502  0.0019699 0.0409945 0.0495059
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.19345    0.14970 -0.12762  0.51451
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0630473  0.0041268 0.0541963 0.0718984
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0533033  0.0056635 0.0411562 0.0654504
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.049605   0.004796 0.039319 0.059892
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0649641  0.0028218 0.0589118 0.0710163
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.045891   0.002786 0.039915 0.051866
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0490575  0.0015636 0.0457039 0.0524112
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0437481  0.0024847 0.0384189 0.0490773
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0471319  0.0030183 0.0406582 0.0536056
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.044545   0.001951 0.040361 0.048729
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0666425  0.0038191 0.0584512 0.0748337
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0283110  0.0018897 0.0242580 0.0323640
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0739518  0.0020588 0.0695361 0.0783675
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0771889  0.0031188 0.0704997 0.0838780
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0464020  0.0022863 0.0414984 0.0513057
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0472803  0.0015175 0.0440256 0.0505350
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.104320   0.019825 0.061801 0.146840
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.054702   0.002027 0.050354 0.059049
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0552973  0.0015417 0.0519906 0.0586039
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.057124   0.002731 0.051267 0.062982
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0616137  0.0025112 0.0562278 0.0669997
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0403890  0.0020649 0.0359601 0.0448178
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0458723  0.0014357 0.0427930 0.0489517
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0449507  0.0035661 0.0373023 0.0525991
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0443857  0.0067948 0.0298123 0.0589590
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.050905   0.001773 0.047102 0.054708
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0584513  0.0026193 0.0528335 0.0640691
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0283349  0.0017431 0.0245963 0.0320735
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0599838  0.0023961 0.0548447 0.0651229
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0773090  0.0079537 0.0602501 0.0943679
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0430692  0.0022668 0.0382074 0.0479310
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.041900   0.001454 0.038782 0.045019
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.072982   0.018863 0.032524 0.113440
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0519563  0.0021339 0.0473795 0.0565331
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0529138  0.0021374 0.0483295 0.0574982
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0529037  0.0016438 0.0493780 0.0564293</code></pre>
+<pre class="r"><code>log_EC50 &lt;- log_models %&gt;% 
+  dplyr::select(ll4.EC50) %&gt;% 
+  unnest_wider(ll4.EC50) %&gt;% 
+  rename(EC50 = ...1  , 
+         std.error = ...2 ,
+         lower = ...3, 
+         upper = ...4)</code></pre>
+<pre class="r"><code>nest_hormetic &lt;- hormetic_data %&gt;% 
+  group_by(fungicide, experiment, isolate) %&gt;% 
+  nest()
+
+fit_CRS &lt;- function(dataset){
+  drm(rel.growth ~ dose, fct = CRS.4c(), data = dataset)
+}
+
+fit_BC4 &lt;- function(dataset){
+  drm(rel.growth ~ dose, fct = BC.4(), data = dataset)
+}
+
+# fit hormetic models and compared it to LL.4
+hormetic_models &lt;- nest_hormetic %&gt;% 
+  mutate(crs.model = purrr::map(data, fit_CRS),
+         bc4.model = purrr::map(data, fit_BC4 ),
+         crs.fit = purrr::map(crs.model, mselect), 
+         bc4.fit = purrr::map(bc4.model, mselect)
+         )</code></pre>
+<pre><code>Warning in sqrt(diag(varMat)): NaNs produced
+
+Warning in sqrt(diag(varMat)): NaNs produced
+
+Warning in sqrt(diag(varMat)): NaNs produced
+
+Warning in sqrt(diag(varMat)): NaNs produced
+
+Warning in sqrt(diag(varMat)): NaNs produced
+
+Warning in sqrt(diag(varMat)): NaNs produced</code></pre>
+<pre class="r"><code>hormetic_selection &lt;- hormetic_models %&gt;% 
+  dplyr::select(crs.fit, bc4.fit)</code></pre>
+<pre><code>Adding missing grouping variables: `fungicide`, `experiment`, `isolate`</code></pre>
+<pre class="r"><code>hormetic_selection &lt;- hormetic_selection %&gt;% 
+  gather(crs.fit, bc4.fit,  key = &quot;model&quot;, value = &quot;model.fit&quot;) %&gt;%   
+  unnest_wider(model.fit)
+
+# add LL4 fit 
+hormetic_selection &lt;- semi_join(log_selection, hormetic_isolates) %&gt;% 
+  filter(model == &quot;ll4.fit&quot;) %&gt;% 
+  bind_rows(hormetic_selection) %&gt;% 
+  arrange(isolate, IC)</code></pre>
+<pre><code>Joining, by = c(&quot;fungicide&quot;, &quot;experiment&quot;, &quot;isolate&quot;)</code></pre>
+<pre class="r"><code># best hormetic model
+hormetic_selection %&gt;% 
+  dplyr::select(fungicide, experiment, isolate, model, IC) %&gt;% 
+  spread(model, IC) %&gt;% 
+  filter(crs.fit &gt; bc4.fit) %&gt;% 
+  n_distinct()</code></pre>
+<pre><code>[1] 24</code></pre>
+<pre class="r"><code>hormetic_selection %&gt;% 
+  dplyr::select(fungicide, experiment, isolate, model, IC) %&gt;% 
+  spread(model, IC) %&gt;% 
+  filter(ll4.fit &gt; bc4.fit) %&gt;% 
+  n_distinct()</code></pre>
+<pre><code>[1] 28</code></pre>
+<pre class="r"><code>hormetic_selection %&gt;% 
+  filter(`Lack of fit` &gt; 0.05) %&gt;% 
+  group_by(model) %&gt;% 
+  count() </code></pre>
+<pre><code># A tibble: 3 x 2
+# Groups:   model [3]
+  model       n
+  &lt;chr&gt;   &lt;int&gt;
+1 bc4.fit    28
+2 crs.fit    24
+3 ll4.fit    21</code></pre>
+<pre class="r"><code># overall bc4 better fit based on lower AIC
+# no lack of fit for ll4 for most isolates with hormetic effect</code></pre>
+<pre class="r"><code># check if 95 CI of exp 1 includes EC50 of exp 2
+log_EC50$experiment &lt;- as.factor(log_EC50$experiment)
+log_EC50$isolate &lt;- as.factor(log_EC50$isolate)
+
+log_EC50 %&gt;% 
+  filter(!isolate == &quot;13&quot;) %&gt;% # 95% CI too large for plotting
+  ggplot(aes(x = isolate, y = EC50, color = experiment)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                  position = position_jitterdodge()) +
+  facet_wrap(~ fungicide, scales = &quot;free_y&quot;) +
+  theme_minimal() +
+  panel_border()</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/combine%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Overall most EC50 of second experiment fall into the 95% CI of EC50 first. Experiment is repoducible so combine the data of both experiments.</p>
+<pre class="r"><code># fit LL.4 model with pooled data
+nest_pooled &lt;- clean_fungicide %&gt;% 
+  group_by(fungicide, isolate) %&gt;% 
+  nest() 
+
+log_pooled &lt;- nest_pooled %&gt;% 
+  mutate(ll4.model = purrr::map(data, fit_LL4),
+         ll4.fit = purrr::map(ll4.model, mselect), 
+         abs.EC50 = purrr::map(ll4.model, abs_EC50)
+         ) </code></pre>
+<pre><code>
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   2.0946     1.5702 -1.1121  5.3013
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.64495    1.22539 -0.85109  4.14098
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50  1.37250    0.46498 0.42417 2.32083
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.16700    0.73734 -0.33490  2.66891
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.59773    1.30062 -2.05154  3.24700
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50  1.46457    0.58354 0.27594 2.65320
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   0.6944     1.6281 -2.6220  4.0107
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.64197    1.18025 -0.76211  4.04606
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.39584    1.12345 -0.89256  3.68424
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.67602    1.11984 -0.60502  3.95706
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  1.83779    1.26020 -0.73241  4.40799
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   2.2728     1.8494 -1.4944  6.0400
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50    3.434     36.790 -71.504  78.373
+
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50   1.0150     1.1685 -1.3680  3.3981
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.77958    0.74946 -0.74702  2.30618
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50  0.94829    0.75209 -0.58367  2.48024
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0092247  0.0014434 0.0062845 0.0121649
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0206483  0.0010198 0.0185711 0.0227255
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0264719  0.0013008 0.0238223 0.0291215
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0224193  0.0012851 0.0198016 0.0250370
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0073165  0.0025844 0.0020523 0.0125807
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.01979519 0.00082071 0.01812346 0.02146691
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.01054143 0.00091277 0.00868218 0.01240068
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00728799 0.00041358 0.00644555 0.00813042
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00746507 0.00099474 0.00543884 0.00949130
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0091027  0.0018775 0.0052784 0.0129270
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0226287  0.0011241 0.0203389 0.0249184
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0212511  0.0052277 0.0106027 0.0318995
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0307757  0.0023569 0.0259748 0.0355765
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00903207 0.00040967 0.00819654 0.00986760
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00872811 0.00045321 0.00780495 0.00965128
+
+Estimated effective doses
+
+         Estimate Std. Error      Lower      Upper
+e:1:50 0.00723274 0.00061942 0.00597102 0.00849445
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0615162  0.0036511 0.0540791 0.0689533
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0448169  0.0015139 0.0417293 0.0479045
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.047471   0.001034 0.045365 0.049578
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0429064  0.0011969 0.0404654 0.0453475
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0661873  0.0044606 0.0570898 0.0752848
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.044715   0.001861 0.040914 0.048515
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0425074  0.0041732 0.0340070 0.0510079
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0297761  0.0012133 0.0273047 0.0322474
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.077665   0.004366 0.068760 0.086569
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.1036030  0.0059954 0.0913909 0.1158152
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0457504  0.0012343 0.0432330 0.0482678
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0481595  0.0013748 0.0453556 0.0509634
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.158344   0.053173 0.050034 0.266653
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.058349   0.002485 0.053287 0.063410
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0533926  0.0026811 0.0479313 0.0588538
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.048399   0.002536 0.043234 0.053565
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.063414   0.001983 0.059375 0.067453
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0432152  0.0018405 0.0394662 0.0469641
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.047420   0.001185 0.045006 0.049834
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0443258  0.0020878 0.0400731 0.0485784
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0457754  0.0034936 0.0386592 0.0528917
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0477926  0.0015226 0.0446911 0.0508940
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0621204  0.0023479 0.0573379 0.0669029
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0283288  0.0012074 0.0258695 0.0307881
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0669727  0.0023353 0.0622158 0.0717296
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.077271   0.003846 0.069436 0.085105
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0446441  0.0016507 0.0412818 0.0480064
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0443776  0.0012577 0.0418158 0.0469395
+
+Estimated effective doses
+
+       Estimate Std. Error    Lower    Upper
+e:1:50 0.088500   0.015959 0.055993 0.121006
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0534475  0.0014591 0.0504755 0.0564196
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0540907  0.0013039 0.0514347 0.0567466
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0548720  0.0015696 0.0516748 0.0580692</code></pre>
+<pre class="r"><code>pooled_EC50 &lt;- log_pooled %&gt;% 
+  dplyr::select(abs.EC50) %&gt;% 
+  unnest_wider(abs.EC50) %&gt;% 
+  rename(EC50 = ...1  , 
+         std_error = ...2 ,
+         lower = ...3, 
+         upper = ...4) </code></pre>
+<pre><code>Adding missing grouping variables: `fungicide`, `isolate`</code></pre>
+<pre><code>New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4</code></pre>
+<pre class="r"><code># fit pool hormetic model
+nest_hormetic_pooled &lt;- hormetic_data %&gt;% 
+  group_by(fungicide, isolate) %&gt;% 
+  nest() 
+
+hormetic_pooled &lt;- nest_hormetic_pooled %&gt;% 
+  filter(!fungicide == &quot;ethaboxam&quot;) # not working abs_Ec50 come back
+
+hormetic_pooled &lt;- hormetic_pooled %&gt;% 
+  mutate(bc4.model = purrr::map(data, fit_BC4),
+         bc4.fit = purrr::map(bc4.model, mselect),
+         abs.EC50 = purrr::map(bc4.model, abs_EC50)
+         )</code></pre>
+<pre><code>
+Estimated effective doses
+
+       Estimate Std. Error   Lower   Upper
+e:1:50  2.03443    0.68196 0.64533 3.42352
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0607414  0.0022889 0.0560790 0.0654038
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0426914  0.0021314 0.0383443 0.0470384
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0467763  0.0027497 0.0408788 0.0526739
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0632422  0.0028982 0.0573312 0.0691532
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0500026  0.0020449 0.0456168 0.0543884
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0317364  0.0044806 0.0221265 0.0413463
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0771009  0.0045576 0.0672549 0.0869469
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0991054  0.0039682 0.0910224 0.1071884
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0451643  0.0013854 0.0421713 0.0481573
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0500715  0.0017807 0.0462522 0.0538908
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0567743  0.0019975 0.0527054 0.0608431
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0517067  0.0029726 0.0456516 0.0577617
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0467293  0.0024347 0.0417700 0.0516886
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0608465  0.0027069 0.0550407 0.0666522
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0424474  0.0031878 0.0356103 0.0492845
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0442819  0.0020966 0.0397850 0.0487787
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0404343  0.0032154 0.0335379 0.0473307
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0658272  0.0036931 0.0579063 0.0737480
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0409255  0.0025149 0.0355317 0.0463194
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0403795  0.0017661 0.0367821 0.0439768
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0534021  0.0023541 0.0483531 0.0584511
+
+Estimated effective doses
+
+        Estimate Std. Error     Lower     Upper
+e:1:50 0.0518492  0.0026404 0.0461862 0.0575123</code></pre>
+<pre class="r"><code>hormetic_EC50 &lt;- hormetic_pooled %&gt;% 
+  dplyr::select(abs.EC50) %&gt;% 
+  unnest_wider(abs.EC50) %&gt;% 
+  rename(EC50 = ...1  , 
+         std.error = ...2 ,
+         lower = ...3, 
+         upper = ...4) %&gt;% 
+  mutate(model = &quot;BC4&quot;)</code></pre>
+<pre><code>Adding missing grouping variables: `fungicide`, `isolate`</code></pre>
+<pre><code>New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+New names:
+* `` -&gt; ...1
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4</code></pre>
+<pre class="r"><code># compare hormetic EC50 with LL4 
+compare_EC50 &lt;- semi_join(pooled_EC50, hormetic_isolates) %&gt;% 
+  mutate(model = &quot;LL4&quot;) </code></pre>
+<pre><code>Joining, by = c(&quot;fungicide&quot;, &quot;isolate&quot;)</code></pre>
+<pre class="r"><code>compare_EC50 &lt;- bind_rows(compare_EC50, hormetic_EC50)
+
+
+compare_EC50$isolate &lt;- as.factor(compare_EC50$isolate)
+
+compare_EC50 %&gt;% 
+  filter(!fungicide == &quot;ethaboxam&quot;) %&gt;% # problem calculating EC50
+  ggplot(aes(x = isolate, y = EC50, color = model)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                  position = position_jitterdodge()) +
+  facet_wrap(~ fungicide, scales = &quot;free&quot;) +
+  theme_minimal() +
+  panel_border()</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/compare%20EC50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="figure-6" class="section level2">
+<h2>Figure 6</h2>
+<pre class="r"><code>EC50_plot &lt;- pooled_EC50 %&gt;% 
+  mutate(species = case_when(
+    isolate %in% c(1, 5, 7:10, 14:16) ~ &quot;P. sojae&quot;,
+    TRUE ~ &quot;P. sansomeana&quot;
+  ))
+
+EC50_plot$fungicide &lt;- str_replace_all(EC50_plot$fungicide, 
+                                       c(&quot;azoxystrobin&quot; = &quot;Azoxystrobin&quot;, 
+                                         &quot;ethaboxam&quot; = &quot;Ethaboxam&quot;, 
+                                         &quot;mefenoxam&quot; = &quot;Mefenoxam&quot;, 
+                                         &quot;metalaxyl&quot; = &quot;Metalaxyl&quot;)
+                                       )
+
+ggplot(EC50_plot, aes(x = EC50, fill = species)) +
+  geom_histogram(alpha = 0.6, color = &quot;white&quot;, bins = 10) +
+  facet_wrap(~ fungicide, scales = &quot;free_x&quot;) +
+  labs(x = expression(&#39;EC&#39;[50]*&#39; (μg ml&#39;^-1*&#39;)&#39;), 
+       y = &quot;Frequency&quot;, 
+       fill = &quot;&quot;) +
+  theme_minimal() +
+  panel_border() +
+  theme(legend.position = &quot;bottom&quot;, 
+        strip.text = element_text(face = &quot;bold&quot;), 
+        panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(), 
+        panel.grid.minor.y = element_blank()) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/figure%206-1.png" width="528" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.0 (2020-04-24)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] scales_1.1.1            drc_3.0-1               MASS_7.3-51.5          
+ [4] corrplot_0.84           Hmisc_4.4-0             Formula_1.2-3          
+ [7] survival_3.1-12         lattice_0.20-41         broom_0.5.6            
+[10] emmeans_1.4.6           ggResidpanel_0.3.0      lmerTest_3.1-2         
+[13] lme4_1.1-23             Matrix_1.2-18           pander_0.6.3           
+[16] hagis_3.0.1             cowplot_1.0.0           rnaturalearthdata_0.1.0
+[19] rnaturalearth_0.1.0     maps_3.3.0              sf_0.9-3               
+[22] here_0.1                forcats_0.5.0           stringr_1.4.0          
+[25] dplyr_0.8.5             purrr_0.3.4             readr_1.3.1            
+[28] tidyr_1.1.0             tibble_3.0.1            ggplot2_3.3.0          
+[31] tidyverse_1.3.0         workflowr_1.6.2        
+
+loaded via a namespace (and not attached):
+  [1] readxl_1.3.1        backports_1.1.6     plyr_1.8.6         
+  [4] lazyeval_0.2.2      sp_1.4-2            splines_4.0.0      
+  [7] TH.data_1.0-10      digest_0.6.25       qqplotr_0.0.4      
+ [10] htmltools_0.4.0     fansi_0.4.1         magrittr_1.5       
+ [13] checkmate_2.0.0     cluster_2.1.0       openxlsx_4.1.5     
+ [16] modelr_0.1.8        sandwich_2.5-1      jpeg_0.1-8.1       
+ [19] colorspace_1.4-1    rvest_0.3.5         haven_2.2.0        
+ [22] xfun_0.14           crayon_1.3.4        jsonlite_1.6.1     
+ [25] zoo_1.8-8           glue_1.4.1          gtable_0.3.0       
+ [28] car_3.0-8           DEoptimR_1.0-8      abind_1.4-5        
+ [31] mvtnorm_1.1-0       DBI_1.1.0           Rcpp_1.0.4.6       
+ [34] plotrix_3.7-8       viridisLite_0.3.0   xtable_1.8-4       
+ [37] htmlTable_1.13.3    units_0.6-6         foreign_0.8-78     
+ [40] htmlwidgets_1.5.1   httr_1.4.1          RColorBrewer_1.1-2 
+ [43] acepack_1.4.1       ellipsis_0.3.1      farver_2.0.3       
+ [46] pkgconfig_2.0.3     multcompView_0.1-8  nnet_7.3-13        
+ [49] dbplyr_1.4.3        utf8_1.1.4          labeling_0.3       
+ [52] tidyselect_1.1.0    rlang_0.4.6         later_1.0.0        
+ [55] munsell_0.5.0       cellranger_1.1.0    tools_4.0.0        
+ [58] cli_2.0.2           generics_0.0.2      pacman_0.5.1       
+ [61] evaluate_0.14       yaml_2.2.1          knitr_1.28         
+ [64] fs_1.4.1            zip_2.0.4           robustbase_0.93-6  
+ [67] nlme_3.1-147        whisker_0.4         xml2_1.3.2         
+ [70] pbkrtest_0.4-8.6    compiler_4.0.0      rstudioapi_0.11    
+ [73] plotly_4.9.2.1      curl_4.3            png_0.1-7          
+ [76] e1071_1.7-3         reprex_0.3.0        statmod_1.4.34     
+ [79] stringi_1.4.6       rgeos_0.5-3         classInt_0.4-3     
+ [82] nloptr_1.2.2.1      vctrs_0.3.0         pillar_1.4.4       
+ [85] lifecycle_0.2.0     estimability_1.3    data.table_1.12.8  
+ [88] httpuv_1.5.2        R6_2.4.1            latticeExtra_0.6-29
+ [91] promises_1.1.0      KernSmooth_2.23-16  gridExtra_2.3      
+ [94] rio_0.5.16          codetools_0.2-16    gtools_3.8.2       
+ [97] boot_1.3-24         assertthat_0.2.1    rprojroot_1.3-2    
+[100] withr_2.2.0         multcomp_1.4-13     parallel_4.0.0     
+[103] hms_0.5.3           grid_4.0.0          rpart_4.1-15       
+[106] class_7.3-16        minqa_1.2.4         rmarkdown_2.1      
+[109] carData_3.0-4       git2r_0.27.1        numDeriv_2016.8-1.1
+[112] lubridate_1.7.8     base64enc_0.1-3    </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -9,6 +9,8 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  - text: Analysis
+    href: 02_analysis_phytophthora-spp-survey.Rmd
 output:
   workflowr::wflow_html:
     toc: yes
