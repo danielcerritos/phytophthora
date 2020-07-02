@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -22,7 +22,7 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
 
 # Import data
 
-```{r data}
+```{r data, message=FALSE}
 all_data <- list.files(here("output", "clean_data"), full.names = TRUE)
 # samples collection
 soil_samples <- read_csv(all_data[8])
@@ -137,10 +137,9 @@ isolates_recovered %>%
   group_by(year, county) %>% 
   count() %>% 
   ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(alpha = 0.5) +
+  geom_col(alpha = 0.6) +
   coord_flip() +
   labs(x = "", y = "Isolates recovered", fill ="Year") +
-  scale_fill_manual(values = c("#e31a1c", "#33a02c", "#1f78b4")) +
   theme_minimal_vgrid() +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
@@ -207,7 +206,7 @@ hagis_args <- list(
   perc_susc = "percent.susceptible"
 )
 
-# effective Rps
+# effective Rps Fig 3A
 sojae_rps <- do.call(summarize_gene, hagis_args)
 effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
@@ -232,6 +231,7 @@ complexity_percent$complexity <- as.numeric(complexity_percent$complexity)
 # mean complexity
 pander(summary(complexities))
 
+# Fig 3B
 complexity_mean <- complexity_percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
   geom_col(alpha = 0.6, fill = "#F37B59", color = "gray68") + 
@@ -242,15 +242,11 @@ complexity_mean <- complexity_percent %>%
                      labels = percent_format()) +
   scale_x_continuous(limits = c(1, 12), breaks = 1:12) +
   theme_minimal_hgrid() 
-
-complexity_mean
 ```
 
 ## Figure 3
 
-change the colors of this graphs to match the rest of the figures
-
-```{r fig 3}
+```{r fig 3, fig.height=5.7, fig.width=4.5}
 plot_grid(effective_rps, complexity_mean, labels = "AUTO", ncol = 1)
 ```
 
@@ -428,7 +424,7 @@ emmeans(fm_root_area, ~ isolate, type = "response") %>%
 ```
 ## Figure 4
 
-```{r fig 4}
+```{r fig 4, fig.height=4.8, fig.width=3.2}
 # combine the two controls for plotting
 aggressiveness_plots <- aggressiveness
 
@@ -460,7 +456,7 @@ plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
 
 ## Figure 5
 
-```{r figure 5}
+```{r figure 5, fig.height=5, fig.width=6}
 fig_5A <-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
   stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
@@ -525,7 +521,7 @@ means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
 
 ## Correlation between aggressiveness and complexity 
 
-```{r commbine sojae data}
+```{r commbine sojae data, message=FALSE}
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
 means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
 
@@ -554,12 +550,11 @@ corrplot(sojae_corr$r, method = "number")
 sojae_corr
 ```
 
-Make some plots for the temperature data, to see why the experiments are different or to validate the reason they are not
+Make some plots for the temperature data
 
 # Fungicide Sensitivity 
 
-look the papers to see what graphs/table to do, distribution of EC50s based on color of species seems ok
-look the book of agriculture stats with R, too see if add something for model fitting 
+Make some plots for the SHAM data
 
 ```{r prepare fs data}
 # eliminate NAs
@@ -620,7 +615,7 @@ hormetic_isolates %>%
 hormetic_data <- semi_join(clean_fungicide, hormetic_isolates)
 ```
 
-```{r fit log logistic models }
+```{r fit log logistic models, warning=FALSE }
 # fit log-logistic models with 3 and 4 parameters 
 nest_fungicide <- clean_fungicide %>% 
   group_by(fungicide, experiment, isolate) %>% 
@@ -664,7 +659,7 @@ log_selection %>%
   count() # LL.4 model better fit for most isolates
 ```
 
-```{r EC50s}
+```{r EC50s, message=FALSE}
 # extract EC50s from LL.4 model
 abs_EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
@@ -824,7 +819,7 @@ compare_EC50 %>%
 
 ## Figure 6
 
-```{r figure 6}
+```{r figure 6, fig.height=5, fig.width=5.5}
 EC50_plot <- pooled_EC50 %>% 
   mutate(species = case_when(
     isolate %in% c(1, 5, 7:10, 14:16) ~ "P. sojae",
