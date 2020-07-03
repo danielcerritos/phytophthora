@@ -47,8 +47,7 @@ fungicide <- read.csv(all_data[4])
 # 2016-2017
 soil_samples %>%
   group_by(year) %>% 
-  count() %>% 
-  knitr::kable()
+  count() 
 
 soil_samples$county %>%
   n_distinct()
@@ -57,9 +56,8 @@ soil_samples$county %>%
 ```{r plant samples}
 # 2018
 plant_samples %>%
-  count() %>% # just included positive samples 
-  knitr::kable()
-
+  count() # just included positive samples 
+  
 plant_samples$county %>%
   n_distinct()
 ```
