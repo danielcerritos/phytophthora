@@ -681,7 +681,7 @@ log_selection %>%
 More non-significant p-values for lack of fit  for the 4 parameters model (LL.3).  
 Overall, LL.4 model better fit for most isolates
 
-```{r EC50s, message=FALSE, eval=FALSE}
+```{r EC50s, message=FALSE}
 # extract absolute EC50s from LL.4 model
 abs_EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
@@ -768,7 +768,7 @@ overall bc4 better fit based on lower AIC
 no lack of fit for ll4 for most isolates with hormetic effect
 
 
-```{r combine data}
+```{r both data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
 log_EC50$experiment <- as.factor(log_EC50$experiment)
 log_EC50$isolate <- as.factor(log_EC50$isolate)
@@ -785,7 +785,7 @@ log_EC50 %>%
 
 Overall most EC50 of second experiment fall into the 95% CI of EC50 first. Experiment is repoducible so combine the data of both experiments. 
 
-```{r LL.4 combine data, eval=FALSE, message=FALSE, warning=FALSE}
+```{r LL.4 combine data, message=FALSE, warning=FALSE}
 # fit LL.4 model with pooled data
 nest_pooled <- clean_fungicide %>% 
   group_by(fungicide, isolate) %>% 
@@ -806,7 +806,7 @@ pooled_EC50 <- log_pooled %>%
          upper = ...4) 
 ```
 
-```{r pooled hormetic model, eval=FALSE, message=FALSE, warning=FALSE}
+```{r pooled hormetic model, message=FALSE, warning=FALSE}
 # fit pool hormetic model
 nest_hormetic_pooled <- hormetic_data %>% 
   group_by(fungicide, isolate) %>% 
