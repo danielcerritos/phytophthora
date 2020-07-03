@@ -407,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-07-02
+<strong>Last updated:</strong> 2020-07-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -498,16 +498,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreecbc77b466d30ff5c99e6f390fc09915a8e760092targetblankcbc77b4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/cbc77b466d30ff5c99e6f390fc09915a8e760092" target="_blank">cbc77b4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree8029b56e9c8b17be5c27ccef82b3a27e1a96d263targetblank8029b56a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/8029b56e9c8b17be5c27ccef82b3a27e1a96d263" target="_blank">8029b56</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreecbc77b466d30ff5c99e6f390fc09915a8e760092targetblankcbc77b4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree8029b56e9c8b17be5c27ccef82b3a27e1a96d263targetblank8029b56a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/cbc77b466d30ff5c99e6f390fc09915a8e760092" target="_blank">cbc77b4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/8029b56e9c8b17be5c27ccef82b3a27e1a96d263" target="_blank">8029b56</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -515,10 +515,8 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    scripts/
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
 
 </code></pre>
 <p>
@@ -557,6 +555,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/8029b56e9c8b17be5c27ccef82b3a27e1a96d263/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">8029b56</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-03
+</td>
+<td>
+workflowr::wflow_publish(“analysis/02_analysis_phytophtora-spp-survey.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/90b765ca05f141ec9f47d49d888549ef3123c219/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">90b765c</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-03
+</td>
+<td>
+update figures colors and save EC50s results
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/danielcerritos/phytophthora/64ce208c01e985e3294bf2a3e348fa7e5162872a/docs/02_analysis_phytophtora-spp-survey.html" target="_blank">64ce208</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-07-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1510,23 +1559,45 @@ fungicide &lt;- read.csv(all_data[4])</code></pre>
 <pre class="r"><code># 2016-2017
 soil_samples %&gt;%
   group_by(year) %&gt;% 
-  count() </code></pre>
-<pre><code># A tibble: 2 x 2
-# Groups:   year [2]
-   year     n
-  &lt;dbl&gt; &lt;int&gt;
-1  2016    28
-2  2017    22</code></pre>
+  count() %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="right">28</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">22</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>soil_samples$county %&gt;%
   n_distinct()</code></pre>
 <pre><code>[1] 26</code></pre>
 <pre class="r"><code># 2018
 plant_samples %&gt;%
-  count() # just included positive samples </code></pre>
-<pre><code># A tibble: 1 x 1
-      n
-  &lt;int&gt;
-1    96</code></pre>
+  count() %&gt;% # just included positive samples 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">96</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>plant_samples$county %&gt;%
   n_distinct()</code></pre>
 <pre><code>[1] 26</code></pre>
@@ -1578,7 +1649,7 @@ map_plant &lt;- map_plant %&gt;%
 <pre class="r"><code># samples collection map 
 ggplot() +
   geom_sf(data = counties, fill = NA) +
-  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.6) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
   scale_fill_manual(values = c(&quot;#a6cee3&quot;, &quot;#1f78b4&quot;, &quot;#b2df8a&quot;, &quot;#33a02c&quot;), 
@@ -1586,6 +1657,7 @@ ggplot() +
   scale_shape_discrete(name = &quot;Year&quot;) +
   theme_map()</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sample%20map-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#   scale_fill_manual(values = c(&quot;#a6cee3&quot;, &quot;#1f78b4&quot;, &quot;#b2df8a&quot;, &quot;#33a02c&quot;), </code></pre>
 </div>
 </div>
 <div id="identification-of-isolates" class="section level1">
@@ -1638,13 +1710,13 @@ ggplot() +
 
 isolates_species %&gt;% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.6, color = &quot;gray68&quot;) +
+  geom_col(alpha = 0.6) +
   coord_flip() +
   labs(x = &quot;&quot;, y = &quot;Percent isolates recovered&quot;) +
   theme_minimal_vgrid() +
   theme(legend.position = &quot;none&quot;,
         axis.text.y  = element_text(face = &quot;italic&quot;)) +
-  scale_fill_manual(values = c(&quot;#e31a1c&quot;, &quot;#BEBEBE&quot;)) +
+  scale_fill_manual(values = c(&quot;#F8766D&quot;, &quot;#BEBEBE&quot;)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
                      labels = percent_format()) </code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20collected-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -1652,24 +1724,98 @@ isolates_species %&gt;%
   filter(species %in% c(&quot;Phytophthora sansomeana&quot;, &quot;Phytophthora sojae&quot;)) %&gt;% 
   group_by(year, county) %&gt;% 
   count(species) %&gt;% 
-  arrange(desc(n))</code></pre>
-<pre><code># A tibble: 13 x 4
-# Groups:   year, county [13]
-    year county     species                     n
-   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;                   &lt;int&gt;
- 1  2018 Jefferson  Phytophthora sojae          5
- 2  2018 Knox       Phytophthora sojae          5
- 3  2017 Boone      Phytophthora sojae          4
- 4  2018 Champaign  Phytophthora sansomeana     3
- 5  2016 Champaign  Phytophthora sojae          2
- 6  2016 Grundy     Phytophthora sansomeana     2
- 7  2016 Livingston Phytophthora sojae          2
- 8  2017 Franklin   Phytophthora sojae          2
- 9  2018 Massac     Phytophthora sojae          2
-10  2016 Kankakee   Phytophthora sansomeana     1
-11  2017 Crawford   Phytophthora sojae          1
-12  2017 Macon      Phytophthora sansomeana     1
-13  2018 Vermilion  Phytophthora sojae          1</code></pre>
+  arrange(desc(n)) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="left">county</th>
+<th align="left">species</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="left">Jefferson</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">2018</td>
+<td align="left">Knox</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="right">2017</td>
+<td align="left">Boone</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">2018</td>
+<td align="left">Champaign</td>
+<td align="left">Phytophthora sansomeana</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="left">Champaign</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">2016</td>
+<td align="left">Grundy</td>
+<td align="left">Phytophthora sansomeana</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="left">Livingston</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="left">Franklin</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="left">Massac</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">2016</td>
+<td align="left">Kankakee</td>
+<td align="left">Phytophthora sansomeana</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2017</td>
+<td align="left">Crawford</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="left">Macon</td>
+<td align="left">Phytophthora sansomeana</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="left">Vermilion</td>
+<td align="left">Phytophthora sojae</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="pathotype" class="section level1">
@@ -1702,22 +1848,18 @@ hagis_args &lt;- list(
 
 # effective Rps Fig 3A
 sojae_rps &lt;- do.call(summarize_gene, hagis_args)
+
 effective_rps &lt;- sojae_rps %&gt;% 
   mutate(percent_pathogenic = percent_pathogenic/100) %&gt;% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(alpha = 0.6, fill =  &quot;#529EFF&quot;, color = &quot;gray68&quot;) +
+  geom_col(alpha = 0.6, fill = &quot;#F37B59&quot;) +
   labs(x = &quot;Rps gene&quot;, 
-       y = &quot;Percnet pathogenic&quot;) +
+       y = &quot;Percent pathogenic&quot;) +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05)), 
     labels = percent_format()) +
     theme_minimal_hgrid()</code></pre>
 <pre class="r"><code>complexities &lt;- do.call(calculate_complexities, hagis_args)
-
-complexity_percent &lt;- complexities$grouped_complexities %&gt;% 
-  mutate(percent = (frequency/21))
-
-complexity_percent$complexity &lt;- as.numeric(complexity_percent$complexity)
 
 # mean complexity
 pander(summary(complexities))</code></pre>
@@ -1743,9 +1885,14 @@ pander(summary(complexities))</code></pre>
 </tbody>
 </table>
 <pre class="r"><code># Fig 3B
-complexity_mean &lt;- complexity_percent %&gt;% 
+complexity_percent &lt;- complexities$grouped_complexities %&gt;% 
+  mutate(percent = (frequency/21))
+
+complexity_percent$complexity &lt;- as.numeric(complexity_percent$complexity)
+
+mean_complexity &lt;- complexity_percent %&gt;% 
   ggplot(aes(x = complexity, y = percent)) +
-  geom_col(alpha = 0.6, fill = &quot;#F37B59&quot;, color = &quot;gray68&quot;) + 
+  geom_col(alpha = 0.6, fill = &quot;#529EFF&quot;) + 
   geom_vline(xintercept = 6, linetype=&quot;dashed&quot;,  size = 1) +
   labs(x = &quot;Complexity&quot;, 
        y = &quot;Percent Isolates&quot;) +
@@ -1756,8 +1903,7 @@ complexity_mean &lt;- complexity_percent %&gt;%
 </div>
 <div id="figure-3" class="section level2">
 <h2>Figure 3</h2>
-<pre class="r"><code>plot_grid(effective_rps, complexity_mean, labels = &quot;AUTO&quot;, ncol = 1)</code></pre>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_col).</code></pre>
+<pre class="r"><code>plot_grid(effective_rps, mean_complexity, labels = &quot;AUTO&quot;, ncol = 1)</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%203-1.png" width="432" style="display: block; margin: auto;" /></p>
 </div>
 <div id="table-1" class="section level2">
@@ -1927,9 +2073,6 @@ by_exp_length &lt;- exp_plot(&quot;length_in&quot;)
 by_exp_area &lt;- exp_plot(&quot;area_in.2&quot;)
 
 plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).
-
-Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/exp%20plot%201-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>dis_shoot &lt;- qplot(shoot_mg, data = aggressiveness) +
   theme_minimal()
@@ -1941,28 +2084,18 @@ dis_area &lt;- qplot(area_in.2, data = aggressiveness) +
   theme_minimal() # also skew
 
 plot_grid(dis_shoot, dis_dry, dis_length, dis_area)</code></pre>
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>dis_length_log &lt;- qplot(log(length_in), data = aggressiveness) +
   theme_minimal() 
 dis_area_log &lt;- qplot(log(area_in.2), data = aggressiveness) +
   theme_minimal() 
 
-plot_grid(dis_length_log, dis_area_log) #improves</code></pre>
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/log%20transform-1.png" width="672" style="display: block; margin: auto;" /></p>
+plot_grid(dis_length_log, dis_area_log) #improves a bit</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/log%20transform-1.png" width="720" style="display: block; margin: auto;" /></p>
 </div>
 <div id="fit-mixed-model" class="section level2">
 <h2>Fit mixed model</h2>
-<pre class="r"><code># not nesting isolate:species, isolates coded in a way there is no redundancy
+<pre class="r"><code># not nesting isolate:species, isolates coded in a way there is no needed
 # same coefficient estimates and p values without nesting
 fm_root_dry &lt;- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
 <pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
@@ -2401,7 +2534,8 @@ aggressiveness_plots$species &lt;- str_replace_all(aggressiveness_plots$species,
                                             &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)
                                           )
 
-fig_length &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
+fig_length &lt;- aggressiveness_plots %&gt;% 
+  ggplot(aes(x = species, y = length_in, color =  species)) +
   geom_boxplot(alpha = 0.6) +
   geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
   labs(x = &quot;&quot;, 
@@ -2418,13 +2552,12 @@ fig_dry &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, 
   theme(legend.position = &quot;none&quot;) 
 
 plot_grid(fig_dry, fig_length, ncol = 1, labels = &quot;AUTO&quot; )</code></pre>
-<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>Warning: Removed 8 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%204-1.png" width="307.2" style="display: block; margin: auto;" /></p>
 </div>
 <div id="figure-5" class="section level2">
 <h2>Figure 5</h2>
-<pre class="r"><code>fig_5A &lt;-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+<pre class="r"><code>fig_5A &lt;- aggressiveness_plots %&gt;% 
+  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
   stat_summary(fun.data = &quot;mean_se&quot;, aes(colour = species), alpha = 0.6) +
   geom_hline(yintercept = 20, linetype=&quot;dashed&quot;,  size = 0.7) +
@@ -2455,25 +2588,21 @@ plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c(&quot;A&quo
 <h2>Save results</h2>
 <pre class="r"><code>m_root_dry &lt;- emmeans(fm_root_dry, ~ isolate) %&gt;% 
   tidy() %&gt;% 
-  mutate(measurement = &quot;dry_root&quot;)</code></pre>
-<pre><code>NOTE: A nesting structure was detected in the fitted model:
-    isolate %in% species</code></pre>
-<pre class="r"><code>m_shoot_dry &lt;- emmeans(fm_shoot_dry, ~ isolate) %&gt;% 
+  mutate(measurement = &quot;dry_root&quot;)
+
+m_shoot_dry &lt;- emmeans(fm_shoot_dry, ~ isolate) %&gt;% 
   tidy() %&gt;% 
-  mutate(measurement = &quot;dry_shoot&quot;)</code></pre>
-<pre><code>NOTE: A nesting structure was detected in the fitted model:
-    isolate %in% species</code></pre>
-<pre class="r"><code>m_root_length &lt;- emmeans(fm_root_length, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  mutate(measurement = &quot;dry_shoot&quot;)
+
+m_root_length &lt;- emmeans(fm_root_length, ~ isolate, type = &quot;response&quot;) %&gt;% 
   tidy() %&gt;% 
-  mutate(measurement = &quot;root_length&quot;)</code></pre>
-<pre><code>NOTE: A nesting structure was detected in the fitted model:
-    isolate %in% species</code></pre>
-<pre class="r"><code>m_root_area &lt;- emmeans(fm_root_area, ~ isolate, type = &quot;response&quot;) %&gt;% 
+  mutate(measurement = &quot;root_length&quot;)
+
+m_root_area &lt;- emmeans(fm_root_area, ~ isolate, type = &quot;response&quot;) %&gt;% 
   tidy()%&gt;% 
-  mutate(measurement = &quot;root_area&quot;)</code></pre>
-<pre><code>NOTE: A nesting structure was detected in the fitted model:
-    isolate %in% species</code></pre>
-<pre class="r"><code>means_aggressiveness &lt;- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
+  mutate(measurement = &quot;root_area&quot;)
+
+means_aggressiveness &lt;- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
 
 # estimate and response (back-transform means) in same column
 back_transform_means &lt;- means_aggressiveness %&gt;% 
@@ -2490,7 +2619,8 @@ means_aggressiveness &lt;- bind_rows(means_aggressiveness, back_transform_means)
 </div>
 <div id="correlation-between-aggressiveness-and-complexity" class="section level2">
 <h2>Correlation between aggressiveness and complexity</h2>
-<pre class="r"><code>sojae_pathotype &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))
+<pre class="r"><code># import saved results
+sojae_pathotype &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))
 means_aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_results-means.csv&quot;))
 
 sojae_complexity &lt;- sojae_pathotype %&gt;% 
@@ -2511,7 +2641,7 @@ corrplot(sojae_corr$r, method = &quot;number&quot;)</code></pre>
 </div>
 <div id="table-2" class="section level2">
 <h2>Table 2</h2>
-<pre class="r"><code>sojae_corr</code></pre>
+<pre class="r"><code>sojae_corr </code></pre>
 <pre><code>            complexity dry_root dry_shoot root_area root_length
 complexity        1.00     0.35      0.43      0.44        0.41
 dry_root          0.35     1.00      0.71      0.92        0.92
@@ -2534,7 +2664,7 @@ root_length 0.0475     0.0000   0.0000    0.0000               </code></pre>
 </div>
 <div id="fungicide-sensitivity" class="section level1">
 <h1>Fungicide Sensitivity</h1>
-<p>Make some plots for the SHAM data</p>
+<p>Clean data and transform data for analysis</p>
 <pre class="r"><code># eliminate NAs
 # average colony measurements 
 clean_fungicide &lt;- fungicide %&gt;% 
@@ -2564,6 +2694,7 @@ clean_fungicide &lt;- clean_fungicide %&gt;%
   mutate(rel.growth = (length.mm/control.mean)*100)
 
 # write_csv(clean_fungicide, here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_fungicide-sensitivity_transform.csv&quot;))</code></pre>
+<p>Filter isolates</p>
 <pre class="r"><code># check if there are isolates with no EC50
 # isolates with &gt;50% rel growth in the higher dose 
 no_EC50 &lt;- clean_fungicide %&gt;% 
@@ -2587,14 +2718,14 @@ hormetic_isolates %&gt;%
   group_by(fungicide, experiment, isolate) %&gt;% 
   n_distinct()</code></pre>
 <pre><code>[1] 37</code></pre>
-<pre class="r"><code>hormetic_data &lt;- semi_join(clean_fungicide, hormetic_isolates)</code></pre>
-<pre><code>Joining, by = c(&quot;fungicide&quot;, &quot;experiment&quot;, &quot;isolate&quot;)</code></pre>
+<pre class="r"><code>hormetic_data &lt;- semi_join(clean_fungicide, hormetic_isolates, by = c(&quot;fungicide&quot;,
+                                                                        &quot;experiment&quot;, 
+                                                                        &quot;isolate&quot;))</code></pre>
 <pre class="r"><code># fit log-logistic models with 3 and 4 parameters 
 nest_fungicide &lt;- clean_fungicide %&gt;% 
   group_by(fungicide, experiment, isolate) %&gt;% 
   nest()
 
-# lower limit fit at zero in LL.3
 fit_LL3 &lt;- function(dataset){
   drm(rel.growth ~ dose, fct = LL.3(names = c(&quot;slope&quot;, &quot;upper&quot;, &quot;EC50&quot;)), data = dataset)
 }
@@ -2620,21 +2751,37 @@ log_selection %&gt;%
   dplyr::select(fungicide, isolate, model, IC) %&gt;% 
   spread(model, IC) %&gt;% 
   filter(ll3.fit &lt; ll4.fit) %&gt;% 
-  n_distinct()</code></pre>
+  n_distinct() </code></pre>
 <pre><code>Adding missing grouping variables: `experiment`</code></pre>
 <pre><code>[1] 66</code></pre>
+<p>From the 256 models fit (experiment, fungicide and isolation combination), only 66 had higher AIC value for 4 parameters model (LL.4)</p>
 <pre class="r"><code># lack of fit p-values 
 log_selection %&gt;% 
-  filter(`Lack of fit`  &lt; 0.05) %&gt;% 
+  filter(`Lack of fit` &gt; 0.05) %&gt;% 
   group_by(model)%&gt;% 
-  count() # LL.4 model better fit for most isolates</code></pre>
-<pre><code># A tibble: 2 x 2
-# Groups:   model [2]
-  model       n
-  &lt;chr&gt;   &lt;int&gt;
-1 ll3.fit    48
-2 ll4.fit    32</code></pre>
-<pre class="r"><code># extract EC50s from LL.4 model
+  count() %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ll3.fit</td>
+<td align="right">80</td>
+</tr>
+<tr class="even">
+<td align="left">ll4.fit</td>
+<td align="right">96</td>
+</tr>
+</tbody>
+</table>
+<p>More non-significant p-values for lack of fit for the 4 parameters model (LL.3).<br />
+Overall, LL.4 model better fit for most isolates</p>
+<pre class="r"><code># extract absolute EC50s from LL.4 model
 abs_EC50 &lt;- function(models){
   ED(models, respLev = c(50), type = &quot;absolute&quot;, interval = &quot;delta&quot;)
 }
@@ -3291,6 +3438,7 @@ e:1:50 0.0529037  0.0016438 0.0493780 0.0564293</code></pre>
          std.error = ...2 ,
          lower = ...3, 
          upper = ...4)</code></pre>
+<p>Fit hormetic models to data with hormetic effects.</p>
 <pre class="r"><code>nest_hormetic &lt;- hormetic_data %&gt;% 
   group_by(fungicide, experiment, isolate) %&gt;% 
   nest()
@@ -3310,17 +3458,6 @@ hormetic_models &lt;- nest_hormetic %&gt;%
          crs.fit = purrr::map(crs.model, mselect), 
          bc4.fit = purrr::map(bc4.model, mselect)
          )</code></pre>
-<pre><code>Warning in sqrt(diag(varMat)): NaNs produced
-
-Warning in sqrt(diag(varMat)): NaNs produced
-
-Warning in sqrt(diag(varMat)): NaNs produced
-
-Warning in sqrt(diag(varMat)): NaNs produced
-
-Warning in sqrt(diag(varMat)): NaNs produced
-
-Warning in sqrt(diag(varMat)): NaNs produced</code></pre>
 <pre class="r"><code>hormetic_selection &lt;- hormetic_models %&gt;% 
   dplyr::select(crs.fit, bc4.fit)</code></pre>
 <pre><code>Adding missing grouping variables: `fungicide`, `experiment`, `isolate`</code></pre>
@@ -3338,10 +3475,12 @@ hormetic_selection &lt;- semi_join(log_selection, hormetic_isolates) %&gt;%
 hormetic_selection %&gt;% 
   dplyr::select(fungicide, experiment, isolate, model, IC) %&gt;% 
   spread(model, IC) %&gt;% 
-  filter(crs.fit &gt; bc4.fit) %&gt;% 
+  filter(crs.fit &lt; bc4.fit) %&gt;% 
   n_distinct()</code></pre>
-<pre><code>[1] 24</code></pre>
-<pre class="r"><code>hormetic_selection %&gt;% 
+<pre><code>[1] 13</code></pre>
+<p>111 hormetic models fit, only 13 had higher for BC.4</p>
+<pre class="r"><code># compare hormetic models vs LL.4
+hormetic_selection %&gt;% 
   dplyr::select(fungicide, experiment, isolate, model, IC) %&gt;% 
   spread(model, IC) %&gt;% 
   filter(ll4.fit &gt; bc4.fit) %&gt;% 
@@ -3350,16 +3489,31 @@ hormetic_selection %&gt;%
 <pre class="r"><code>hormetic_selection %&gt;% 
   filter(`Lack of fit` &gt; 0.05) %&gt;% 
   group_by(model) %&gt;% 
-  count() </code></pre>
-<pre><code># A tibble: 3 x 2
-# Groups:   model [3]
-  model       n
-  &lt;chr&gt;   &lt;int&gt;
-1 bc4.fit    28
-2 crs.fit    24
-3 ll4.fit    21</code></pre>
-<pre class="r"><code># overall bc4 better fit based on lower AIC
-# no lack of fit for ll4 for most isolates with hormetic effect</code></pre>
+  count() %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">bc4.fit</td>
+<td align="right">28</td>
+</tr>
+<tr class="even">
+<td align="left">crs.fit</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left">ll4.fit</td>
+<td align="right">21</td>
+</tr>
+</tbody>
+</table>
+<p>overall bc4 better fit based on lower AIC no lack of fit for ll4 for most isolates with hormetic effect</p>
 <pre class="r"><code># check if 95 CI of exp 1 includes EC50 of exp 2
 log_EC50$experiment &lt;- as.factor(log_EC50$experiment)
 log_EC50$isolate &lt;- as.factor(log_EC50$isolate)
@@ -3372,7 +3526,7 @@ log_EC50 %&gt;%
   facet_wrap(~ fungicide, scales = &quot;free_y&quot;) +
   theme_minimal() +
   panel_border()</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/combine%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/both%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Overall most EC50 of second experiment fall into the 95% CI of EC50 first. Experiment is repoducible so combine the data of both experiments.</p>
 <pre class="r"><code># fit LL.4 model with pooled data
 nest_pooled &lt;- clean_fungicide %&gt;% 
@@ -3711,327 +3865,6 @@ e:1:50 0.0548720  0.0015696 0.0516748 0.0580692</code></pre>
          std_error = ...2 ,
          lower = ...3, 
          upper = ...4) </code></pre>
-<pre><code>Adding missing grouping variables: `fungicide`, `isolate`</code></pre>
-<pre><code>New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4</code></pre>
 <pre class="r"><code># fit pool hormetic model
 nest_hormetic_pooled &lt;- hormetic_data %&gt;% 
   group_by(fungicide, isolate) %&gt;% 
@@ -4168,127 +4001,11 @@ e:1:50 0.0518492  0.0026404 0.0461862 0.0575123</code></pre>
          lower = ...3, 
          upper = ...4) %&gt;% 
   mutate(model = &quot;BC4&quot;)</code></pre>
-<pre><code>Adding missing grouping variables: `fungicide`, `isolate`</code></pre>
-<pre><code>New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-New names:
-* `` -&gt; ...1
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4</code></pre>
 <pre class="r"><code># compare hormetic EC50 with LL4 
-compare_EC50 &lt;- semi_join(pooled_EC50, hormetic_isolates) %&gt;% 
-  mutate(model = &quot;LL4&quot;) </code></pre>
-<pre><code>Joining, by = c(&quot;fungicide&quot;, &quot;isolate&quot;)</code></pre>
-<pre class="r"><code>compare_EC50 &lt;- bind_rows(compare_EC50, hormetic_EC50)
+compare_EC50 &lt;- semi_join(pooled_EC50, hormetic_isolates, by = c(&quot;fungicide&quot;, &quot;isolate&quot;)) %&gt;% 
+  mutate(model = &quot;LL4&quot;) 
+
+compare_EC50 &lt;- bind_rows(compare_EC50, hormetic_EC50)
 
 
 compare_EC50$isolate &lt;- as.factor(compare_EC50$isolate)
@@ -4301,7 +4018,8 @@ compare_EC50 %&gt;%
   facet_wrap(~ fungicide, scales = &quot;free&quot;) +
   theme_minimal() +
   panel_border()</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/compare%20EC50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/compare%20EC50-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Lower EC50 for the hormetic models.</p>
 <div id="figure-6" class="section level2">
 <h2>Figure 6</h2>
 <pre class="r"><code>EC50_plot &lt;- pooled_EC50 %&gt;% 
@@ -4332,6 +4050,8 @@ ggplot(EC50_plot, aes(x = EC50, fill = species)) +
         panel.grid.minor.y = element_blank()) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) </code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/figure%206-1.png" width="528" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># write_csv(pooled_EC50, here(&quot;output&quot;, &quot;results&quot;, &quot;02_fungicide-sensitivity_EC50.csv&quot;))
+# write_csv(compare_EC50, here(&quot;output&quot;, &quot;results&quot;, &quot;02_fungicide-sensitivity_EC50_hormetic-isolates.csv&quot;))</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -4396,18 +4116,18 @@ loaded via a namespace (and not attached):
  [70] pbkrtest_0.4-8.6    compiler_4.0.0      rstudioapi_0.11    
  [73] plotly_4.9.2.1      curl_4.3            png_0.1-7          
  [76] e1071_1.7-3         reprex_0.3.0        statmod_1.4.34     
- [79] stringi_1.4.6       rgeos_0.5-3         classInt_0.4-3     
- [82] nloptr_1.2.2.1      vctrs_0.3.0         pillar_1.4.4       
- [85] lifecycle_0.2.0     estimability_1.3    data.table_1.12.8  
- [88] httpuv_1.5.2        R6_2.4.1            latticeExtra_0.6-29
- [91] promises_1.1.0      KernSmooth_2.23-16  gridExtra_2.3      
- [94] rio_0.5.16          codetools_0.2-16    gtools_3.8.2       
- [97] boot_1.3-24         assertthat_0.2.1    rprojroot_1.3-2    
-[100] withr_2.2.0         multcomp_1.4-13     parallel_4.0.0     
-[103] hms_0.5.3           grid_4.0.0          rpart_4.1-15       
-[106] class_7.3-16        minqa_1.2.4         rmarkdown_2.1      
-[109] carData_3.0-4       git2r_0.27.1        numDeriv_2016.8-1.1
-[112] lubridate_1.7.8     base64enc_0.1-3    </code></pre>
+ [79] stringi_1.4.6       highr_0.8           rgeos_0.5-3        
+ [82] classInt_0.4-3      nloptr_1.2.2.1      vctrs_0.3.0        
+ [85] pillar_1.4.4        lifecycle_0.2.0     estimability_1.3   
+ [88] data.table_1.12.8   httpuv_1.5.2        R6_2.4.1           
+ [91] latticeExtra_0.6-29 promises_1.1.0      KernSmooth_2.23-16 
+ [94] gridExtra_2.3       rio_0.5.16          codetools_0.2-16   
+ [97] gtools_3.8.2        boot_1.3-24         assertthat_0.2.1   
+[100] rprojroot_1.3-2     withr_2.2.0         multcomp_1.4-13    
+[103] parallel_4.0.0      hms_0.5.3           grid_4.0.0         
+[106] rpart_4.1-15        class_7.3-16        minqa_1.2.4        
+[109] rmarkdown_2.1       carData_3.0-4       git2r_0.27.1       
+[112] numDeriv_2016.8-1.1 lubridate_1.7.8     base64enc_0.1-3    </code></pre>
 </div>
 </div>
 </div>
