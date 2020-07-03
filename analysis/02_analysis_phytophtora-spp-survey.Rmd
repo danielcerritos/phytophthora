@@ -20,6 +20,7 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
                Hmisc, corrplot, drc, scales)
 ```
 
+
 # Import data
 
 ```{r data, message=FALSE}
@@ -39,13 +40,15 @@ area_length <- read_csv(all_data[2])
 fungicide <- read.csv(all_data[4])
 ```
 
+
 # Sample collection
 
 ```{r soil samples}
 # 2016-2017
 soil_samples %>%
   group_by(year) %>% 
-  count() 
+  count() %>% 
+  knitr::kable()
 
 soil_samples$county %>%
   n_distinct()
@@ -54,7 +57,8 @@ soil_samples$county %>%
 ```{r plant samples}
 # 2018
 plant_samples %>%
-  count() # just included positive samples 
+  count() %>% # just included positive samples 
+  knitr::kable()
 
 plant_samples$county %>%
   n_distinct()
@@ -112,13 +116,16 @@ map_plant <- map_plant %>%
 # samples collection map 
 ggplot() +
   geom_sf(data = counties, fill = NA) +
-  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.6) +
+  geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
   scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
                     name = "Plant samples") +
   scale_shape_discrete(name = "Year") +
   theme_map()
+
+#   scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
+
 ```
 
 # Identification of isolates
@@ -158,13 +165,13 @@ isolates_species <- isolates_recovered %>%
 
 isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.6, color = "gray68") +
+  geom_col(alpha = 0.6) +
   coord_flip() +
   labs(x = "", y = "Percent isolates recovered") +
   theme_minimal_vgrid() +
   theme(legend.position = "none",
         axis.text.y  = element_text(face = "italic")) +
-  scale_fill_manual(values = c("#e31a1c", "#BEBEBE")) +
+  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
                      labels = percent_format()) 
 ```
@@ -174,7 +181,8 @@ isolates_recovered %>%
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
   group_by(year, county) %>% 
   count(species) %>% 
-  arrange(desc(n))
+  arrange(desc(n)) %>% 
+  knitr::kable()
 ```
 
 # Pathotype
@@ -208,12 +216,13 @@ hagis_args <- list(
 
 # effective Rps Fig 3A
 sojae_rps <- do.call(summarize_gene, hagis_args)
+
 effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(alpha = 0.6, fill =  "#529EFF", color = "gray68") +
+  geom_col(alpha = 0.6, fill = "#F37B59") +
   labs(x = "Rps gene", 
-       y = "Percnet pathogenic") +
+       y = "Percent pathogenic") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05)), 
     labels = percent_format()) +
@@ -223,18 +232,18 @@ effective_rps <- sojae_rps %>%
 ```{r complexity}
 complexities <- do.call(calculate_complexities, hagis_args)
 
+# mean complexity
+pander(summary(complexities))
+
+# Fig 3B
 complexity_percent <- complexities$grouped_complexities %>% 
   mutate(percent = (frequency/21))
 
 complexity_percent$complexity <- as.numeric(complexity_percent$complexity)
 
-# mean complexity
-pander(summary(complexities))
-
-# Fig 3B
-complexity_mean <- complexity_percent %>% 
+mean_complexity <- complexity_percent %>% 
   ggplot(aes(x = complexity, y = percent)) +
-  geom_col(alpha = 0.6, fill = "#F37B59", color = "gray68") + 
+  geom_col(alpha = 0.6, fill = "#529EFF") + 
   geom_vline(xintercept = 6, linetype="dashed",  size = 1) +
   labs(x = "Complexity", 
        y = "Percent Isolates") +
@@ -246,8 +255,8 @@ complexity_mean <- complexity_percent %>%
 
 ## Figure 3
 
-```{r fig 3, fig.height=5.7, fig.width=4.5}
-plot_grid(effective_rps, complexity_mean, labels = "AUTO", ncol = 1)
+```{r fig 3, fig.height=5.7, fig.width=4.5, warning=FALSE}
+plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1)
 ```
 
 ## Table 1
@@ -329,7 +338,7 @@ aggressiveness <- aggressiveness %>%
 
 ## Exploratory plots 
 
-```{r exp plot 1}
+```{r exp plot 1, warning=FALSE}
 aggressiveness$experiment <- as.factor(aggressiveness$experiment)
 aggressiveness$isolate <- as.factor(aggressiveness$isolate)
 aggressiveness$species <- as.factor(aggressiveness$species)
@@ -351,7 +360,7 @@ by_exp_area <- exp_plot("area_in.2")
 plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)
 ```
 
-```{r distribution}
+```{r distribution, warning=FALSE, message=FALSE}
 dis_shoot <- qplot(shoot_mg, data = aggressiveness) +
   theme_minimal()
 dis_dry <- qplot(root_mg, data = aggressiveness) +
@@ -364,19 +373,19 @@ dis_area <- qplot(area_in.2, data = aggressiveness) +
 plot_grid(dis_shoot, dis_dry, dis_length, dis_area)
 ```
 
-```{r log transform}
+```{r log transform, warning=FALSE, message=FALSE, fig.height=3, fig.width=7.5}
 dis_length_log <- qplot(log(length_in), data = aggressiveness) +
   theme_minimal() 
 dis_area_log <- qplot(log(area_in.2), data = aggressiveness) +
   theme_minimal() 
 
-plot_grid(dis_length_log, dis_area_log) #improves
+plot_grid(dis_length_log, dis_area_log) #improves a bit
 ```
 
 ## Fit mixed model
 
-```{r fm root dry }
-# not nesting isolate:species, isolates coded in a way there is no redundancy
+```{r fm root dry}
+# not nesting isolate:species, isolates coded in a way there is no needed
 # same coefficient estimates and p values without nesting
 fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(fm_root_dry) 
@@ -424,7 +433,7 @@ emmeans(fm_root_area, ~ isolate, type = "response") %>%
 ```
 ## Figure 4
 
-```{r fig 4, fig.height=4.8, fig.width=3.2}
+```{r fig 4, fig.height=4.8, fig.width=3.2, warning=FALSE}
 # combine the two controls for plotting
 aggressiveness_plots <- aggressiveness
 
@@ -435,7 +444,8 @@ aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species,
                                             "Phytophthora sansomeana" = "P. sansomeana")
                                           )
 
-fig_length <- ggplot(data = aggressiveness_plots, aes(x = species, y = length_in, color =  species)) +
+fig_length <- aggressiveness_plots %>% 
+  ggplot(aes(x = species, y = length_in, color =  species)) +
   geom_boxplot(alpha = 0.6) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
@@ -457,7 +467,8 @@ plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
 ## Figure 5
 
 ```{r figure 5, fig.height=5, fig.width=6}
-fig_5A <-  ggplot(aggressiveness_plots, aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+fig_5A <- aggressiveness_plots %>% 
+  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
   stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
   geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
@@ -486,7 +497,7 @@ plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c("A", "B", "
 
 ## Save results  
 
-```{r save agg means}
+```{r save agg means, message=FALSE}
 m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
   tidy() %>% 
   mutate(measurement = "dry_root")
@@ -522,6 +533,7 @@ means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
 ## Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data, message=FALSE}
+# import saved results
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
 means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
 
@@ -547,14 +559,14 @@ corrplot(sojae_corr$r, method = "number")
 ## Table 2
 
 ```{r table 2}
-sojae_corr
+sojae_corr 
 ```
 
 Make some plots for the temperature data
 
 # Fungicide Sensitivity 
 
-Make some plots for the SHAM data
+Clean data and transform data for analysis
 
 ```{r prepare fs data}
 # eliminate NAs
@@ -588,6 +600,8 @@ clean_fungicide <- clean_fungicide %>%
 # write_csv(clean_fungicide, here("output", "transform_data", "02_fungicide-sensitivity_transform.csv"))
 ```
 
+Filter isolates 
+
 ```{r filter fungicide}
 # check if there are isolates with no EC50
 # isolates with >50% rel growth in the higher dose 
@@ -612,7 +626,9 @@ hormetic_isolates %>%
   group_by(fungicide, experiment, isolate) %>% 
   n_distinct()
 
-hormetic_data <- semi_join(clean_fungicide, hormetic_isolates)
+hormetic_data <- semi_join(clean_fungicide, hormetic_isolates, by = c("fungicide",
+                                                                        "experiment", 
+                                                                        "isolate"))
 ```
 
 ```{r fit log logistic models, warning=FALSE }
@@ -621,7 +637,6 @@ nest_fungicide <- clean_fungicide %>%
   group_by(fungicide, experiment, isolate) %>% 
   nest()
 
-# lower limit fit at zero in LL.3
 fit_LL3 <- function(dataset){
   drm(rel.growth ~ dose, fct = LL.3(names = c("slope", "upper", "EC50")), data = dataset)
 }
@@ -650,17 +665,24 @@ log_selection %>%
   dplyr::select(fungicide, isolate, model, IC) %>% 
   spread(model, IC) %>% 
   filter(ll3.fit < ll4.fit) %>% 
-  n_distinct()
+  n_distinct() 
+```
+From the 256 models fit (experiment, fungicide and isolation combination), only 66 had higher AIC value for 4 parameters model (LL.4)
 
+```{r fit p values}
 # lack of fit p-values 
 log_selection %>% 
-  filter(`Lack of fit`  < 0.05) %>% 
+  filter(`Lack of fit` > 0.05) %>% 
   group_by(model)%>% 
-  count() # LL.4 model better fit for most isolates
+  count() %>% 
+  knitr::kable()
 ```
 
-```{r EC50s, message=FALSE}
-# extract EC50s from LL.4 model
+More non-significant p-values for lack of fit  for the 4 parameters model (LL.3).  
+Overall, LL.4 model better fit for most isolates
+
+```{r EC50s, message=FALSE, eval=FALSE}
+# extract absolute EC50s from LL.4 model
 abs_EC50 <- function(models){
   ED(models, respLev = c(50), type = "absolute", interval = "delta")
 }
@@ -677,7 +699,9 @@ log_EC50 <- log_models %>%
          upper = ...4)
 ```
 
-```{r fit hormetic models}
+Fit hormetic models to data with hormetic effects.
+
+```{r fit hormetic models, message=FALSE, warning=FALSE}
 nest_hormetic <- hormetic_data %>% 
   group_by(fungicide, experiment, isolate) %>% 
   nest()
@@ -717,9 +741,16 @@ hormetic_selection <- semi_join(log_selection, hormetic_isolates) %>%
 hormetic_selection %>% 
   dplyr::select(fungicide, experiment, isolate, model, IC) %>% 
   spread(model, IC) %>% 
-  filter(crs.fit > bc4.fit) %>% 
+  filter(crs.fit < bc4.fit) %>% 
   n_distinct()
   
+
+```
+
+111 hormetic models fit, only 13 had higher for BC.4
+
+```{r lack of fit hormetic}
+# compare hormetic models vs LL.4
 hormetic_selection %>% 
   dplyr::select(fungicide, experiment, isolate, model, IC) %>% 
   spread(model, IC) %>% 
@@ -729,10 +760,13 @@ hormetic_selection %>%
 hormetic_selection %>% 
   filter(`Lack of fit` > 0.05) %>% 
   group_by(model) %>% 
-  count() 
-# overall bc4 better fit based on lower AIC
-# no lack of fit for ll4 for most isolates with hormetic effect
+  count() %>% 
+  knitr::kable()
 ```
+
+overall bc4 better fit based on lower AIC
+no lack of fit for ll4 for most isolates with hormetic effect
+
 
 ```{r combine data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
@@ -751,7 +785,7 @@ log_EC50 %>%
 
 Overall most EC50 of second experiment fall into the 95% CI of EC50 first. Experiment is repoducible so combine the data of both experiments. 
 
-```{r LL.4 combine data }
+```{r LL.4 combine data, eval=FALSE, message=FALSE, warning=FALSE}
 # fit LL.4 model with pooled data
 nest_pooled <- clean_fungicide %>% 
   group_by(fungicide, isolate) %>% 
@@ -772,7 +806,7 @@ pooled_EC50 <- log_pooled %>%
          upper = ...4) 
 ```
 
-```{r pooled hormetic model}
+```{r pooled hormetic model, eval=FALSE, message=FALSE, warning=FALSE}
 # fit pool hormetic model
 nest_hormetic_pooled <- hormetic_data %>% 
   group_by(fungicide, isolate) %>% 
@@ -797,9 +831,9 @@ hormetic_EC50 <- hormetic_pooled %>%
   mutate(model = "BC4")
 ```
 
-```{r compare EC50}
+```{r compare EC50, fig.height=3, fig.width=8}
 # compare hormetic EC50 with LL4 
-compare_EC50 <- semi_join(pooled_EC50, hormetic_isolates) %>% 
+compare_EC50 <- semi_join(pooled_EC50, hormetic_isolates, by = c("fungicide", "isolate")) %>% 
   mutate(model = "LL4") 
 
 compare_EC50 <- bind_rows(compare_EC50, hormetic_EC50)
@@ -816,6 +850,8 @@ compare_EC50 %>%
   theme_minimal() +
   panel_border()
 ```
+
+Lower EC50 for the hormetic models.
 
 ## Figure 6
 
@@ -848,3 +884,8 @@ ggplot(EC50_plot, aes(x = EC50, fill = species)) +
         panel.grid.minor.y = element_blank()) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) 
 ```
+```{r save EC50}
+# write_csv(pooled_EC50, here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
+# write_csv(compare_EC50, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
+```
+
