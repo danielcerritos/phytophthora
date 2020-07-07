@@ -26,18 +26,19 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
 ```{r data, message=FALSE}
 all_data <- list.files(here("output", "clean_data"), full.names = TRUE)
 # samples collection
-soil_samples <- read_csv(all_data[8])
-plant_samples <- read_csv(all_data[7])
+soil_samples <- read_csv(all_data[9])
+plant_samples <- read_csv(all_data[8])
 # identification of isolates
 isolates_recovered <- read_csv(here("data", "all-isolates-in-data-base.csv"))
 # pathotype
-sojae <- read_csv(all_data[6])
-sansomeana <- read_csv(all_data[5])
+sojae <- read_csv(all_data[7])
+sansomeana <- read_csv(all_data[6])
 #aggressiveness
 dry_weigth <- read_csv(all_data[1])
 area_length <- read_csv(all_data[2])
+agg_temperature <- read_csv(all_data[3]) 
 # fungicide sensitivity 
-fungicide <- read.csv(all_data[4])
+fungicide <- read.csv(all_data[5])
 ```
 
 
@@ -121,9 +122,6 @@ ggplot() +
                     name = "Plant samples") +
   scale_shape_discrete(name = "Year") +
   theme_map()
-
-#   scale_fill_manual(values = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"), 
-
 ```
 
 # Identification of isolates
@@ -335,6 +333,21 @@ aggressiveness <- aggressiveness %>%
 ```
 
 ## Exploratory plots 
+
+```{r temperature agg}
+agg_temperature$time <- as.character(agg_temperature$time)
+# filter to the hours they have in common 
+agg_temperature_filtered <- agg_temperature %>% 
+  filter(time %in% c("00:15:00", "08:15:00", "16:15:00"))
+
+agg_temperature_filtered %>% 
+  ggplot(aes(x = date, y = room_temperature, color = as.factor(experiment))) +
+  geom_line(group = 1)  +
+  facet_grid(~ as.factor(experiment), scales = "free_x") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        legend.position = "none") 
+```
 
 ```{r exp plot 1, warning=FALSE}
 aggressiveness$experiment <- as.factor(aggressiveness$experiment)

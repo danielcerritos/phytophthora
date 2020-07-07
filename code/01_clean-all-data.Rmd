@@ -28,6 +28,7 @@ sansomeana <- read_excel(here("data", "P. sansomeana pathotyping.xlsx"))
 sojae <- read_excel(here("data","P. sojae Pathotyping.xlsx "), sheet = 3)
 
 # aggressiveness 
+temperature_files <- list.files(here("data"), full.names = TRUE, pattern = "temperature")
 exp_names <- c(1, 2, 3)
 
 path.design <- list.files(here("data"), pattern = "design", full.names = TRUE)
@@ -209,6 +210,39 @@ write_csv(length_area, path = here("output", "clean_data",
 
 ```
 
+```{r temperature agg}
+experiment1 <- read_excel(temperature_files[1]) %>% 
+  select(date_time = `Date/Time`, 
+         room_temperature = `1713 Room temperature`, 
+         heating_target = `heating target`, 
+         cooling_target = `cooling target`,
+         outside_temperature = `outside temperature`) %>% 
+  mutate(experiment = 1)
+
+experiment2 <- read_excel(temperature_files[2])  %>% 
+  select(date_time = `Date/Time`, 
+         room_temperature = `USDA 7W4 ROOM TEMP`, 
+         heating_target = `USDA 7W4 HEAT TEMP`, 
+         cooling_target = `USDA 7W4 VENT TEMP`,
+         outside_temperature = `OUTSIDE TEMP`) %>% 
+  mutate(experiment = 2)
+
+experiment3 <- read_excel(temperature_files[3])  %>% 
+  select(date_time = Date, 
+         room_temperature = `Room Temperature`, 
+         heating_target = `Heating Target`, 
+         cooling_target = `Cooling Target`,
+         outside_temperature = `Outside Temperature`) %>% 
+  mutate(experiment = 3) %>% 
+  filter(!room_temperature == "NULL")
+
+temperature_data <- rbind(experiment1, experiment2, experiment3) %>% 
+  separate(col = date_time, into = c("date", "time"), sep = ",") 
+
+temperature_data$room_temperature <- as.numeric(temperature_data$room_temperature)
+
+write_csv(temperature_data, here("output", "clean_data", "01_agg_room-temperature_clean-data.csv"))
+```
 
 # Fungicide sensitivity 
 
