@@ -573,7 +573,6 @@ corrplot(sojae_corr$r, method = "number")
 sojae_corr 
 ```
 
-Make some plots for the temperature data
 
 # Fungicide Sensitivity 
 
