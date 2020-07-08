@@ -334,6 +334,14 @@ aggressiveness <- aggressiveness %>%
 
 ## Exploratory plots 
 
+```{r average temperature, message=FALSE}
+agg_temperature %>% 
+  group_by(experiment) %>% 
+  summarise(min = min(room_temperature), 
+            max = max(room_temperature), 
+            mean = mean(room_temperature))
+```
+
 ```{r temperature agg}
 agg_temperature$time <- as.character(agg_temperature$time)
 # filter to the hours they have in common 
