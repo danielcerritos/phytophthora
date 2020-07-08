@@ -268,7 +268,7 @@ pathotype_frequency <- diversity$table_of_pathotypes
 
 ## Phytophthora sansomeana
 
-```{r sansomena effective genes}
+```{r sansomena effective genes, fig.height=2.85, fig.width=4.5}
 sansomeana <- sansomeana %>% 
   mutate(percent.susceptible = round((dead/total)*100))
 
