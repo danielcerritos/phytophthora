@@ -54,6 +54,8 @@ soil_samples$county %>%
   n_distinct()
 ```
 
+add new file: "Plant_Clinic_2018" to see the samples that were actually processed, only 52 from the 95 that Phytophthotra was detected by the ELISA
+
 ```{r plant samples}
 # 2018
 plant_samples %>%
@@ -110,6 +112,8 @@ map_plant <- map_plant %>%
 ```
 
 ## Figure 1
+
+change this figure to actual 52 samples 
 
 ```{r sample map}
 # samples collection map 
@@ -450,7 +454,7 @@ emmeans(fm_root_length, ~ isolate, type = "response") %>%
 emmeans(fm_root_area, ~ isolate, type = "response") %>% 
   cld.emmGrid()
 ```
- ## Figure 4
+## Figure 4
 
 ```{r fig 4, fig.height=4.8, fig.width=3.2, warning=FALSE}
 # combine the two controls for plotting
