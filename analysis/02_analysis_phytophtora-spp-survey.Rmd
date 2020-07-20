@@ -114,7 +114,7 @@ map_plant <- map_plant %>%
 ## Figure 1
 
 change this figure to actual 52 samples 
-
+change triangles looks like rojas map
 ```{r sample map}
 # samples collection map 
 ggplot() +
