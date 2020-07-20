@@ -878,6 +878,10 @@ Lower EC50 for the hormetic models.
 ## Figure 6
 
 ```{r figure 6, fig.height=5, fig.width=5.5}
+
+fungicide_EC50 <- read_csv("output/results/02_fungicide-sensitivity_EC50.csv")
+
+
 EC50_plot <- pooled_EC50 %>% 
   mutate(species = case_when(
     isolate %in% c(1, 5, 7:10, 14:16) ~ "P. sojae",
