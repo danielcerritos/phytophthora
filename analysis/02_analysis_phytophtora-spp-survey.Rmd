@@ -117,7 +117,7 @@ change this figure to actual 52 samples
 change triangles looks like rojas map
 ```{r sample map}
 # samples collection map 
-ggplot() +
+(figure_one <- ggplot() +
   geom_sf(data = counties, fill = NA) +
   geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
@@ -126,6 +126,9 @@ ggplot() +
                     name = "Plant samples") +
   scale_shape_discrete(name = "Year") +
   theme_map()
+ )
+
+# ggsave("figure1.tiff", plot = figure_one, dpi = 300, path = here("docs", "figure"))
 ```
 
 # Identification of isolates
@@ -151,8 +154,6 @@ isolates_recovered %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
-## Figure 2 
-
 ```{r species collected}
 isolates_species <- isolates_recovered %>% 
   dplyr::select(species) %>%
@@ -176,13 +177,16 @@ isolates_species %>%
                      labels = percent_format()) 
 ```
 
+## Table 1
+
 ```{r phytophthora county}
-isolates_recovered %>% 
+(table_one <- isolates_recovered %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
-  group_by(year, county) %>% 
-  count(species) %>% 
-  arrange(desc(n)) %>% 
-  knitr::kable()
+  dplyr::select(species, isolate_id, county, year) %>% 
+  arrange(year)
+)
+
+# write_csv(table_one, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
 
 # Pathotype
@@ -253,13 +257,16 @@ mean_complexity <- complexity_percent %>%
   theme_minimal_hgrid() 
 ```
 
-## Figure 3
+## Figure 2
 
 ```{r fig 3, fig.height=5.7, fig.width=4.5, warning=FALSE}
-plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1)
+(figure_two <- plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1))
+
+# ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4.5, height = 5.7)
+
 ```
 
-## Table 1
+## Table 2
 
 ```{r pathotype}
 # pathotypes
@@ -285,14 +292,27 @@ sansomeana_rps <- summarize_gene(
   perc_susc = "percent.susceptible"
 )
 
-sansomeana_rps %>% 
-  ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(alpha = 0.5) +
-  theme_minimal_hgrid() +
+sansomena <- sansomeana_rps %>% 
+  ggplot(aes(x = gene, y = percent_pathogenic/100)) +
+  geom_col(alpha = 0.6) +
+  theme_minimal_hgrid()  +
   labs(x = "Rps gene", 
        y = "Percent pathogenic") +
   scale_y_continuous(
-    expand = expansion(mult = c(0, 0.05))) 
+    expand = expansion(mult = c(0, 0.05)), 
+    labels = percent_format()) +
+    theme_minimal_hgrid()
+
+
+
+
+plot_grid(effective_rps, sansomena, labels = "AUTO", ncol = 1)
+
+
+
+
+
+
 ```
 
 ```{r save pathotype data}
@@ -454,69 +474,6 @@ emmeans(fm_root_length, ~ isolate, type = "response") %>%
 emmeans(fm_root_area, ~ isolate, type = "response") %>% 
   cld.emmGrid()
 ```
-## Figure 4
-
-```{r fig 4, fig.height=4.8, fig.width=3.2, warning=FALSE}
-# combine the two controls for plotting
-aggressiveness_plots <- aggressiveness
-
-aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species, 
-                                          c("Control Agar" = "Control", 
-                                            "Control None" = "Control", 
-                                            "Phytophthora sojae" = "P. sojae", 
-                                            "Phytophthora sansomeana" = "P. sansomeana")
-                                          )
-
-fig_length <- aggressiveness_plots %>% 
-  ggplot(aes(x = species, y = length_in, color =  species)) +
-  geom_boxplot(alpha = 0.6) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
-  labs(x = "", 
-         y = "Root length (in)") + 
-  theme_minimal() +
-  theme(legend.position = "none")  
-
-fig_dry <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
-  geom_boxplot(alpha = 0.8) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
-  labs(x = "", 
-       y = "Root dry weigth (mg)") + 
-  theme_minimal() +
-  theme(legend.position = "none") 
-
-plot_grid(fig_dry, fig_length, ncol = 1, labels = "AUTO" )
-```
-
-## Figure 5
-
-```{r figure 5, fig.height=5, fig.width=6}
-fig_5A <- aggressiveness_plots %>% 
-  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
-  coord_flip() +
-  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
-  geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  labs(x = "",
-       y = "Root dry weigth (mg)",
-       color = "") 
-
-fig_5B <- aggressiveness_plots %>% 
-  filter(!is.na(length_in)) %>% 
-ggplot(aes(x = reorder (isolate,length_in), y = length_in, color = species)) + 
-  coord_flip() +
-  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.8) +
-  geom_hline(yintercept = 25, linetype="dashed",  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  labs(x = "",
-       y = "Root length (in)",
-       color = "") 
-
-legend <- get_legend(fig_5A + theme(legend.position = "bottom"))
-
-plot_grid(fig_5A, fig_5B, legend, rel_heights = c(1, .1), labels = c("A", "B", ""))
-```
 
 ## Save results  
 
@@ -553,6 +510,150 @@ means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
 # write_csv(means_aggressiveness , here("output", "results", "02_aggressiveness_results-means.csv"))
 ```
 
+
+## Figure 3
+
+```{r fig 4, fig.height=5, fig.width=6,  warning=FALSE}
+# combine the two controls for plotting
+aggressiveness_plots <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
+
+aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species, 
+                                          c("Control Agar" = "Control", 
+                                            "Control None" = "Control", 
+                                            "Phytophthora sojae" = "P. sojae", 
+                                            "Phytophthora sansomeana" = "P. sansomeana")
+                                          )
+
+fig_3A <- aggressiveness_plots %>% 
+  ggplot(aes(x = species, y = length_in, color =  species)) +
+  geom_boxplot(alpha = 0.6) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
+  labs(x = "", 
+         y = "Root length (in)") + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank())  
+
+fig_3B <- aggressiveness_plots %>% 
+  ggplot(aes(x = species, y = area_in.2, color =  species)) +
+  geom_boxplot(alpha = 0.6) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
+  labs(y = expression('Root area (in'^2*')'), 
+       x = "")  + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) 
+
+fig_3C <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
+  geom_boxplot(alpha = 0.8) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
+  labs(x = "", 
+       y = "Root dry weigth (mg)") + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) 
+
+fig_3D <- ggplot(data = aggressiveness_plots, aes(x = species, y = shoot_mg, color =  species)) +
+  geom_boxplot(alpha = 0.8) +
+  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
+  labs(x = "", 
+       y = "Shoot dry weigth (mg)") + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) 
+
+
+figure_three_no_legend <- plot_grid(
+  fig_3A + theme(legend.position="none"),
+  fig_3B + theme(legend.position="none"),
+  fig_3C + theme(legend.position="none"),
+  fig_3D + theme(legend.position="none"), 
+  labels = "AUTO" 
+)
+
+legend_three <- get_legend(fig_3A + theme(legend.position = "bottom"))
+
+(figure_three <- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))
+
+# ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 6, height = 5)
+```
+
+## Figure 4
+
+```{r figure 4, fig.height= 8, fig.width=5}
+# use back-transform means from emmeans output
+# means bit different from raw data  
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
+# combine the two controls for plotting
+means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
+                                                c("Control Agar" = "Control", 
+                                                  "Control None" = "Control", 
+                                                  "Phytophthora sojae" = "P. sojae", 
+                                                  "Phytophthora sansomeana" = "P. sansomeana")
+                                                )
+
+fig_4A <- means_aggressiveness %>% 
+  filter(measurement == "root_length") %>% 
+  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
+  coord_flip() +
+  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  alpha = 0.6) +
+  geom_hline(yintercept = 12.8, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = "Root length (in)",
+       color = "") 
+
+fig_4B <- means_aggressiveness %>% 
+  filter(measurement == "root_area") %>% 
+  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
+  coord_flip() +
+  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  alpha = 0.6) +
+  geom_hline(yintercept = 0.26, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = expression('Root area (in'^2*')'),
+       color = "") 
+
+fig_4C <- aggressiveness_plots %>% 
+  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
+  geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = "Root dry weigth (mg)",
+       color = "") 
+
+fig_4D <- aggressiveness_plots %>% 
+  ggplot(aes(x = reorder (isolate, shoot_mg), y = shoot_mg, color = species)) + 
+  coord_flip() +
+  stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
+  geom_hline(yintercept = 47, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = "Shoot dry weigth (mg)",
+       color = "") 
+
+figure_four_AB <- plot_grid(fig_4A, fig_4B, labels = c("A", "B"), nrow  = 1)
+figure_four_CD <- plot_grid(fig_4C, fig_4D, labels = c("C", "D"), nrow  = 1)
+
+figure_four_no_legend <- plot_grid(figure_four_AB, figure_four_CD, ncol = 1)
+
+legend_four <- get_legend(fig_4A + theme(legend.position = "bottom"))
+
+(figure_four <- plot_grid(figure_four_no_legend, legend_four, ncol = 1, rel_heights = c(1,0.04)))
+
+ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 5, height = 8)
+
+```
+
+
 ## Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data, message=FALSE}
@@ -576,7 +677,20 @@ sojae_corr <- sojae_all_data %>%
   dplyr::select(-isolate_id) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
-corrplot(sojae_corr$r, method = "number")
+corrplot(sojae_corr$r, method = "number", type = "upper", order = "hclust", 
+         p.mat = sojae_corr$P, sig.level = .05)
+
+
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(sojae_corr$r, method = "color", col = col(200),
+         type = "upper", order = "hclust", number.cex = 2.5,
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col = "black", tl.srt = 90, # Text label color and rotation
+         # Combine with significance
+         p.mat = sojae_corr$P, sig.level = 0.05, insig = "blank", 
+         # hide correlation coefficient on the principal diagonal
+         diag = FALSE, tl.cex = 2.5)
+
 ```
 
 ## Table 2
@@ -875,14 +989,17 @@ compare_EC50 %>%
 
 Lower EC50 for the hormetic models.
 
-## Figure 6
+```{r save EC50}
+# write_csv(pooled_EC50, here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
+# write_csv(compare_EC50, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
+```
 
-```{r figure 6, fig.height=5, fig.width=5.5}
+## Figure 5
 
-fungicide_EC50 <- read_csv("output/results/02_fungicide-sensitivity_EC50.csv")
+```{r figure 5,fig.height=5, fig.width=5.5 }
+fungicide_EC50 <- read_csv(here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
 
-
-EC50_plot <- pooled_EC50 %>% 
+EC50_plot <- fungicide_EC50  %>% 
   mutate(species = case_when(
     isolate %in% c(1, 5, 7:10, 14:16) ~ "P. sojae",
     TRUE ~ "P. sansomeana"
@@ -895,7 +1012,8 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
                                          "metalaxyl" = "Metalaxyl")
                                        )
 
-ggplot(EC50_plot, aes(x = EC50, fill = species)) +
+
+(figure_five <- ggplot(EC50_plot, aes(x = EC50, fill = species)) +
   geom_histogram(alpha = 0.6, color = "white", bins = 10) +
   facet_wrap(~ fungicide, scales = "free_x") +
   labs(x = expression('EC'[50]*' (μg ml'^-1*')'), 
@@ -903,15 +1021,15 @@ ggplot(EC50_plot, aes(x = EC50, fill = species)) +
        fill = "") +
   theme_minimal() +
   panel_border() +
-  theme(legend.position = "bottom", 
-        strip.text = element_text(face = "bold"), 
+  theme(strip.text = element_text(face = "bold", size = rel(1)), 
         panel.grid.major.x = element_blank(), 
         panel.grid.minor.x = element_blank(), 
-        panel.grid.minor.y = element_blank()) +
+        panel.grid.minor.y = element_blank(), 
+        legend.position = "bottom") +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) 
-```
-```{r save EC50}
-# write_csv(pooled_EC50, here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
-# write_csv(compare_EC50, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
+)
+
+# ggsave("figure5.tiff", plot = figure_five, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
+
 ```
 
