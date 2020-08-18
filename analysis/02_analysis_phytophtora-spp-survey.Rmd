@@ -480,30 +480,30 @@ emmeans(fm_root_area, ~ isolate, type = "response") %>%
 ```{r save agg means, message=FALSE}
 m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
   tidy() %>% 
-  mutate(measurement = "dry_root")
+  mutate(measurement = "Root dry weigth")
 
 m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
   tidy() %>% 
-  mutate(measurement = "dry_shoot")
+  mutate(measurement = "Shoot dry weigth")
 
 m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
   tidy() %>% 
-  mutate(measurement = "root_length")
+  mutate(measurement = "Root length")
 
 m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
   tidy()%>% 
-  mutate(measurement = "root_area")
+  mutate(measurement = "Root area")
 
 means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
 
 # estimate and response (back-transform means) in same column
 back_transform_means <- means_aggressiveness %>% 
-  filter(measurement %in% c("root_length", "root_area")) %>% 
+  filter(measurement %in% c("Root length", "Root area")) %>% 
   dplyr::select(-estimate) %>% 
   rename(estimate = response)
 
 means_aggressiveness <- means_aggressiveness %>% 
-  filter(!(measurement %in% c("root_length", "root_area"))) %>% 
+  filter(!(measurement %in% c("Root length", "Root area"))) %>% 
   dplyr::select(-response)
 
 means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
@@ -589,9 +589,9 @@ means_aggressiveness$species <- str_replace_all(means_aggressiveness$species,
                                                 )
 
 fig_4A <- means_aggressiveness %>% 
-  filter(measurement == "root_length") %>% 
+  filter(measurement == "Root length") %>% 
   ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() +
+  coord_flip() 
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
   geom_hline(yintercept = 12.8, linetype="dashed",  size = 0.7) +
@@ -603,7 +603,7 @@ fig_4A <- means_aggressiveness %>%
        color = "") 
 
 fig_4B <- means_aggressiveness %>% 
-  filter(measurement == "root_area") %>% 
+  filter(measurement == "Root area") %>% 
   ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
   coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
@@ -649,7 +649,7 @@ legend_four <- get_legend(fig_4A + theme(legend.position = "bottom"))
 
 (figure_four <- plot_grid(figure_four_no_legend, legend_four, ncol = 1, rel_heights = c(1,0.04)))
 
-ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 5, height = 8)
+# ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 5, height = 8)
 
 ```
 
@@ -672,25 +672,23 @@ sojae_aggressiveness <- means_aggressiveness %>%
 sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
 ```
 
-```{r correlation}
+## poster corr plot
+
+```{r correlation, fig.height=5, fig.width=5}
 sojae_corr <- sojae_all_data %>%
   dplyr::select(-isolate_id) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
-corrplot(sojae_corr$r, method = "number", type = "upper", order = "hclust", 
-         p.mat = sojae_corr$P, sig.level = .05)
-
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(sojae_corr$r, method = "color", col = col(200),
-         type = "upper", order = "hclust", number.cex = 2.5,
+         type = "upper", order = "hclust", number.cex = 1,
          addCoef.col = "black", # Add coefficient of correlation
          tl.col = "black", tl.srt = 90, # Text label color and rotation
          # Combine with significance
          p.mat = sojae_corr$P, sig.level = 0.05, insig = "blank", 
          # hide correlation coefficient on the principal diagonal
-         diag = FALSE, tl.cex = 2.5)
-
+         diag = FALSE, tl.cex = 1)
 ```
 
 ## Table 2
@@ -698,6 +696,38 @@ corrplot(sojae_corr$r, method = "color", col = col(200),
 ```{r table 2}
 sojae_corr 
 ```
+
+
+## Corr plot
+
+```{r corr plot 2, fig.height=5, fig.width=5}
+library(ggcorrplot)
+(corr_plot <- ggcorrplot(sojae_corr$r, hc.order = TRUE, outline.color = "white", type = "lower",  
+           colors = c("#6D9EC1", "white", "#E46726"), lab = TRUE,p.mat = sojae_corr$P, 
+           insig = "pch", pch = 4, pch.col = "white", pch.cex = 8, lab_size = 6) 
+  )
+
+# ggsave("correlationplot.tiff", plot = corr_plot, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
+```
+
+
+## Analysis by species 
+
+```{r}
+sojae_aggressiveness <- aggressiveness %>% 
+  filter(!species == "Phytophthora sansomeana")
+
+sansomeana_aggressiveness <- aggressiveness %>% 
+  filter(!species == "Phytophthora sojae")
+
+fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_dry) 
+anova(fm_root_dry)
+emmeans(fm_root_dry, ~ species) %>% 
+  cld.emmGrid()
+
+```
+
 
 
 # Fungicide Sensitivity 
@@ -1032,4 +1062,3 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
 # ggsave("figure5.tiff", plot = figure_five, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
 
 ```
-
