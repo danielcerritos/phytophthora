@@ -713,22 +713,97 @@ library(ggcorrplot)
 
 ## Analysis by species 
 
-```{r}
+```{r seperate data}
+aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
+
 sojae_aggressiveness <- aggressiveness %>% 
   filter(!species == "Phytophthora sansomeana")
 
 sansomeana_aggressiveness <- aggressiveness %>% 
   filter(!species == "Phytophthora sojae")
-
-fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_dry) 
-anova(fm_root_dry)
-emmeans(fm_root_dry, ~ species) %>% 
-  cld.emmGrid()
-
 ```
 
+### P. sojae 
 
+```{r sojae dry root}
+fm_root_dry_sojae <- lmer(root_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_dry_sojae) 
+anova(fm_root_dry_sojae)
+emmeans(fm_root_dry_sojae, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r shoot dry root}
+fm_shoot_dry_sojae <- lmer(shoot_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_shoot_dry_sojae) 
+anova(fm_shoot_dry_sojae)
+emmeans(fm_shoot_dry_sojae, ~ isolate) %>% 
+  cld.emmGrid()
+```
+```{r distribution sojae}
+qplot(length_in, data = sojae_aggressiveness) +
+  theme_minimal() # skew to the left, some transformation needed
+qplot(area_in.2, data = sojae_aggressiveness) +
+  theme_minimal() 
+```
+
+```{r length sojae}
+# log transformation for normality and slight difference in variances
+fm_root_length_sojae <- lmer(log(length_in) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_length_sojae) # diagnostic plots look fine
+anova(fm_root_length_sojae)
+emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+```
+
+```{r area sojea}
+# log transformation for normality and slight difference in variances
+fm_root_area_sojae <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_area_sojae) # diagnostic plots look fine
+anova(fm_root_area_sojae)
+emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+```
+### P. sansomeana
+
+```{r distribution sansomeana}
+qplot(length_in, data = sansomeana_aggressiveness) +
+  theme_minimal() # skew to the left, some transformation needed
+qplot(area_in.2, data = sansomeana_aggressiveness) +
+  theme_minimal() 
+```
+
+```{r sansomeana dry root}
+fm_root_dry_sansomeana <- lmer(root_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_dry_sansomeana) 
+anova(fm_root_dry_sansomeana)
+emmeans(fm_root_dry_sansomeana, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana dry shoot}
+fm_shoot_dry_sansomeana <- lmer(shoot_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_shoot_dry_sansomeana) 
+anova(fm_shoot_dry_sansomeana)
+emmeans(fm_shoot_dry_sansomeana, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana length}
+fm_root_length_sansomeana <- lmer(log(length_in) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_length_sansomeana) 
+anova(fm_root_length_sansomeana)
+emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana area}
+fm_root_area_sansomeana <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_area_sansomeana) 
+anova(fm_root_area_sansomeana)
+emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+```
 
 # Fungicide Sensitivity 
 
