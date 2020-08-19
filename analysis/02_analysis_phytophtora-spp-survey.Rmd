@@ -51,19 +51,63 @@ soil_samples %>%
   count() 
 
 soil_samples$county %>%
-  n_distinct()
+  n_distinct() 
 ```
 
-add new file: "Plant_Clinic_2018" to see the samples that were actually processed, only 52 from the 95 that Phytophthotra was detected by the ELISA
+```{r soil samples county}
+soil_samples %>%
+   group_by(year, county) %>% 
+  count() %>% 
+  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
+  geom_col(alpha = 0.6) +
+  coord_flip() +
+  labs(x = "", y = "Soil Samples", fill ="Year") +
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+```
+
+
+
+
 
 ```{r plant samples}
 # 2018
-plant_samples %>%
-  count() # just included positive samples 
-  
-plant_samples$county %>%
+plant_samples$PC_ID %>% 
+  n_distinct()
+
+plant_samples$County %>%
   n_distinct()
 ```
+```{r plant samples counties}
+plant_subsamples <- plant_samples %>% 
+  group_by(PC_ID, County) %>% 
+  count() 
+
+plant_samples_county <- plant_subsamples %>% 
+  filter(!is.na(County)) %>% 
+  dplyr::select(county = County) %>% 
+  group_by(county) %>% 
+  count()
+
+plant_samples_county %>%
+  ggplot(aes(x = fct_reorder(County, n), y = n)) +
+  geom_col(alpha = 0.6) +
+  coord_flip() +
+  labs(x = "", y = "Plant Samples", fill ="Year") +
+  theme_minimal_vgrid() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+```
+
+```{r}
+plant_samples_county %>% 
+  arrange(n) %>% view()
+
+
+```
+
+
+
+
 
 ```{r samples data map}
 # subset county data 
@@ -82,14 +126,11 @@ map_soil <- st_as_sf(map_soil, coords = c("long", "lat"),
                    crs = 4326, agr = "constant")
 
 # change continuous data (plant samples) into categories 
-map_plant <- plant_samples %>% 
-  group_by(county) %>% 
-  count() %>% 
+map_plant <- plant_samples_county %>% 
   mutate(samples_categ = case_when(
     n <= 5 ~ "1-5", 
     n >= 6 & n <= 10 ~ "6-10",
     n >= 11 & n <= 15 ~ "11-15", 
-    n >= 16 & n <= 20 ~ "16-20", 
   ))
 
 # add counties coordinates to plant samples data
@@ -104,8 +145,7 @@ map_plant$samples_categ <- as.factor(map_plant$samples_categ)
 map_plant$samples_categ <- factor(map_plant$samples_categ, 
                                   levels = c("1-5", 
                                              "6-10",                                  
-                                             "11-15",
-                                             "16-20" ))
+                                             "11-15"))
 map_soil$year <- as.factor(map_soil$year)
 map_plant <- map_plant %>% 
   filter(!is.na(samples_categ))
@@ -113,8 +153,6 @@ map_plant <- map_plant %>%
 
 ## Figure 1
 
-change this figure to actual 52 samples 
-change triangles looks like rojas map
 ```{r sample map}
 # samples collection map 
 (figure_one <- ggplot() +
@@ -122,11 +160,11 @@ change triangles looks like rojas map
   geom_sf(data = map_plant, aes(fill = samples_categ) , alpha = 0.7) +
   geom_sf(data = map_soil, aes(shape = year),  size = 2) +
   coord_sf(xlim = c(-92, -87), ylim = c(36.5, 43), expand = FALSE) +
-  scale_fill_manual(values = c("#bdd7e7", "#6baed6", "#3182bd", "#08519c"), 
+  scale_fill_manual(values = c("#bdd7e7", "#3182bd", "#08519c"), 
                     name = "Plant samples") +
   scale_shape_discrete(name = "Year") +
   theme_map()
- )
+)
 
 # ggsave("figure1.tiff", plot = figure_one, dpi = 300, path = here("docs", "figure"))
 ```
@@ -134,15 +172,26 @@ change triangles looks like rojas map
 # Identification of isolates
 
 ```{r exp isolates}
-isolates_recovered %>% 
-  group_by(identification) %>% 
+identified_isolates <-  isolates_recovered %>%
+  filter(identification == "sequence") 
+  
+identified_isolates %>% 
   count() 
 
-isolates_recovered %>% 
+identified_isolates %>% 
   group_by(source) %>% 
   count()
 
-isolates_recovered %>% 
+identified_isolates$county %>% 
+  n_distinct()
+
+identified_isolates %>%
+  group_by(year) %>% 
+  count()
+```
+
+```{r counties isolates collected}
+identified_isolates %>% 
   filter(!is.na(county)) %>% 
   group_by(year, county) %>% 
   count() %>% 
@@ -155,7 +204,7 @@ isolates_recovered %>%
 ```
 
 ```{r species collected}
-isolates_species <- isolates_recovered %>% 
+isolates_species <- identified_isolates %>% 
   dplyr::select(species) %>%
   group_by(species) %>% 
   count() %>%  
