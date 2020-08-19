@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(here)
 library(tidyverse)
 library(readxl)
+library(naniar)
 ```
 
 # Import data
@@ -21,7 +22,7 @@ library(readxl)
 # sample collection 
 samples.2016 <- read_excel(here("data", "Samples 2016.xlsx"))
 samples.2017 <- read_excel(here("data", "Samples 2017.xlsx"))
-samples.2018 <- read_excel(here("data", "2018 soypocalypse.xlsx"))
+samples.2018 <- read_excel(here("data", "Plant_Clinic_2018.xlsx"))
 
 # pathotype  
 sansomeana <- read_excel(here("data", "P. sansomeana pathotyping.xlsx"))
@@ -75,7 +76,6 @@ fs.2019 <- path.fs.2019 %>%
 # Sample collection
 
 ```{r samples}
-
 samples.2016 <- samples.2016 %>% 
   mutate(year = 2016) %>% 
   select(year, sample_id, lat = `GPS N`, long = `GPS W`, county)
@@ -85,11 +85,9 @@ samples.2017 <- samples.2017 %>%
   select(year, sample_id, lat = `GPS N`, long = `GPS W`, county)
 
 samples.2018 <- samples.2018 %>% 
-  mutate(year = 2018) %>% 
-  filter(`Genus Confirmation` == "Confirmed") %>% 
-  select(year, 
-         sample_id = `Sample #`, 
-         county = County)
+  dplyr::select(PC_ID, Submit_Date = `Submit Date`, County, Genus_confirmation =`Genus Confirmation`, 
+                PBNIC, plate_name = `Plate name`, morfological_assesment = `Morfological assesment`, 
+                morfological_date = Date, days_store = `Days store`)
 
 soil.samples <- rbind(samples.2016, samples.2017)
 
