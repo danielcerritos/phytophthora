@@ -90,24 +90,13 @@ plant_samples_county <- plant_subsamples %>%
   count()
 
 plant_samples_county %>%
-  ggplot(aes(x = fct_reorder(County, n), y = n)) +
+  ggplot(aes(x = fct_reorder(county, n), y = n)) +
   geom_col(alpha = 0.6) +
   coord_flip() +
   labs(x = "", y = "Plant Samples", fill ="Year") +
   theme_minimal_vgrid() +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
-
-```{r}
-plant_samples_county %>% 
-  arrange(n) %>% view()
-
-
-```
-
-
-
-
 
 ```{r samples data map}
 # subset county data 
@@ -229,7 +218,7 @@ isolates_species %>%
 ## Table 1
 
 ```{r phytophthora county}
-(table_one <- isolates_recovered %>% 
+(table_one <- identified_isolates %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
   dplyr::select(species, isolate_id, county, year) %>% 
   arrange(year)
@@ -341,27 +330,16 @@ sansomeana_rps <- summarize_gene(
   perc_susc = "percent.susceptible"
 )
 
-sansomena <- sansomeana_rps %>% 
-  ggplot(aes(x = gene, y = percent_pathogenic/100)) +
+sansomeana_rps %>% 
+  mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
+  ggplot(aes(x = gene, y = percent_pathogenic)) +
   geom_col(alpha = 0.6) +
-  theme_minimal_hgrid()  +
   labs(x = "Rps gene", 
        y = "Percent pathogenic") +
   scale_y_continuous(
     expand = expansion(mult = c(0, 0.05)), 
     labels = percent_format()) +
     theme_minimal_hgrid()
-
-
-
-
-plot_grid(effective_rps, sansomena, labels = "AUTO", ncol = 1)
-
-
-
-
-
-
 ```
 
 ```{r save pathotype data}
@@ -373,7 +351,7 @@ isolates_pathotypes <- diversity$individual_pathotypes %>%
   rename(isolate_number = Sample)
 
 isolates_complexity$isolate_number <- as.numeric(isolates_complexity$isolate_number)
-sojae_all <- left_join(isolates_complexity, isolates_pathotypes)
+sojae_all <- left_join(isolates_complexity, isolates_pathotypes, by = "isolate_number")
 
 add_isolate_id <- sojae[1:24, ]
 
@@ -408,8 +386,11 @@ aggressiveness <- aggressiveness %>%
 ## Exploratory plots 
 
 ```{r average temperature, message=FALSE}
+agg_temperature <- agg_temperature %>% 
+  mutate(room_temperature = (room_temperature-32) * 5/9)   # transform to Celsius
+  
 agg_temperature %>% 
-  group_by(experiment) %>% 
+group_by(experiment) %>% 
   summarise(min = min(room_temperature), 
             max = max(room_temperature), 
             mean = mean(room_temperature))
@@ -640,7 +621,7 @@ means_aggressiveness$species <- str_replace_all(means_aggressiveness$species,
 fig_4A <- means_aggressiveness %>% 
   filter(measurement == "Root length") %>% 
   ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() 
+  coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
   geom_hline(yintercept = 12.8, linetype="dashed",  size = 0.7) +
@@ -749,6 +730,8 @@ sojae_corr
 
 ## Corr plot
 
+Can't save the plot using the corrplot package, I am going to recreate plot with ggcorrplot.
+
 ```{r corr plot 2, fig.height=5, fig.width=5}
 library(ggcorrplot)
 (corr_plot <- ggcorrplot(sojae_corr$r, hc.order = TRUE, outline.color = "white", type = "lower",  
@@ -760,7 +743,9 @@ library(ggcorrplot)
 ```
 
 
-## Analysis by species 
+## Aggressiveness: subset data by species 
+
+Subset data by species to see difference withinn the species.
 
 ```{r seperate data}
 aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
@@ -813,6 +798,7 @@ anova(fm_root_area_sojae)
 emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform estimates
   cld.emmGrid()
 ```
+
 ### P. sansomeana
 
 ```{r distribution sansomeana}
