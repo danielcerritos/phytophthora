@@ -1,4 +1,4 @@
-isolate_number,isolate_id,complexity,Pathotype
+isolate_number,isolate_id,Complexity,Pathotype
 1,16PR009.1,6,"1b, 7, 2, 3b, 3c, 5"
 2,16PR009.2,7,"1b, 7, 2, 3a, 3b, 3c, 5"
 3,16PR027C.1,7,"1a, 1b, 1c, 1k, 3c, 4, 5"

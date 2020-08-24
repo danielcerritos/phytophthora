@@ -20,7 +20,6 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
                Hmisc, corrplot, drc, scales)
 ```
 
-
 # Import data
 
 ```{r data, message=FALSE}
@@ -48,7 +47,8 @@ fungicide <- read.csv(all_data[5])
 # 2016-2017
 soil_samples %>%
   group_by(year) %>% 
-  count() 
+  count() %>% 
+  pander
 
 soil_samples$county %>%
   n_distinct() 
@@ -169,14 +169,16 @@ identified_isolates %>%
 
 identified_isolates %>% 
   group_by(source) %>% 
-  count()
+  count() %>% 
+  pander()
 
 identified_isolates$county %>% 
   n_distinct()
 
 identified_isolates %>%
   group_by(year) %>% 
-  count()
+  count() %>% 
+  pander()
 ```
 
 ```{r counties isolates collected}
@@ -191,7 +193,6 @@ identified_isolates %>%
   theme_minimal_vgrid() +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
-
 ```{r species collected}
 isolates_species <- identified_isolates %>% 
   dplyr::select(species) %>%
@@ -200,8 +201,21 @@ isolates_species <- identified_isolates %>%
   mutate(genus = case_when(
     grepl("Phyto", species) ~ "Phytophthora spp.",
     grepl("Pyth", species) ~"Pythium spp.")) %>% 
-  mutate(percentage = (n/180))
+  mutate(percentage = (n/96))
 
+isolates_species$species %>% 
+  n_distinct()
+```
+```{r isolates per species}
+isolates_species %>% 
+  mutate(percentage = percentage*100) %>%
+  dplyr::select(species, n) %>% 
+  arrange(n) %>% 
+  pander()
+  
+```
+
+```{r species collected fig}
 isolates_species %>% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
   geom_col(alpha = 0.6) +
@@ -218,11 +232,12 @@ isolates_species %>%
 ## Table 1
 
 ```{r phytophthora county}
-(table_one <- identified_isolates %>% 
+table_one <- identified_isolates %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
-  dplyr::select(species, isolate_id, county, year) %>% 
-  arrange(year)
-)
+  dplyr::select(isolate_id,species, county, year) %>% 
+  arrange(species, year)
+
+table_one %>% pander()
 
 # write_csv(table_one, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
@@ -309,10 +324,17 @@ mean_complexity <- complexity_percent %>%
 ```{r pathotype}
 # pathotypes
 diversity <- do.call(calculate_diversities, hagis_args)
-diversities_table(diversity) 
 
-pathotype_frequency <- diversity$table_of_pathotypes
+pathotype_frequency <- diversity$table_of_pathotypes %>% 
+  mutate(Percentage = round((Frequency/16)*100))
+
+pathotype_frequency <- pathotype_frequency %>% 
+  arrange(Frequency) %>% 
+  dplyr::select(Pathotype, Frequency, Percentage)
+
 # write_csv(pathotype_frequency, here("output", "results", "02_pathotype-psojae_frequency-table.csv"))
+
+pathotype_frequency %>% pandoc.table()
 ```
 
 ## Phytophthora sansomeana
@@ -345,7 +367,7 @@ sansomeana_rps %>%
 ```{r save pathotype data}
 # combine pathtoyping results
 isolates_complexity <- complexities$indvidual_complexities %>% 
-  rename(isolate_number = sample, complexity = N_samp)
+  rename(isolate_number = sample, Complexity = N_samp)
 
 isolates_pathotypes <- diversity$individual_pathotypes %>% 
   rename(isolate_number = Sample)
@@ -356,7 +378,7 @@ sojae_all <- left_join(isolates_complexity, isolates_pathotypes, by = "isolate_n
 add_isolate_id <- sojae[1:24, ]
 
 sojae_pathotype <- left_join(sojae_all, add_isolate_id, by = "isolate_number") %>% 
-  dplyr::select(isolate_number, isolate_id, complexity, Pathotype)
+  dplyr::select(isolate_number, isolate_id, Complexity, Pathotype)
 
 # write_csv(sojae_pathotype, here("output", "results", "02_pathotype-psojae_results.csv"))
 ```
@@ -378,7 +400,8 @@ aggressiveness <- aggressiveness %>%
   mutate(shoot_mg = shoot.mg/germination, 
          root_mg = root.mg/germination, 
          length_in = length_in/germination, 
-         area_in.2 = area_in.2/germination)
+         area_in.2 = area_in.2/germination) %>% 
+  dplyr::select(-c(emergence, root.mg, shoot.mg))
 
 # write_csv(aggressiveness, here("output", "transform_data", "02_aggressiveness_transform.csv"))
 ```
@@ -393,7 +416,8 @@ agg_temperature %>%
 group_by(experiment) %>% 
   summarise(min = min(room_temperature), 
             max = max(room_temperature), 
-            mean = mean(room_temperature))
+            mean = mean(room_temperature)) %>% 
+  pandoc.table()
 ```
 
 ```{r temperature agg}
@@ -455,91 +479,42 @@ dis_area_log <- qplot(log(area_in.2), data = aggressiveness) +
 plot_grid(dis_length_log, dis_area_log) #improves a bit
 ```
 
-## Fit mixed model
+## Difference between species
 
 ```{r fm root dry}
 # not nesting isolate:species, isolates coded in a way there is no needed
 # same coefficient estimates and p values without nesting
-fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_dry) 
-anova(fm_root_dry)
-emmeans(fm_root_dry, ~ species) %>% 
+species_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(species_root_dry) 
+anova(species_root_dry)
+emmeans(species_root_dry, ~ species) %>% 
   cld.emmGrid()
 ```
 
 ```{r fm shoot dry }
-fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_shoot_dry) 
-anova(fm_shoot_dry)
-emmeans(fm_shoot_dry, ~ species) %>% 
+species_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(species_shoot_dry) 
+anova(species_shoot_dry)
+emmeans(species_shoot_dry, ~ species) %>% 
   cld.emmGrid()
 ```
 
 ```{r fm root length }
 # log transformation for normality and slight difference in variances
-fm_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_length) # diagnostic plots look fine
-anova(fm_root_length)
-emmeans(fm_root_length, ~ species, type = "response") %>% # back-transform estimates
+species_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(species_root_length ) # diagnostic plots look fine
+anova(species_root_length )
+emmeans(species_root_length , ~ species, type = "response") %>% # back-transform estimates
   cld.emmGrid()
 ```
 
 ```{r fm root area}
-fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_area) # transformation also worked 
-anova(fm_root_area)
-emmeans(fm_root_area, ~ species, type = "response") %>% 
+species_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(species_root_area) # transformation also worked 
+anova(species_root_area)
+emmeans(species_root_area, ~ species, type = "response") %>% 
   cld.emmGrid()
 ```
-
-## Differences within species (between isolates)
-
-```{r mean separation isolates}
-emmeans(fm_root_dry, ~ isolate) %>% 
-  cld.emmGrid()
-emmeans(fm_shoot_dry, ~ isolate) %>% 
-  cld.emmGrid()
-emmeans(fm_root_length, ~ isolate, type = "response") %>% 
-  cld.emmGrid()
-emmeans(fm_root_area, ~ isolate, type = "response") %>% 
-  cld.emmGrid()
-```
-
-## Save results  
-
-```{r save agg means, message=FALSE}
-m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(measurement = "Root dry weigth")
-
-m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(measurement = "Shoot dry weigth")
-
-m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
-  tidy() %>% 
-  mutate(measurement = "Root length")
-
-m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
-  tidy()%>% 
-  mutate(measurement = "Root area")
-
-means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
-
-# estimate and response (back-transform means) in same column
-back_transform_means <- means_aggressiveness %>% 
-  filter(measurement %in% c("Root length", "Root area")) %>% 
-  dplyr::select(-estimate) %>% 
-  rename(estimate = response)
-
-means_aggressiveness <- means_aggressiveness %>% 
-  filter(!(measurement %in% c("Root length", "Root area"))) %>% 
-  dplyr::select(-response)
-
-means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
-# write_csv(means_aggressiveness , here("output", "results", "02_aggressiveness_results-means.csv"))
-```
-
 
 ## Figure 3
 
@@ -602,6 +577,137 @@ legend_three <- get_legend(fig_3A + theme(legend.position = "bottom"))
 (figure_three <- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))
 
 # ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 6, height = 5)
+```
+
+
+## Difference within species (between isolates)
+
+```{r seperate data}
+# subset data by species
+aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
+
+sojae_aggressiveness <- aggressiveness %>% 
+  filter(!species == "Phytophthora sansomeana")
+
+sansomeana_aggressiveness <- aggressiveness %>% 
+  filter(!species == "Phytophthora sojae")
+```
+
+### Phytophthora sojae
+
+```{r sojae dry root}
+fm_root_dry_sojae <- lmer(root_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_dry_sojae) 
+anova(fm_root_dry_sojae)
+emmeans(fm_root_dry_sojae, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r shoot dry root}
+fm_shoot_dry_sojae <- lmer(shoot_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_shoot_dry_sojae) 
+anova(fm_shoot_dry_sojae)
+emmeans(fm_shoot_dry_sojae, ~ isolate) %>% 
+  cld.emmGrid()
+```
+```{r distribution sojae}
+qplot(length_in, data = sojae_aggressiveness) +
+  theme_minimal() # skew to the left, some transformation needed
+qplot(area_in.2, data = sojae_aggressiveness) +
+  theme_minimal() 
+```
+
+```{r length sojae}
+# log transformation for normality and slight difference in variances
+fm_root_length_sojae <- lmer(log(length_in) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_length_sojae) # diagnostic plots look fine
+anova(fm_root_length_sojae)
+emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+```
+
+```{r area sojea}
+# log transformation for normality and slight difference in variances
+fm_root_area_sojae <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+resid_panel(fm_root_area_sojae) # diagnostic plots look fine
+anova(fm_root_area_sojae)
+emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+```
+
+### Phytophthora sansomeana
+
+```{r distribution sansomeana}
+qplot(length_in, data = sansomeana_aggressiveness) +
+  theme_minimal() # skew to the left, some transformation needed
+qplot(area_in.2, data = sansomeana_aggressiveness) +
+  theme_minimal() 
+```
+
+```{r sansomeana dry root}
+fm_root_dry_sansomeana <- lmer(root_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_dry_sansomeana) 
+anova(fm_root_dry_sansomeana)
+emmeans(fm_root_dry_sansomeana, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana dry shoot}
+fm_shoot_dry_sansomeana <- lmer(shoot_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_shoot_dry_sansomeana) 
+anova(fm_shoot_dry_sansomeana)
+emmeans(fm_shoot_dry_sansomeana, ~ isolate) %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana length}
+fm_root_length_sansomeana <- lmer(log(length_in) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_length_sansomeana) 
+anova(fm_root_length_sansomeana)
+emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+```
+
+```{r sansomeana area}
+fm_root_area_sansomeana <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+resid_panel(fm_root_area_sansomeana) 
+anova(fm_root_area_sansomeana)
+emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>% 
+  cld.emmGrid()
+```
+
+```{r save agg means, message=FALSE}
+# save means
+m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(measurement = "Root dry weigth")
+
+m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(measurement = "Shoot dry weigth")
+
+m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(measurement = "Root length")
+
+m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
+  tidy()%>% 
+  mutate(measurement = "Root area")
+
+means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
+
+# estimate and response (back-transform means) in same column
+back_transform_means <- means_aggressiveness %>% 
+  filter(measurement %in% c("Root length", "Root area")) %>% 
+  dplyr::select(-estimate) %>% 
+  rename(estimate = response)
+
+means_aggressiveness <- means_aggressiveness %>% 
+  filter(!(measurement %in% c("Root length", "Root area"))) %>% 
+  dplyr::select(-response)
+
+means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
+# write_csv(means_aggressiveness , here("output", "results", "02_aggressiveness_results-means.csv"))
 ```
 
 ## Figure 4
@@ -684,7 +790,7 @@ legend_four <- get_legend(fig_4A + theme(legend.position = "bottom"))
 ```
 
 
-## Correlation between aggressiveness and complexity 
+# Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data, message=FALSE}
 # import saved results
@@ -692,7 +798,7 @@ sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_resul
 means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
 
 sojae_complexity <- sojae_pathotype %>% 
-  dplyr::select(isolate_id, complexity)
+  dplyr::select(isolate_id, Complexity)
 
 sojae_aggressiveness <- means_aggressiveness %>% 
   filter(species == "Phytophthora sojae") %>% 
@@ -702,9 +808,13 @@ sojae_aggressiveness <- means_aggressiveness %>%
 sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
 ```
 
-## poster corr plot
+```{r pearson correlation}
+sojae_corr 
+```
 
-```{r correlation, fig.height=5, fig.width=5}
+## Figure 5
+
+```{r corr plot}
 sojae_corr <- sojae_all_data %>%
   dplyr::select(-isolate_id) %>%
   as.matrix() %>%
@@ -712,7 +822,7 @@ sojae_corr <- sojae_all_data %>%
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(sojae_corr$r, method = "color", col = col(200),
-         type = "upper", order = "hclust", number.cex = 1,
+         type = "upper", order = "hclust", number.cex = 1.5,
          addCoef.col = "black", # Add coefficient of correlation
          tl.col = "black", tl.srt = 90, # Text label color and rotation
          # Combine with significance
@@ -721,128 +831,9 @@ corrplot(sojae_corr$r, method = "color", col = col(200),
          diag = FALSE, tl.cex = 1)
 ```
 
-## Table 2
+# Fungicide sensitivity 
 
-```{r table 2}
-sojae_corr 
-```
-
-
-## Corr plot
-
-Can't save the plot using the corrplot package, I am going to recreate plot with ggcorrplot.
-
-```{r corr plot 2, fig.height=5, fig.width=5}
-library(ggcorrplot)
-(corr_plot <- ggcorrplot(sojae_corr$r, hc.order = TRUE, outline.color = "white", type = "lower",  
-           colors = c("#6D9EC1", "white", "#E46726"), lab = TRUE,p.mat = sojae_corr$P, 
-           insig = "pch", pch = 4, pch.col = "white", pch.cex = 8, lab_size = 6) 
-  )
-
-# ggsave("correlationplot.tiff", plot = corr_plot, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
-```
-
-
-## Aggressiveness: subset data by species 
-
-Subset data by species to see difference withinn the species.
-
-```{r seperate data}
-aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
-
-sojae_aggressiveness <- aggressiveness %>% 
-  filter(!species == "Phytophthora sansomeana")
-
-sansomeana_aggressiveness <- aggressiveness %>% 
-  filter(!species == "Phytophthora sojae")
-```
-
-### P. sojae 
-
-```{r sojae dry root}
-fm_root_dry_sojae <- lmer(root_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_dry_sojae) 
-anova(fm_root_dry_sojae)
-emmeans(fm_root_dry_sojae, ~ isolate) %>% 
-  cld.emmGrid()
-```
-
-```{r shoot dry root}
-fm_shoot_dry_sojae <- lmer(shoot_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_shoot_dry_sojae) 
-anova(fm_shoot_dry_sojae)
-emmeans(fm_shoot_dry_sojae, ~ isolate) %>% 
-  cld.emmGrid()
-```
-```{r distribution sojae}
-qplot(length_in, data = sojae_aggressiveness) +
-  theme_minimal() # skew to the left, some transformation needed
-qplot(area_in.2, data = sojae_aggressiveness) +
-  theme_minimal() 
-```
-
-```{r length sojae}
-# log transformation for normality and slight difference in variances
-fm_root_length_sojae <- lmer(log(length_in) ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_length_sojae) # diagnostic plots look fine
-anova(fm_root_length_sojae)
-emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% # back-transform estimates
-  cld.emmGrid()
-```
-
-```{r area sojea}
-# log transformation for normality and slight difference in variances
-fm_root_area_sojae <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_area_sojae) # diagnostic plots look fine
-anova(fm_root_area_sojae)
-emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform estimates
-  cld.emmGrid()
-```
-
-### P. sansomeana
-
-```{r distribution sansomeana}
-qplot(length_in, data = sansomeana_aggressiveness) +
-  theme_minimal() # skew to the left, some transformation needed
-qplot(area_in.2, data = sansomeana_aggressiveness) +
-  theme_minimal() 
-```
-
-```{r sansomeana dry root}
-fm_root_dry_sansomeana <- lmer(root_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_dry_sansomeana) 
-anova(fm_root_dry_sansomeana)
-emmeans(fm_root_dry_sansomeana, ~ isolate) %>% 
-  cld.emmGrid()
-```
-
-```{r sansomeana dry shoot}
-fm_shoot_dry_sansomeana <- lmer(shoot_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_shoot_dry_sansomeana) 
-anova(fm_shoot_dry_sansomeana)
-emmeans(fm_shoot_dry_sansomeana, ~ isolate) %>% 
-  cld.emmGrid()
-```
-
-```{r sansomeana length}
-fm_root_length_sansomeana <- lmer(log(length_in) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_length_sansomeana) 
-anova(fm_root_length_sansomeana)
-emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>% 
-  cld.emmGrid()
-```
-
-```{r sansomeana area}
-fm_root_area_sansomeana <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_area_sansomeana) 
-anova(fm_root_area_sansomeana)
-emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>% 
-  cld.emmGrid()
-```
-
-# Fungicide Sensitivity 
-
-Clean data and transform data for analysis
+## Clean and transform data for analysis
 
 ```{r prepare fs data}
 # eliminate NAs
@@ -876,7 +867,7 @@ clean_fungicide <- clean_fungicide %>%
 # write_csv(clean_fungicide, here("output", "transform_data", "02_fungicide-sensitivity_transform.csv"))
 ```
 
-Filter isolates 
+## Filter isolates 
 
 ```{r filter fungicide}
 # check if there are isolates with no EC50
@@ -906,6 +897,8 @@ hormetic_data <- semi_join(clean_fungicide, hormetic_isolates, by = c("fungicide
                                                                         "experiment", 
                                                                         "isolate"))
 ```
+
+## Fit log logistic models
 
 ```{r fit log logistic models, warning=FALSE }
 # fit log-logistic models with 3 and 4 parameters 
@@ -975,6 +968,8 @@ log_EC50 <- log_models %>%
          upper = ...4)
 ```
 
+
+## Hormetic models
 Fit hormetic models to data with hormetic effects.
 
 ```{r fit hormetic models, message=FALSE, warning=FALSE}
@@ -1043,6 +1038,7 @@ hormetic_selection %>%
 overall bc4 better fit based on lower AIC
 no lack of fit for ll4 for most isolates with hormetic effect
 
+## Reproducibility of assay 
 
 ```{r both data}
 # check if 95 CI of exp 1 includes EC50 of exp 2
@@ -1081,6 +1077,8 @@ pooled_EC50 <- log_pooled %>%
          lower = ...3, 
          upper = ...4) 
 ```
+
+## Combined data analysis
 
 ```{r pooled hormetic model, message=FALSE, warning=FALSE}
 # fit pool hormetic model
@@ -1134,7 +1132,7 @@ Lower EC50 for the hormetic models.
 # write_csv(compare_EC50, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
 ```
 
-## Figure 5
+## Figure 6
 
 ```{r figure 5,fig.height=5, fig.width=5.5 }
 fungicide_EC50 <- read_csv(here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
@@ -1170,5 +1168,4 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
 )
 
 # ggsave("figure5.tiff", plot = figure_five, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
-
 ```
