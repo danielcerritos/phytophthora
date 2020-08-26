@@ -314,7 +314,7 @@ mean_complexity <- complexity_percent %>%
 
 ## Figure 2
 
-```{r fig 3, fig.height=5.7, fig.width=4.5, warning=FALSE}
+```{r fig 2, fig.height=5.7, fig.width=4.5, warning=FALSE}
 (figure_two <- plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1))
 
 # ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4.5, height = 5.7)
@@ -495,7 +495,7 @@ emmeans(fm_root_dry, ~ species) %>%
 
 ```{r fm shoot dry}
 fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(species_shoot_dry) 
+resid_panel(fm_shoot_dry) 
 anova(fm_shoot_dry)
 emmeans(fm_shoot_dry, ~ species) %>% 
   cld.emmGrid()
@@ -512,7 +512,7 @@ emmeans(fm_root_length , ~ species, type = "response") %>% # back-transform esti
 
 ```{r fm root area}
 fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(species_root_area) # transformation also worked 
+resid_panel(fm_root_area) # transformation also worked 
 anova(fm_root_area)
 emmeans(fm_root_area, ~ species, type = "response") %>% 
   cld.emmGrid()
@@ -555,7 +555,7 @@ agg_species_means %>%
 
 ## Figure 3
 
-```{r fig 4, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
+```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
 # combine the two controls for plotting
 aggressiveness_plots <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
 
@@ -871,16 +871,18 @@ sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isol
 ```
 
 ```{r pearson correlation}
+sojae_corr <- sojae_all_data %>%
+  dplyr::select(-isolate_id) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
 sojae_corr 
 ```
 
 ## Figure 5
 
 ```{r corr plot}
-sojae_corr <- sojae_all_data %>%
-  dplyr::select(-isolate_id) %>%
-  as.matrix() %>%
-  rcorr(type = "pearson")
+
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(sojae_corr$r, method = "color", col = col(200),
@@ -1221,8 +1223,9 @@ compare_EC50_id <- right_join(compare_EC50, isolates_used, by = "isolate")
 compare_EC50_id <- compare_EC50_id %>% 
   filter(!is.na(fungicide))
 
-write_csv(pooled_EC50_id, here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
-write_csv(compare_EC50_id, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
+# write_csv(pooled_EC50_id, here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
+# write_csv(compare_EC50_id, here("output", "results", "02_fungicide-sensitivity_EC50_hormetic-isolates.csv"))
+
 ```
 
 ## Figure 6
