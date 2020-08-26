@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
-               Hmisc, corrplot, drc, scales)
+               Hmisc, corrplot, drc, scales, broom)
 ```
 
 # Import data
@@ -193,6 +193,7 @@ identified_isolates %>%
   theme_minimal_vgrid() +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
+
 ```{r species collected}
 isolates_species <- identified_isolates %>% 
   dplyr::select(species) %>%
@@ -206,6 +207,7 @@ isolates_species <- identified_isolates %>%
 isolates_species$species %>% 
   n_distinct()
 ```
+
 ```{r isolates per species}
 isolates_species %>% 
   mutate(percentage = percentage*100) %>%
@@ -476,7 +478,7 @@ dis_length_log <- qplot(log(length_in), data = aggressiveness) +
 dis_area_log <- qplot(log(area_in.2), data = aggressiveness) +
   theme_minimal() 
 
-plot_grid(dis_length_log, dis_area_log) #improves a bit
+plot_grid(dis_length_log, dis_area_log) #improves with log transformation
 ```
 
 ## Difference between species
@@ -484,41 +486,76 @@ plot_grid(dis_length_log, dis_area_log) #improves a bit
 ```{r fm root dry}
 # not nesting isolate:species, isolates coded in a way there is no needed
 # same coefficient estimates and p values without nesting
-species_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(species_root_dry) 
-anova(species_root_dry)
-emmeans(species_root_dry, ~ species) %>% 
-  cld.emmGrid()
+fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_dry) 
+anova(fm_root_dry)
+emmeans(fm_root_dry, ~ species) %>% 
+  cld.emmGrid() 
 ```
 
-```{r fm shoot dry }
-species_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+```{r fm shoot dry}
+fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(species_shoot_dry) 
-anova(species_shoot_dry)
-emmeans(species_shoot_dry, ~ species) %>% 
+anova(fm_shoot_dry)
+emmeans(fm_shoot_dry, ~ species) %>% 
   cld.emmGrid()
 ```
 
 ```{r fm root length }
 # log transformation for normality and slight difference in variances
-species_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(species_root_length ) # diagnostic plots look fine
-anova(species_root_length )
-emmeans(species_root_length , ~ species, type = "response") %>% # back-transform estimates
+fm_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_length ) # diagnostic plots look fine
+anova(fm_root_length )
+emmeans(fm_root_length , ~ species, type = "response") %>% # back-transform estimates
   cld.emmGrid()
 ```
 
 ```{r fm root area}
-species_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
+fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(species_root_area) # transformation also worked 
-anova(species_root_area)
-emmeans(species_root_area, ~ species, type = "response") %>% 
+anova(fm_root_area)
+emmeans(fm_root_area, ~ species, type = "response") %>% 
   cld.emmGrid()
+```
+
+```{r effect sizes, message=FALSE}
+# save means to see effect size
+m_root_dry <- emmeans(fm_root_dry, ~ species) %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "root dry", 
+         relative_growth = (estimate/33.95000)*100) # relative growth compared to control
+
+m_shoot_dry <- emmeans(fm_shoot_dry, ~ species) %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "shoot dry", 
+         relative_growth = (estimate/83.45671)*100)
+
+m_root_length <- emmeans(fm_root_length , ~ species, type = "response") %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "root length", 
+         relative_growth = (response/33.34525)*100) %>% 
+  rename(estimate = response)
+
+m_root_area <- emmeans(fm_root_area, ~ species, type = "response") %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "root area", 
+         relative_growth = (response/0.7225228)*100)%>% 
+  rename(estimate = response)
+
+agg_species_means <- rbind(m_root_dry, m_shoot_dry, 
+                           m_root_length, m_root_area) %>% 
+  mutate(reduction = 100-relative_growth )
+
+
+agg_species_means %>% 
+  dplyr::select(agg_parameter, species, relative_growth, reduction) %>% 
+  filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
+  pander()
 ```
 
 ## Figure 3
 
-```{r fig 4, fig.height=5, fig.width=6,  warning=FALSE}
+```{r fig 4, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
 # combine the two controls for plotting
 aggressiveness_plots <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
 
@@ -579,10 +616,9 @@ legend_three <- get_legend(fig_3A + theme(legend.position = "bottom"))
 # ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 6, height = 5)
 ```
 
-
 ## Difference within species (between isolates)
 
-```{r seperate data}
+```{r seperate data, message=FALSE}
 # subset data by species
 aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
 
@@ -610,12 +646,6 @@ anova(fm_shoot_dry_sojae)
 emmeans(fm_shoot_dry_sojae, ~ isolate) %>% 
   cld.emmGrid()
 ```
-```{r distribution sojae}
-qplot(length_in, data = sojae_aggressiveness) +
-  theme_minimal() # skew to the left, some transformation needed
-qplot(area_in.2, data = sojae_aggressiveness) +
-  theme_minimal() 
-```
 
 ```{r length sojae}
 # log transformation for normality and slight difference in variances
@@ -635,14 +665,40 @@ emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform e
   cld.emmGrid()
 ```
 
-### Phytophthora sansomeana
+```{r save agg means, message=FALSE}
+m_root_dry_sojae <- emmeans(fm_root_dry_sojae, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "Root dry weigth")
 
-```{r distribution sansomeana}
-qplot(length_in, data = sansomeana_aggressiveness) +
-  theme_minimal() # skew to the left, some transformation needed
-qplot(area_in.2, data = sansomeana_aggressiveness) +
-  theme_minimal() 
+m_shoot_dry_sojae <- emmeans(fm_shoot_dry_sojae, ~ isolate) %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "Shoot dry weigth")
+
+m_root_length_sojae <- emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "Root length") %>% 
+  rename(estimate = response)
+
+m_root_area_sojae <- emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "Root area") %>% 
+  rename(estimate = response)
+
+agg_sojae_means <- bind_rows(m_root_dry_sojae, m_shoot_dry_sojae,
+                             m_root_length_sojae, m_root_area_sojae)
+
+# add species to isolates
+agg_sojae_means <- agg_sojae_means %>% 
+  mutate(species = case_when(
+    isolate == "Control None" ~ "Control None", 
+    isolate == "Control Agar" ~ "Control Agar", 
+    TRUE ~ "Phytophthora sojae"
+      ))
+
+# write_csv(agg_sojae_means, here("output", "results", "02_aggressiveness_sojae-means.csv"))
 ```
+
+### Phytophthora sansomeana
 
 ```{r sansomeana dry root}
 fm_root_dry_sansomeana <- lmer(root_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
@@ -676,87 +732,46 @@ emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>%
   cld.emmGrid()
 ```
 
-```{r save agg means, message=FALSE}
-# save means
-m_root_dry <- emmeans(fm_root_dry, ~ isolate) %>% 
+```{r save sansomeana agg means, message=FALSE}
+m_root_dry_sansomeana <- emmeans(fm_root_dry_sansomeana, ~ isolate) %>% 
   tidy() %>% 
-  mutate(measurement = "Root dry weigth")
+  mutate(agg_parameter = "Root dry weigth")
 
-m_shoot_dry <- emmeans(fm_shoot_dry, ~ isolate) %>% 
+m_shoot_dry_sansomeana <- emmeans(fm_shoot_dry_sansomeana, ~ isolate) %>% 
   tidy() %>% 
-  mutate(measurement = "Shoot dry weigth")
+  mutate(agg_parameter = "Shoot dry weigth")
 
-m_root_length <- emmeans(fm_root_length, ~ isolate, type = "response") %>% 
+m_root_length_sansomeana <- emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>% 
   tidy() %>% 
-  mutate(measurement = "Root length")
-
-m_root_area <- emmeans(fm_root_area, ~ isolate, type = "response") %>% 
-  tidy()%>% 
-  mutate(measurement = "Root area")
-
-means_aggressiveness <- bind_rows(m_root_dry, m_shoot_dry, m_root_length, m_root_area)
-
-# estimate and response (back-transform means) in same column
-back_transform_means <- means_aggressiveness %>% 
-  filter(measurement %in% c("Root length", "Root area")) %>% 
-  dplyr::select(-estimate) %>% 
+  mutate(agg_parameter = "Root length") %>% 
   rename(estimate = response)
 
-means_aggressiveness <- means_aggressiveness %>% 
-  filter(!(measurement %in% c("Root length", "Root area"))) %>% 
-  dplyr::select(-response)
+m_root_area_sansomeana <- emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>% 
+  tidy() %>% 
+  mutate(agg_parameter = "Root area") %>% 
+  rename(estimate = response)
 
-means_aggressiveness <- bind_rows(means_aggressiveness, back_transform_means)
-# write_csv(means_aggressiveness , here("output", "results", "02_aggressiveness_results-means.csv"))
+agg_sansomeana_means <- bind_rows(m_root_dry_sansomeana, m_shoot_dry_sansomeana,
+                             m_root_length_sansomeana, m_root_area_sansomeana)
+
+# add species to isolates
+agg_sansomeana_means <- agg_sansomeana_means %>% 
+  mutate(species = case_when(
+    isolate == "Control None" ~ "Control None sansomena", 
+    isolate == "Control Agar" ~ "Control Agar sansomeana", 
+    TRUE ~ "Phytophthora sansomeana"
+      ))
+
+# write_csv(agg_sansomeana_means, here("output", "results", "02_aggressiveness_sansomeana-means.csv"))
 ```
 
-## Figure 4
 
-```{r figure 4, fig.height= 8, fig.width=5}
-# use back-transform means from emmeans output
-# means bit different from raw data  
-means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
-# combine the two controls for plotting
-means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
-                                                c("Control Agar" = "Control", 
-                                                  "Control None" = "Control", 
-                                                  "Phytophthora sojae" = "P. sojae", 
-                                                  "Phytophthora sansomeana" = "P. sansomeana")
-                                                )
-
-fig_4A <- means_aggressiveness %>% 
-  filter(measurement == "Root length") %>% 
-  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() +
-  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-                  alpha = 0.6) +
-  geom_hline(yintercept = 12.8, linetype="dashed",  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = "none", 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = "",
-       y = "Root length (in)",
-       color = "") 
-
-fig_4B <- means_aggressiveness %>% 
-  filter(measurement == "Root area") %>% 
-  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() +
-  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-                  alpha = 0.6) +
-  geom_hline(yintercept = 0.26, linetype="dashed",  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = "none", 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = "",
-       y = expression('Root area (in'^2*')'),
-       color = "") 
-
-fig_4C <- aggressiveness_plots %>% 
+```{r fig 4 parts, message=FALSE}
+fig_4A <- aggressiveness_plots %>% 
   ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
   stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
-  geom_hline(yintercept = 20, linetype="dashed",  size = 0.7) +
+  geom_hline(yintercept = 23.5, linetype="dashed",  size = 0.7) +
   theme_minimal() +
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
@@ -764,11 +779,11 @@ fig_4C <- aggressiveness_plots %>%
        y = "Root dry weigth (mg)",
        color = "") 
 
-fig_4D <- aggressiveness_plots %>% 
+fig_4B <- aggressiveness_plots %>% 
   ggplot(aes(x = reorder (isolate, shoot_mg), y = shoot_mg, color = species)) + 
   coord_flip() +
   stat_summary(fun.data = "mean_se", aes(colour = species), alpha = 0.6) +
-  geom_hline(yintercept = 47, linetype="dashed",  size = 0.7) +
+  geom_hline(yintercept = 57.15, linetype="dashed",  size = 0.7) +
   theme_minimal() +
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
@@ -776,6 +791,55 @@ fig_4D <- aggressiveness_plots %>%
        y = "Shoot dry weigth (mg)",
        color = "") 
 
+# use back-transform means from emmeans output
+# means bit different from raw data, some missing data
+means_sojae <- read_csv(here("output", "results", "02_aggressiveness_sojae-means.csv"))
+means_sansomeana <- read_csv(here("output", "results", "02_aggressiveness_sansomeana-means.csv")) %>% 
+  filter(!species == "Control Agar sansomeana", 
+         !species == "Control None sansomena")
+
+# combine the two for plotting
+means_aggressiveness <- rbind(means_sojae, means_sansomeana) 
+
+means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
+                                                c("Control Agar" = "Control", 
+                                                  "Control None" = "Control", 
+                                                  "Phytophthora sojae" = "P. sojae", 
+                                                  "Phytophthora sansomeana" = "P. sansomeana")
+                                                )
+
+fig_4C <- means_aggressiveness %>% 
+  filter(agg_parameter == "Root length") %>% 
+  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
+  coord_flip() +
+  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  alpha = 0.6) +
+  geom_hline(yintercept = 11.8, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = "Root length (in)",
+       color = "") 
+
+fig_4D <- means_aggressiveness %>% 
+  filter(agg_parameter == "Root area") %>% 
+  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
+  coord_flip() +
+  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  alpha = 0.6) +
+  geom_hline(yintercept = 0.272, linetype="dashed",  size = 0.7) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        axis.text.y  = element_text(size = rel(0.95))) +
+  labs(x = "",
+       y = expression('Root area (in'^2*')'),
+       color = "") 
+```
+
+## Figure 4
+
+```{r fig 4, fig.height= 8, fig.width=5}
 figure_four_AB <- plot_grid(fig_4A, fig_4B, labels = c("A", "B"), nrow  = 1)
 figure_four_CD <- plot_grid(fig_4C, fig_4D, labels = c("C", "D"), nrow  = 1)
 
@@ -786,24 +850,22 @@ legend_four <- get_legend(fig_4A + theme(legend.position = "bottom"))
 (figure_four <- plot_grid(figure_four_no_legend, legend_four, ncol = 1, rel_heights = c(1,0.04)))
 
 # ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 5, height = 8)
-
 ```
-
 
 # Correlation between aggressiveness and complexity 
 
 ```{r commbine sojae data, message=FALSE}
 # import saved results
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
-means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_results-means.csv"))
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_sojae-means.csv"))
 
 sojae_complexity <- sojae_pathotype %>% 
   dplyr::select(isolate_id, Complexity)
 
 sojae_aggressiveness <- means_aggressiveness %>% 
   filter(species == "Phytophthora sojae") %>% 
-  dplyr::select(isolate_id = isolate, estimate, measurement) %>% 
-  spread(measurement, estimate)
+  dplyr::select(isolate_id = isolate, estimate, agg_parameter) %>% 
+  spread(agg_parameter, estimate)
 
 sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
 ```
@@ -944,7 +1006,7 @@ log_selection %>%
   filter(`Lack of fit` > 0.05) %>% 
   group_by(model)%>% 
   count() %>% 
-  knitr::kable()
+  pander()
 ```
 
 More non-significant p-values for lack of fit  for the 4 parameters model (LL.3).  
@@ -1124,6 +1186,31 @@ compare_EC50 %>%
   theme_minimal() +
   panel_border()
 ```
+
+```{r add id to isolates}
+## add isolate ID and species
+## filter isolates not used 
+isolates_used <- table_one %>% 
+  filter(isolate_id %in% c("16PR009.1", "16PR018B.1", "16PR024C.1", "16PR024C.2", 
+                           "16PR027C.1", "17PR006L.1", "17PR009A.1", "17PR013G.3", 
+                           "17PR018H.1", "18PR001", "18PR003", "18PR004", "18PR005", 
+                           "18PR006", "18PR011", "18PR013")) %>% 
+  dplyr::select(isolate_id, species, county) %>% 
+  arrange(isolate_id)
+
+# add isolate number, identification used in sensitivity assays
+isolates_used$isolate <- seq.int(nrow(isolates_used)) 
+
+
+```
+
+
+
+
+
+
+
+
 
 Lower EC50 for the hormetic models.
 

@@ -65,7 +65,7 @@ year,source,sample_id,county,isolate_id,isolate_name,plant_organ,species,identif
 2017,17SR,17SR,Pike,17PRORR.3,,Root,Pythium spp.,sequence
 2017,17SR,17SR,Pike,17PRORR.4,,Root,Pythium ultimum var. ultimum,sequence
 2018,plant clinic,201800334,Livingston,18PY008,201800334,Root and Stem,Pythium spp.,morpholgy
-2018,plant clinic,201800337,Vermilion,18PR001,201800337,Root and Stem,Phytophthora sojae,morpholgy
+2018,plant clinic,201800337,Vermilion,18PR001,201800337,Root and Stem,Phytophthora sojae,sequence
 2018,Bowen CFAR,18PRCFAR200,Champaign,18Py003,18PRCFAR200_7,Root and Stem,Pythium spp.,morpholgy
 2018,Bowen CFAR,18PRCFAR200,Champaign,18Py004,18PRCFAR200_8,Root and Stem,Pythium spp.,morpholgy
 2018,Bowen CFAR,18PRCFAR200,Champaign,18Py005,18PRCFAR200_1,Root and Stem,Pythium spp.,morpholgy
