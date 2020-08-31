@@ -80,6 +80,14 @@ map_soil <- st_as_sf(map_soil, coords = c("long", "lat"),
                    crs = 4326, agr = "constant")
 
 # change continuous data (plant samples) into categorical
+plant_samples_county <- plant_samples %>% 
+  group_by(PC_ID, County) %>% 
+  count() %>% 
+  filter(!is.na(County)) %>% 
+  dplyr::select(county = County) %>% 
+  group_by(county) %>% 
+  count() 
+
 map_plant <- plant_samples_county %>% 
   mutate(samples_categ = case_when(
     n <= 5 ~ "1-5", 
