@@ -171,13 +171,13 @@ year,source,sample_id,county,isolate_id,isolate_name,plant_organ,species,identif
 2018,plant clinic,201800443,Jasper,18PY020,201800443_2,Root and Stem,Pythium spp.,morpholgy
 2018,plant clinic,201800454,Massac,18PR007,201800454_1,Root and Stem,Phytophthora sojae,sequence
 2018,plant clinic,201800454,Massac,18PR006,201800454_2,Root and Stem,Phytophthora sojae,sequence
-2018,plant clinic,plant.clinic,Jefferson ,18PR008,PL3.1,Stem,Phytophthora sojae,sequence
-2018,plant clinic,plant.clinic,Jefferson ,18PR010,PL3.2,Stem,Phytophthora sojae,sequence
-2018,plant clinic,plant.clinic,Jefferson ,18PR009,PL5.1,Stem,Phytophthora sojae,sequence
-2018,kurt varland,KV002,Knox,18PR011,KV002.1,Stem,Phytophthora sojae,sequence
-2018,kurt varland,KV002,Knox,18PR012,KV002.2,Stem,Phytophthora sojae,sequence
-2018,plant clinic,,Jefferson ,18PR016,PL5.2,Stem,Phytophthora sojae,sequence
-2018,kurt varland,KV006,Knox,18PR014,KV006,Stem,Phytophthora sojae,sequence
-2018,kurt varland,KV009,Knox,18PR015,KV009,Stem,Phytophthora sojae,sequence
-2018,plant clinic,,Jefferson ,18PR013,PL7,Stem,Phytophthora sojae,sequence
-2018,kurt varland,KV002,Knox,18PR017,KV002.3,Stem,Phytophthora sojae,sequence
+2018,plant clinic,201800483,Knox,18PR008,PL3.1,Stem,Phytophthora sojae,sequence
+2018,plant clinic,201800483,Knox,18PR010,PL3.2,Stem,Phytophthora sojae,sequence
+2018,plant clinic,201800483,Knox,18PR009,PL5.1,Stem,Phytophthora sojae,sequence
+2018,kurt varland,KV002,Jefferson,18PR011,KV002.1,Stem,Phytophthora sojae,sequence
+2018,kurt varland,KV002,Jefferson,18PR012,KV002.2,Stem,Phytophthora sojae,sequence
+2018,plant clinic,201800483,Knox,18PR016,PL5.2,Stem,Phytophthora sojae,sequence
+2018,kurt varland,KV006,Jefferson,18PR014,KV006,Stem,Phytophthora sojae,sequence
+2018,kurt varland,KV009,Jefferson,18PR015,KV009,Stem,Phytophthora sojae,sequence
+2018,plant clinic,201800483,Knox,18PR013,PL7,Stem,Phytophthora sojae,sequence
+2018,kurt varland,KV002,Jefferson,18PR017,KV002.3,Stem,Phytophthora sojae,sequence

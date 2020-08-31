@@ -54,22 +54,6 @@ soil_samples$county %>%
   n_distinct() 
 ```
 
-```{r soil samples county}
-soil_samples %>%
-   group_by(year, county) %>% 
-  count() %>% 
-  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(alpha = 0.6) +
-  coord_flip() +
-  labs(x = "", y = "Soil Samples", fill ="Year") +
-  theme_minimal_vgrid() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
-```
-
-
-
-
-
 ```{r plant samples}
 # 2018
 plant_samples$PC_ID %>% 
@@ -77,25 +61,6 @@ plant_samples$PC_ID %>%
 
 plant_samples$County %>%
   n_distinct()
-```
-```{r plant samples counties}
-plant_subsamples <- plant_samples %>% 
-  group_by(PC_ID, County) %>% 
-  count() 
-
-plant_samples_county <- plant_subsamples %>% 
-  filter(!is.na(County)) %>% 
-  dplyr::select(county = County) %>% 
-  group_by(county) %>% 
-  count()
-
-plant_samples_county %>%
-  ggplot(aes(x = fct_reorder(county, n), y = n)) +
-  geom_col(alpha = 0.6) +
-  coord_flip() +
-  labs(x = "", y = "Plant Samples", fill ="Year") +
-  theme_minimal_vgrid() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
 ```
 
 ```{r samples data map}
@@ -114,7 +79,7 @@ map_soil <- soil_samples %>%
 map_soil <- st_as_sf(map_soil, coords = c("long", "lat"), 
                    crs = 4326, agr = "constant")
 
-# change continuous data (plant samples) into categories 
+# change continuous data (plant samples) into categorical
 map_plant <- plant_samples_county %>% 
   mutate(samples_categ = case_when(
     n <= 5 ~ "1-5", 
@@ -160,88 +125,125 @@ map_plant <- map_plant %>%
 
 # Identification of isolates
 
-```{r exp isolates}
-identified_isolates <-  isolates_recovered %>%
-  filter(identification == "sequence") 
-  
-identified_isolates %>% 
-  count() 
-
-identified_isolates %>% 
-  group_by(source) %>% 
-  count() %>% 
-  pander()
-
-identified_isolates$county %>% 
-  n_distinct()
-
-identified_isolates %>%
-  group_by(year) %>% 
+```{r sequenced isolates}
+isolates_recovered %>%
+  group_by(identification) %>% 
   count() %>% 
   pander()
 ```
 
-```{r counties isolates collected}
-identified_isolates %>% 
-  filter(!is.na(county)) %>% 
-  group_by(year, county) %>% 
+```{r identified isolates}
+sequenced_isolates <-  isolates_recovered %>%
+  filter(identification == "sequence") 
+  
+sequenced_isolates %>% 
+  group_by(year) %>% 
   count() %>% 
-  ggplot(aes(x = fct_reorder(county, n), y = n, fill = as.factor(year))) +
-  geom_col(alpha = 0.6) +
-  coord_flip() +
-  labs(x = "", y = "Isolates recovered", fill ="Year") +
-  theme_minimal_vgrid() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+  mutate(percentage = (n/97)) %>% 
+  pander()
+
+sequenced_isolates$county %>% 
+  n_distinct()
 ```
 
 ```{r species collected}
-isolates_species <- identified_isolates %>% 
+isolates_species <- sequenced_isolates %>% 
   dplyr::select(species) %>%
   group_by(species) %>% 
   count() %>%  
   mutate(genus = case_when(
     grepl("Phyto", species) ~ "Phytophthora spp.",
     grepl("Pyth", species) ~"Pythium spp.")) %>% 
-  mutate(percentage = (n/96))
+  mutate(percentage = (n/97))
 
-isolates_species$species %>% 
-  n_distinct()
-```
-
-```{r isolates per species}
 isolates_species %>% 
-  mutate(percentage = percentage*100) %>%
-  dplyr::select(species, n) %>% 
-  arrange(n) %>% 
+  group_by(genus) %>% 
+  count() %>% 
+  mutate(percentage = (n/97)) %>% 
   pander()
-  
 ```
 
-```{r species collected fig}
-isolates_species %>% 
-  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.6) +
-  coord_flip() +
-  labs(x = "", y = "Percent isolates recovered") +
-  theme_minimal_vgrid() +
-  theme(legend.position = "none",
-        axis.text.y  = element_text(face = "italic")) +
-  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
-                     labels = percent_format()) 
+## Phytophthora spp
+
+```{r phytophtora isolates}
+phytophthora_isolates <- sequenced_isolates %>% 
+  filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) 
+
+phytophthora_isolates %>% 
+  group_by(year) %>% 
+  count()
+
+phytophthora_isolates %>% 
+  dplyr::select(county) %>% 
+  n_distinct()
+
+# soil samples
+phytophthora_isolates %>% 
+  filter(!year == 2018) %>% 
+  dplyr::select(sample_id) %>% 
+  n_distinct() 
+
+# plant samples
+phytophthora_isolates %>% 
+  filter(year == 2018) %>% 
+  dplyr::select(sample_id) %>% 
+  n_distinct() 
+
+phytophthora_isolates %>% 
+  filter(year == 2018) %>% 
+  group_by(source) %>% 
+  count()
+
 ```
 
 ## Table 1
 
 ```{r phytophthora county}
-table_one <- identified_isolates %>% 
-  filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) %>% 
+table_one <- phytophthora_isolates %>% 
   dplyr::select(isolate_id,species, county, year) %>% 
   arrange(species, year)
 
 table_one %>% pander()
 
 # write_csv(table_one, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
+```
+
+## All species
+
+```{r isolates per species}
+isolates_species %>% 
+  filter(!species %in% c("Pythium spp.", "Phytophthora spp.")) %>% # no species after BLAST
+  dplyr::select(species) %>% 
+  n_distinct()
+
+isolates_species %>% 
+  mutate(percentage = percentage*100) %>%
+  dplyr::select(-genus) %>% 
+  arrange(n) %>% 
+  pander()
+```
+
+```{r phytophthora and pythium}
+sequenced_isolates %>%
+  group_by(sample_id, species) %>% 
+  count() %>% 
+  arrange(n) %>%
+  mutate(genus = case_when(
+    grepl("Phyto", species) ~ "Phytophthora spp.",
+    grepl("Pyth", species) ~"Pythium spp.")) %>% 
+  ggplot(aes(x = sample_id, y = n, fill = genus)) +
+  geom_col(alpha = 0.7) +
+  coord_flip() +
+  theme_minimal_vgrid() +
+  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+```
+
+```{r samples phyto and pythium }
+sequenced_isolates %>%
+  filter(sample_id %in% c("17PR013", "17PR009")) %>% 
+  group_by(sample_id, species, county) %>% 
+  count()
 ```
 
 # Pathotype
@@ -336,7 +338,7 @@ pathotype_frequency <- pathotype_frequency %>%
 
 # write_csv(pathotype_frequency, here("output", "results", "02_pathotype-psojae_frequency-table.csv"))
 
-pathotype_frequency %>% pandoc.table()
+pathotype_frequency %>% pander()
 ```
 
 ## Phytophthora sansomeana
@@ -419,7 +421,7 @@ group_by(experiment) %>%
   summarise(min = min(room_temperature), 
             max = max(room_temperature), 
             mean = mean(room_temperature)) %>% 
-  pandoc.table()
+  pandoc()
 ```
 
 ```{r temperature agg}
@@ -882,8 +884,6 @@ sojae_corr
 ## Figure 5
 
 ```{r corr plot}
-
-
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(sojae_corr$r, method = "color", col = col(200),
          type = "upper", order = "hclust", number.cex = 1.5,
