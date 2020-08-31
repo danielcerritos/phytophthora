@@ -111,6 +111,7 @@ map_plant$samples_categ <- factor(map_plant$samples_categ,
 map_soil$year <- as.factor(map_soil$year)
 map_plant <- map_plant %>% 
   filter(!is.na(samples_categ))
+
 ```
 
 ## Figure 1
@@ -429,7 +430,7 @@ group_by(experiment) %>%
   summarise(min = min(room_temperature), 
             max = max(room_temperature), 
             mean = mean(room_temperature)) %>% 
-  pandoc()
+  pander()
 ```
 
 ```{r temperature agg}
