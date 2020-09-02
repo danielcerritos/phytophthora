@@ -63,6 +63,17 @@ plant_samples$County %>%
   n_distinct()
 ```
 
+```{r total counties}
+county_soil <- soil_samples %>% 
+  dplyr::select(county)
+
+county_plant <- plant_samples %>% 
+  dplyr::select(county = County)
+
+rbind(county_soil, county_plant) %>% 
+  n_distinct()
+```
+
 ```{r samples data map}
 # subset county data 
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -114,7 +125,7 @@ map_plant <- map_plant %>%
 
 ```
 
-## Figure 1
+## Figure 1/
 
 ```{r sample map}
 # samples collection map 
@@ -135,6 +146,10 @@ map_plant <- map_plant %>%
 # Identification of isolates
 
 ```{r sequenced isolates}
+isolates_recovered$county %>%
+  n_distinct()
+
+
 isolates_recovered %>%
   group_by(identification) %>% 
   count() %>% 
@@ -143,7 +158,9 @@ isolates_recovered %>%
 
 ```{r identified isolates}
 sequenced_isolates <-  isolates_recovered %>%
-  filter(identification == "sequence") 
+  filter(identification == "sequence")
+
+sequenced_isolates 
   
 sequenced_isolates %>% 
   group_by(year) %>% 
@@ -177,6 +194,8 @@ isolates_species %>%
 ```{r phytophtora isolates}
 phytophthora_isolates <- sequenced_isolates %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) 
+
+phytophthora_isolates %>% view()
 
 phytophthora_isolates %>% 
   group_by(year) %>% 
@@ -284,9 +303,20 @@ hagis_args <- list(
   perc_susc = "percent.susceptible"
 )
 
-# effective Rps Fig 3A
+# effective Rps
 sojae_rps <- do.call(summarize_gene, hagis_args)
+sojae_rps %>% pander()
+```
 
+```{r complexity}
+complexities <- do.call(calculate_complexities, hagis_args)
+# mean complexity
+pander(summary(complexities))
+```
+
+## Figure 2
+
+```{r fig 2, fig.height=5.7, fig.width=4.5, warning=FALSE}
 effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
@@ -297,13 +327,6 @@ effective_rps <- sojae_rps %>%
     expand = expansion(mult = c(0, 0.05)), 
     labels = percent_format()) +
     theme_minimal_hgrid()
-```
-
-```{r complexity}
-complexities <- do.call(calculate_complexities, hagis_args)
-
-# mean complexity
-pander(summary(complexities))
 
 # Fig 3B
 complexity_percent <- complexities$grouped_complexities %>% 
@@ -321,15 +344,10 @@ mean_complexity <- complexity_percent %>%
                      labels = percent_format()) +
   scale_x_continuous(limits = c(1, 12), breaks = 1:12) +
   theme_minimal_hgrid() 
-```
 
-## Figure 2
-
-```{r fig 2, fig.height=5.7, fig.width=4.5, warning=FALSE}
 (figure_two <- plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1))
 
 # ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4.5, height = 5.7)
-
 ```
 
 ## Table 2
@@ -349,6 +367,15 @@ pathotype_frequency <- pathotype_frequency %>%
 
 pathotype_frequency %>% pander()
 ```
+
+```{r diversity indexes}
+# diversity indexes
+diversity %>% pander()
+
+individual_pathotypes(diversity) 
+```
+
+
 
 ## Phytophthora sansomeana
 
