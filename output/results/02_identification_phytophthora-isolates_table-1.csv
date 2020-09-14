@@ -1,32 +1,32 @@
-isolate_id,species,county,year
-16PR018B.1,Phytophthora sansomeana,Kankakee,2016
-16PR024C.1,Phytophthora sansomeana,Grundy,2016
-16PR024C.2,Phytophthora sansomeana,Grundy,2016
-17PR006L.1,Phytophthora sansomeana,Macon,2017
-18PR003,Phytophthora sansomeana,Champaign,2018
-18PR004,Phytophthora sansomeana,Champaign,2018
-18PR005,Phytophthora sansomeana,Champaign,2018
-16PR009.1,Phytophthora sojae,Champaign,2016
-16PR009.2,Phytophthora sojae,Champaign,2016
-16PR027C.1,Phytophthora sojae,Livingston,2016
-16PR027C.2,Phytophthora sojae,Livingston,2016
-17PR009A.1,Phytophthora sojae,Franklin,2017
-17PR009A.2,Phytophthora sojae,Franklin,2017
-17PR013G.3,Phytophthora sojae,Crawford,2017
-17PR018F.1,Phytophthora sojae,Boone,2017
-17PR018F.2,Phytophthora sojae,Boone,2017
-17PR018H.1,Phytophthora sojae,Boone,2017
-17PR018J.3,Phytophthora sojae,Boone,2017
-18PR001,Phytophthora sojae,Vermilion,2018
-18PR007,Phytophthora sojae,Massac,2018
-18PR006,Phytophthora sojae,Massac,2018
-18PR008,Phytophthora sojae,Knox,2018
-18PR010,Phytophthora sojae,Knox,2018
-18PR009,Phytophthora sojae,Knox,2018
-18PR011,Phytophthora sojae,Jefferson,2018
-18PR012,Phytophthora sojae,Jefferson,2018
-18PR016,Phytophthora sojae,Knox,2018
-18PR014,Phytophthora sojae,Jefferson,2018
-18PR015,Phytophthora sojae,Jefferson,2018
-18PR013,Phytophthora sojae,Knox,2018
-18PR017,Phytophthora sojae,Jefferson,2018
+isolate_id,species,county,year,Pathotype
+16PR018B.1,Phytophthora sansomeana,Kankakee,2016,NA
+16PR024C.1,Phytophthora sansomeana,Grundy,2016,NA
+16PR024C.2,Phytophthora sansomeana,Grundy,2016,NA
+17PR006L.1,Phytophthora sansomeana,Macon,2017,NA
+18PR003,Phytophthora sansomeana,Champaign,2018,NA
+18PR004,Phytophthora sansomeana,Champaign,2018,NA
+18PR005,Phytophthora sansomeana,Champaign,2018,NA
+16PR009.1,Phytophthora sojae,Champaign,2016,"1b, 7, 2, 3b, 3c, 5"
+16PR009.2,Phytophthora sojae,Champaign,2016,"1b, 7, 2, 3a, 3b, 3c, 5"
+16PR027C.1,Phytophthora sojae,Livingston,2016,"1a, 1b, 1c, 1k, 3c, 4, 5"
+16PR027C.2,Phytophthora sojae,Livingston,2016,"1a, 1b, 1c, 1k, 3c, 4, 5"
+17PR009A.1,Phytophthora sojae,Franklin,2017,"1b, 6, 7, 3c, 4, 5"
+17PR009A.2,Phytophthora sojae,Franklin,2017,"1b, 6, 7, 3c, 4, 5"
+17PR013G.3,Phytophthora sojae,Crawford,2017,"1a, 1b, 1c, 1k, 7, 3a, 3b, 3c, 5"
+17PR018F.1,Phytophthora sojae,Boone,2017,"1a, 1b, 1c, 1k, 7, 5"
+17PR018F.2,Phytophthora sojae,Boone,2017,"1b, 1k, 7, 5"
+17PR018H.1,Phytophthora sojae,Boone,2017,"1a, 1b, 1c, 1k, 7, 5"
+17PR018J.3,Phytophthora sojae,Boone,2017,"1b, 1k, 7, 5"
+18PR001,Phytophthora sojae,Vermilion,2018,"1a, 1b, 1c, 1k, 7, 2, 3b, 5"
+18PR006,Phytophthora sojae,Massac,2018,"1a, 1b, 1c, 1k, 2, 3a, 3c, 5"
+18PR007,Phytophthora sojae,Massac,2018,"1a, 1b, 1c, 1k, 7, 2, 3a, 5"
+18PR008,Phytophthora sojae,Knox,2018,"1b, 7, 3a, 3c, 5"
+18PR009,Phytophthora sojae,Knox,2018,"1b, 7, 3a, 3c, 5"
+18PR010,Phytophthora sojae,Knox,2018,"1b, 7, 3a, 5"
+18PR011,Phytophthora sojae,Jefferson,2018,"1b, 1k, 7, 5"
+18PR012,Phytophthora sojae,Jefferson,2018,"1b, 1k, 7, 5"
+18PR013,Phytophthora sojae,Knox,2018,"1b, 7, 3a, 3c, 5"
+18PR014,Phytophthora sojae,Jefferson,2018,"1b, 1k, 3c, 5"
+18PR015,Phytophthora sojae,Jefferson,2018,"1b, 1k, 7, 2, 3a, 3b, 3c, 5"
+18PR016,Phytophthora sojae,Knox,2018,"1b, 3a, 3c, 5"
+18PR017,Phytophthora sojae,Jefferson,2018,"1b, 1k, 7, 2, 3a, 3b, 3c, 4, 5"

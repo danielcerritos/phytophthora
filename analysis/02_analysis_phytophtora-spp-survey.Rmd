@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -224,16 +224,14 @@ phytophthora_isolates %>%
 
 ```
 
-## Table 1
+## Table 1 first 
 
 ```{r phytophthora county}
 table_one <- phytophthora_isolates %>% 
   dplyr::select(isolate_id,species, county, year) %>% 
-  arrange(species, year)
+  arrange(isolate_id)
 
 table_one %>% pander()
-
-# write_csv(table_one, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
 
 ## All species
@@ -368,11 +366,34 @@ pathotype_frequency <- pathotype_frequency %>%
 pathotype_frequency %>% pander()
 ```
 
+
+## Table 1 modified
+
 ```{r diversity indexes}
 # diversity indexes
 diversity %>% pander()
 
-individual_pathotypes(diversity) 
+pathotypes_by_isolate <- diversity$individual_pathotypes %>% 
+  rename(isolate_number = Sample) %>% 
+  arrange(isolate_number)
+
+isolates_ids <- table_one %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  arrange(isolate_id)
+
+pahtotypes_isolate <- bind_cols(isolates_ids, pathotypes_by_isolate) %>% 
+  dplyr::select(-isolate_number)
+
+## add sansomeana isolates to table 1
+sansomeana_table_one <- table_one %>% 
+  filter(species == "Phytophthora sansomeana") %>% 
+  mutate(Pathotype = NA)
+
+table_one_modified <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>% 
+  arrange(species, year)
+  
+# write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
+
 ```
 
 
@@ -381,16 +402,19 @@ individual_pathotypes(diversity)
 
 ```{r sansomena effective genes, fig.height=2.85, fig.width=4.5}
 sansomeana <- sansomeana %>% 
-  mutate(percent.susceptible = round((dead/total)*100))
+  mutate(percent.susceptible = (dead/total)*100)
 
-sansomeana_rps <- summarize_gene(
-  x = sansomeana,
-  cutoff = 75,
-  control = "rps",
-  sample = "isolate_id",
-  gene = "gene",
-  perc_susc = "percent.susceptible"
-)
+# having trouble to use hagis package for sansomeana data
+# calculate by hand
+
+sansomeana_summ <- sansomeana %>% 
+  group_by(isolate_id, differential, gene) %>% 
+  summarise(percent_susceptible = mean(percent.susceptible))
+
+sansomeana_summ %>%
+  filter(percent_susceptible > 75)
+
+
 
 sansomeana_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
@@ -403,6 +427,20 @@ sansomeana_rps %>%
     labels = percent_format()) +
     theme_minimal_hgrid()
 ```
+
+Look isolates that cause disease in Rps3a and Rps 1c
+
+```{r}
+sansomeana %>% 
+    filter(gene %in% c("3a", "1c"), 
+           percent.susceptible >75)
+
+diversity_sansomena <- do.call(calculate_diversities, sansomeana_rps)
+
+
+```
+
+
 
 ```{r save pathotype data}
 # combine pathtoyping results
@@ -556,6 +594,8 @@ emmeans(fm_root_area, ~ species, type = "response") %>%
   cld.emmGrid()
 ```
 
+## Results summary
+
 ```{r effect sizes, message=FALSE}
 # save means to see effect size
 m_root_dry <- emmeans(fm_root_dry, ~ species) %>% 
@@ -611,7 +651,10 @@ fig_3A <- aggressiveness_plots %>%
   labs(x = "", 
          y = "Root length (in)") + 
   theme_minimal() +
-  theme(axis.text.x = element_blank())  
+  theme(axis.text.x = element_blank()) +
+  stat_summary(fun.y="mean", geom="point", size=1.2,
+                 position=position_dodge(width=0.75), color="black")
+
 
 fig_3B <- aggressiveness_plots %>% 
   ggplot(aes(x = species, y = area_in.2, color =  species)) +
@@ -620,7 +663,9 @@ fig_3B <- aggressiveness_plots %>%
   labs(y = expression('Root area (in'^2*')'), 
        x = "")  + 
   theme_minimal() +
-  theme(axis.text.x = element_blank()) 
+  theme(axis.text.x = element_blank())  +
+  stat_summary(fun.y="mean", geom="point", size=1.2,
+                 position=position_dodge(width=0.75), color="black")
 
 fig_3C <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
   geom_boxplot(alpha = 0.8) +
@@ -628,7 +673,9 @@ fig_3C <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, colo
   labs(x = "", 
        y = "Root dry weigth (mg)") + 
   theme_minimal() +
-  theme(axis.text.x = element_blank()) 
+  theme(axis.text.x = element_blank())  +
+  stat_summary(fun.y="mean", geom="point", size=1.2,
+                 position=position_dodge(width=0.75), color="black")
 
 fig_3D <- ggplot(data = aggressiveness_plots, aes(x = species, y = shoot_mg, color =  species)) +
   geom_boxplot(alpha = 0.8) +
@@ -636,7 +683,9 @@ fig_3D <- ggplot(data = aggressiveness_plots, aes(x = species, y = shoot_mg, col
   labs(x = "", 
        y = "Shoot dry weigth (mg)") + 
   theme_minimal() +
-  theme(axis.text.x = element_blank()) 
+  theme(axis.text.x = element_blank())  +
+  stat_summary(fun.y="mean", geom="point", size=1.2,
+                 position=position_dodge(width=0.75), color="black")
 
 
 figure_three_no_legend <- plot_grid(
@@ -673,8 +722,9 @@ sansomeana_aggressiveness <- aggressiveness %>%
 fm_root_dry_sojae <- lmer(root_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
 resid_panel(fm_root_dry_sojae) 
 anova(fm_root_dry_sojae)
-emmeans(fm_root_dry_sojae, ~ isolate) %>% 
+emmeans(fm_root_dry_sojae, ~ isolate) %>%  
   cld.emmGrid()
+
 ```
 
 ```{r shoot dry root}
@@ -690,7 +740,7 @@ emmeans(fm_shoot_dry_sojae, ~ isolate) %>%
 fm_root_length_sojae <- lmer(log(length_in) ~ isolate + (1|experiment), data = sojae_aggressiveness)
 resid_panel(fm_root_length_sojae) # diagnostic plots look fine
 anova(fm_root_length_sojae)
-emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% # back-transform estimates
+emmeans(fm_root_length_sojae, ~ isolate, type = "response")# back-transform estimates
   cld.emmGrid()
 ```
 
@@ -890,46 +940,6 @@ legend_four <- get_legend(fig_4A + theme(legend.position = "bottom"))
 # ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 5, height = 8)
 ```
 
-# Correlation between aggressiveness and complexity 
-
-```{r commbine sojae data, message=FALSE}
-# import saved results
-sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
-means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_sojae-means.csv"))
-
-sojae_complexity <- sojae_pathotype %>% 
-  dplyr::select(isolate_id, Complexity)
-
-sojae_aggressiveness <- means_aggressiveness %>% 
-  filter(species == "Phytophthora sojae") %>% 
-  dplyr::select(isolate_id = isolate, estimate, agg_parameter) %>% 
-  spread(agg_parameter, estimate)
-
-sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
-```
-
-```{r pearson correlation}
-sojae_corr <- sojae_all_data %>%
-  dplyr::select(-isolate_id) %>%
-  as.matrix() %>%
-  rcorr(type = "pearson")
-
-sojae_corr 
-```
-
-## Figure 5
-
-```{r corr plot}
-col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
-corrplot(sojae_corr$r, method = "color", col = col(200),
-         type = "upper", order = "hclust", number.cex = 1.5,
-         addCoef.col = "black", # Add coefficient of correlation
-         tl.col = "black", tl.srt = 90, # Text label color and rotation
-         # Combine with significance
-         p.mat = sojae_corr$P, sig.level = 0.05, insig = "blank", 
-         # hide correlation coefficient on the principal diagonal
-         diag = FALSE, tl.cex = 1)
-```
 
 # Fungicide sensitivity 
 
@@ -1266,7 +1276,7 @@ compare_EC50_id <- compare_EC50_id %>%
 
 ## Figure 6
 
-```{r figure 5,fig.height=5, fig.width=5.5 }
+```{r figure 5,fig.height=5, fig.width=5.5, message=FALSE}
 fungicide_EC50 <- read_csv(here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
 
 EC50_plot <- fungicide_EC50  %>% 
@@ -1301,3 +1311,99 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
 
 # ggsave("figure5.tiff", plot = figure_five, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
 ```
+# Correlation between aggressiveness and complexity 
+
+```{r commbine sojae data, message=FALSE}
+# import saved results
+sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness_sojae-means.csv"))
+
+sojae_complexity <- sojae_pathotype %>% 
+  dplyr::select(isolate_id, Complexity)
+
+sojae_aggressiveness <- means_aggressiveness %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  dplyr::select(isolate_id = isolate, estimate, agg_parameter) %>% 
+  spread(agg_parameter, estimate)
+
+sojae_all_data <- left_join(sojae_complexity, sojae_aggressiveness, by = c("isolate_id")) 
+
+# EC50 data
+corr_EC50 <- fungicide_EC50 %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  dplyr::select(isolate_id, fungicide, EC50)
+
+corr_EC50 <- corr_EC50 %>% 
+  spread(fungicide, EC50)
+
+sojae_all_data_EC50 <- full_join(sojae_all_data, corr_EC50, by = "isolate_id")
+
+```
+
+```{r pearson correlation}
+sojae_corr <- sojae_all_data_EC50 %>%
+  dplyr::select(-isolate_id) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
+sojae_corr 
+```
+
+## Figure 5
+
+```{r corr plot}
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(sojae_corr$r, method = "color", col = col(200),
+         type = "upper", order = "hclust", number.cex = 1.5,
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col = "black", tl.srt = 90, # Text label color and rotation
+         # Combine with significance
+         p.mat = sojae_corr$P, sig.level = 0.05, insig = "blank", 
+         # hide correlation coefficient on the principal diagonal
+         diag = FALSE, tl.cex = 1)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+fungicide_EC50 %>% 
+  group_by(fungicide, species) %>% 
+  summarise(min_EC = min(EC50), 
+            max_EC = max(EC50), 
+            mean_EC = mean(EC50))
+```
+
+
+```{r}
+fungicide_EC50 %>% 
+  filter(fungicide == "azoxystrobin", 
+         EC50 > 2) %>% 
+  group_by(fungicide, species) %>% 
+  summarise(min_EC = min(EC50), 
+            max_EC = max(EC50), 
+            mean_EC = mean(EC50))
+```
+
+
+```{r}
+fungicide_EC50 %>% 
+  filter(fungicide == "azoxystrobin", 
+         EC50 > 2)
+
+fungicide_EC50 %>% 
+  filter(fungicide == "ethaboxam", 
+         EC50 > 0.03)
+
+
+fungicide_EC50 %>% 
+  filter(fungicide == "metalaxyl", 
+         EC50 > 0.07)
+  
+```
+
