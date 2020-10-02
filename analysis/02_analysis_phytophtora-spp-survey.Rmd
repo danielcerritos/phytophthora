@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -125,7 +125,7 @@ map_plant <- map_plant %>%
 
 ```
 
-## Figure 1/
+## Figure 1
 
 ```{r sample map}
 # samples collection map 
@@ -187,6 +187,21 @@ isolates_species %>%
   count() %>% 
   mutate(percentage = (n/97)) %>% 
   pander()
+```
+
+```{r}
+isolates_species %>% 
+  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
+  geom_col(alpha = 0.6) +
+  coord_flip() +
+  labs(x = "", y = "Percent isolates recovered") +
+  theme_minimal_vgrid() +
+  theme(legend.position = "none",
+        axis.text.y  = element_text(face = "italic")) +
+  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) 
+
 ```
 
 ## Phytophthora spp
@@ -633,7 +648,7 @@ agg_species_means %>%
 
 ## Figure 3
 
-```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
+```{r agg data}
 # combine the two controls for plotting
 aggressiveness_plots <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
 
@@ -643,26 +658,33 @@ aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species,
                                             "Phytophthora sojae" = "P. sojae", 
                                             "Phytophthora sansomeana" = "P. sansomeana")
                                           )
+# transform to SI units 
+aggressiveness_plots <- aggressiveness_plots %>% 
+  mutate(length_cm = length_in*2.54, 
+         area_cm.2 = area_in.2*6.4516)
+```
 
+```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
 fig_3A <- aggressiveness_plots %>% 
-  ggplot(aes(x = species, y = length_in, color =  species)) +
+  ggplot(aes(x = species, y = length_cm, color =  species)) +
   geom_boxplot(alpha = 0.6) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
-         y = "Root length (in)") + 
-  theme_minimal() +
+       y = "Root length (cm)", 
+       color = "") + 
+  theme_bw() +
   theme(axis.text.x = element_blank()) +
   stat_summary(fun.y="mean", geom="point", size=1.2,
                  position=position_dodge(width=0.75), color="black")
 
 
 fig_3B <- aggressiveness_plots %>% 
-  ggplot(aes(x = species, y = area_in.2, color =  species)) +
+  ggplot(aes(x = species, y = area_cm.2, color =  species)) +
   geom_boxplot(alpha = 0.6) +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
-  labs(y = expression('Root area (in'^2*')'), 
+  labs(y = expression('Root area (cm'^2*')'), 
        x = "")  + 
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_blank())  +
   stat_summary(fun.y="mean", geom="point", size=1.2,
                  position=position_dodge(width=0.75), color="black")
@@ -672,7 +694,7 @@ fig_3C <- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, colo
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
        y = "Root dry weigth (mg)") + 
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_blank())  +
   stat_summary(fun.y="mean", geom="point", size=1.2,
                  position=position_dodge(width=0.75), color="black")
@@ -682,7 +704,7 @@ fig_3D <- ggplot(data = aggressiveness_plots, aes(x = species, y = shoot_mg, col
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
        y = "Shoot dry weigth (mg)") + 
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_blank())  +
   stat_summary(fun.y="mean", geom="point", size=1.2,
                  position=position_dodge(width=0.75), color="black")
@@ -895,6 +917,18 @@ means_aggressiveness$species <- str_replace_all(means_aggressiveness$species,
                                                   "Phytophthora sojae" = "P. sojae", 
                                                   "Phytophthora sansomeana" = "P. sansomeana")
                                                 )
+prueba <- means_aggressiveness %>% 
+  spread(agg_parameter, estimate) 
+
+prueba %>% view()
+
+means_aggressiveness %>% view()
+
+prueba <- prueba %>% 
+  mutate(length_cm = `Root length`*2.54, 
+         area_cm.2 = `Root area` *6.4516)
+
+prueba %>% view()
 
 fig_4C <- means_aggressiveness %>% 
   filter(agg_parameter == "Root length") %>% 
