@@ -453,6 +453,11 @@ aggressiveness <- aggressiveness %>%
          area_in.2 = area_in.2/germination) %>% 
   dplyr::select(-c(emergence, root.mg, shoot.mg))
 
+# convert to SI units 
+aggressiveness  <- aggressiveness %>%
+  mutate(length_cm = length_in*2.54, 
+         area_cm.2 = area_in.2*6.4516)
+
 # write_csv(aggressiveness, here("output", "transform_data", "02_aggressiveness_transform.csv"))
 ```
 
@@ -501,8 +506,8 @@ exp_plot <- function(y) {
 
 by_exp_shoot <- exp_plot("shoot_mg")
 by_exp_dry <- exp_plot("root_mg")
-by_exp_length <- exp_plot("length_in")
-by_exp_area <- exp_plot("area_in.2")
+by_exp_length <- exp_plot("length_cm")
+by_exp_area <- exp_plot("area_cm.2")
 
 plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)
 ```
@@ -512,18 +517,18 @@ dis_shoot <- qplot(shoot_mg, data = aggressiveness) +
   theme_minimal()
 dis_dry <- qplot(root_mg, data = aggressiveness) +
     theme_minimal()
-dis_length <- qplot(length_in, data = aggressiveness) +
+dis_length <- qplot(length_cm, data = aggressiveness) +
   theme_minimal() # skew to the left, some transformation needed
-dis_area <- qplot(area_in.2, data = aggressiveness) +
+dis_area <- qplot(area_cm.2, data = aggressiveness) +
   theme_minimal() # also skew
 
 plot_grid(dis_shoot, dis_dry, dis_length, dis_area)
 ```
 
 ```{r log transform, warning=FALSE, message=FALSE, fig.height=3, fig.width=7.5}
-dis_length_log <- qplot(log(length_in), data = aggressiveness) +
+dis_length_log <- qplot(log(length_cm), data = aggressiveness) +
   theme_minimal() 
-dis_area_log <- qplot(log(area_in.2), data = aggressiveness) +
+dis_area_log <- qplot(log(area_cm.2), data = aggressiveness) +
   theme_minimal() 
 
 plot_grid(dis_length_log, dis_area_log) #improves with log transformation
@@ -531,9 +536,26 @@ plot_grid(dis_length_log, dis_area_log) #improves with log transformation
 
 ## Difference between species
 
-```{r fm root dry}
+```{r fm root length }
 # not nesting isolate:species, isolates coded in a way there is no needed
 # same coefficient estimates and p values without nesting
+# log transformation for normality and slight difference in variances
+fm_root_length <- lmer(log(length_cm) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_length ) # diagnostic plots look fine
+anova(fm_root_length )
+emmeans(fm_root_length , ~ species, type = "response") %>% # back-transform estimates
+  cld.emmGrid()
+```
+
+```{r fm root area}
+fm_root_area <- lmer(log(area_cm.2) ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_area) # transformation also worked 
+anova(fm_root_area)
+emmeans(fm_root_area, ~ species, type = "response") %>% 
+  cld.emmGrid()
+```
+
+```{r fm root dry}
 fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
 resid_panel(fm_root_dry) 
 anova(fm_root_dry)
@@ -546,23 +568,6 @@ fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggre
 resid_panel(fm_shoot_dry) 
 anova(fm_shoot_dry)
 emmeans(fm_shoot_dry, ~ species) %>% 
-  cld.emmGrid()
-```
-
-```{r fm root length }
-# log transformation for normality and slight difference in variances
-fm_root_length <- lmer(log(length_in) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_length ) # diagnostic plots look fine
-anova(fm_root_length )
-emmeans(fm_root_length , ~ species, type = "response") %>% # back-transform estimates
-  cld.emmGrid()
-```
-
-```{r fm root area}
-fm_root_area <- lmer(log(area_in.2) ~ species + isolate + (1|experiment), data = aggressiveness)
-resid_panel(fm_root_area) # transformation also worked 
-anova(fm_root_area)
-emmeans(fm_root_area, ~ species, type = "response") %>% 
   cld.emmGrid()
 ```
 
@@ -583,13 +588,13 @@ m_shoot_dry <- emmeans(fm_shoot_dry, ~ species) %>%
 m_root_length <- emmeans(fm_root_length , ~ species, type = "response") %>% 
   tidy() %>% 
   mutate(agg_parameter = "root length", 
-         relative_growth = (response/33.34525)*100) %>% 
+         relative_growth = (response/84.7)*100) %>% 
   rename(estimate = response)
 
 m_root_area <- emmeans(fm_root_area, ~ species, type = "response") %>% 
   tidy() %>% 
   mutate(agg_parameter = "root area", 
-         relative_growth = (response/0.7225228)*100)%>% 
+         relative_growth = (response/4.66)*100)%>% 
   rename(estimate = response)
 
 agg_species_means <- rbind(m_root_dry, m_shoot_dry, 
@@ -615,10 +620,6 @@ aggressiveness_plots$species <- str_replace_all(aggressiveness_plots$species,
                                             "Phytophthora sojae" = "P. sojae", 
                                             "Phytophthora sansomeana" = "P. sansomeana")
                                           )
-# transform to SI units 
-aggressiveness_plots <- aggressiveness_plots %>% 
-  mutate(length_cm = length_in*2.54, 
-         area_cm.2 = area_in.2*6.4516)
 ```
 
 ```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
@@ -716,16 +717,16 @@ emmeans(fm_shoot_dry_sojae, ~ isolate) %>%
 
 ```{r length sojae}
 # log transformation for normality and slight difference in variances
-fm_root_length_sojae <- lmer(log(length_in) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+fm_root_length_sojae <- lmer(log(length_cm) ~ isolate + (1|experiment), data = sojae_aggressiveness)
 resid_panel(fm_root_length_sojae) # diagnostic plots look fine
 anova(fm_root_length_sojae)
-emmeans(fm_root_length_sojae, ~ isolate, type = "response")# back-transform estimates
+emmeans(fm_root_length_sojae, ~ isolate, type = "response") %>% # back-transform estimates
   cld.emmGrid()
 ```
 
 ```{r area sojea}
 # log transformation for normality and slight difference in variances
-fm_root_area_sojae <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
+fm_root_area_sojae <- lmer(log(area_cm.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
 resid_panel(fm_root_area_sojae) # diagnostic plots look fine
 anova(fm_root_area_sojae)
 emmeans(fm_root_area_sojae, ~ isolate, type = "response") %>% # back-transform estimates
@@ -784,7 +785,7 @@ emmeans(fm_shoot_dry_sansomeana, ~ isolate) %>%
 ```
 
 ```{r sansomeana length}
-fm_root_length_sansomeana <- lmer(log(length_in) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+fm_root_length_sansomeana <- lmer(log(length_cm) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
 resid_panel(fm_root_length_sansomeana) 
 anova(fm_root_length_sansomeana)
 emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>% 
@@ -792,7 +793,7 @@ emmeans(fm_root_length_sansomeana, ~ isolate, type = "response") %>%
 ```
 
 ```{r sansomeana area}
-fm_root_area_sansomeana <- lmer(log(area_in.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
+fm_root_area_sansomeana <- lmer(log(area_cm.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
 resid_panel(fm_root_area_sansomeana) 
 anova(fm_root_area_sansomeana)
 emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>% 
@@ -874,18 +875,6 @@ means_aggressiveness$species <- str_replace_all(means_aggressiveness$species,
                                                   "Phytophthora sojae" = "P. sojae", 
                                                   "Phytophthora sansomeana" = "P. sansomeana")
                                                 )
-prueba <- means_aggressiveness %>% 
-  spread(agg_parameter, estimate) 
-
-prueba %>% view()
-
-means_aggressiveness %>% view()
-
-prueba <- prueba %>% 
-  mutate(length_cm = `Root length`*2.54, 
-         area_cm.2 = `Root area` *6.4516)
-
-prueba %>% view()
 
 fig_4C <- means_aggressiveness %>% 
   filter(agg_parameter == "Root length") %>% 
