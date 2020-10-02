@@ -148,6 +148,9 @@ map_plant <- map_plant %>%
 ## Phytophthora spp isolates
 
 ```{r phytophtora isolates}
+sequenced_isolates <-  isolates_recovered %>%
+  filter(identification == "sequence")
+
 phytophthora_isolates <- sequenced_isolates %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) 
 
@@ -199,11 +202,6 @@ isolates_recovered %>%
 ```
 
 ```{r sequenced isolates}
-sequenced_isolates <-  isolates_recovered %>%
-  filter(identification == "sequence")
-
-sequenced_isolates 
-  
 sequenced_isolates %>% 
   group_by(year) %>% 
   count() %>% 
@@ -350,6 +348,7 @@ mean_complexity <- complexity_percent %>%
 
 ```{r diversity indexes}
 # diversity indexes
+diversity <- do.call(calculate_diversities, hagis_args)
 diversity %>% pander()
 ```
 
@@ -384,7 +383,6 @@ table_one %>% pander()
 
 ```{r pathotype}
 # pathotypes
-diversity <- do.call(calculate_diversities, hagis_args)
 
 pathotype_frequency <- diversity$table_of_pathotypes %>% 
   mutate(Percentage = round((Frequency/16)*100))
