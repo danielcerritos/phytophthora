@@ -145,72 +145,11 @@ map_plant <- map_plant %>%
 
 # Identification of isolates
 
-```{r sequenced isolates}
-isolates_recovered$county %>%
-  n_distinct()
-
-
-isolates_recovered %>%
-  group_by(identification) %>% 
-  count() %>% 
-  pander()
-```
-
-```{r identified isolates}
-sequenced_isolates <-  isolates_recovered %>%
-  filter(identification == "sequence")
-
-sequenced_isolates 
-  
-sequenced_isolates %>% 
-  group_by(year) %>% 
-  count() %>% 
-  mutate(percentage = (n/97)) %>% 
-  pander()
-
-sequenced_isolates$county %>% 
-  n_distinct()
-```
-
-```{r species collected}
-isolates_species <- sequenced_isolates %>% 
-  dplyr::select(species) %>%
-  group_by(species) %>% 
-  count() %>%  
-  mutate(genus = case_when(
-    grepl("Phyto", species) ~ "Phytophthora spp.",
-    grepl("Pyth", species) ~"Pythium spp.")) %>% 
-  mutate(percentage = (n/97))
-
-isolates_species %>% 
-  group_by(genus) %>% 
-  count() %>% 
-  mutate(percentage = (n/97)) %>% 
-  pander()
-```
-
-```{r}
-isolates_species %>% 
-  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
-  geom_col(alpha = 0.6) +
-  coord_flip() +
-  labs(x = "", y = "Percent isolates recovered") +
-  theme_minimal_vgrid() +
-  theme(legend.position = "none",
-        axis.text.y  = element_text(face = "italic")) +
-  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
-                     labels = percent_format()) 
-
-```
-
-## Phytophthora spp
+## Phytophthora spp isolates
 
 ```{r phytophtora isolates}
 phytophthora_isolates <- sequenced_isolates %>% 
   filter(species %in% c("Phytophthora sansomeana", "Phytophthora sojae")) 
-
-phytophthora_isolates %>% view()
 
 phytophthora_isolates %>% 
   group_by(year) %>% 
@@ -239,30 +178,76 @@ phytophthora_isolates %>%
 
 ```
 
-## Table 1 first 
-
-```{r phytophthora county}
-table_one <- phytophthora_isolates %>% 
+```{r phytophthora table}
+phytophthora_table <- phytophthora_isolates %>% 
   dplyr::select(isolate_id,species, county, year) %>% 
   arrange(isolate_id)
 
-table_one %>% pander()
+phytophthora_table %>% pander()
 ```
 
-## All species
+## All isolates
 
-```{r isolates per species}
-isolates_species %>% 
-  filter(!species %in% c("Pythium spp.", "Phytophthora spp.")) %>% # no species after BLAST
-  dplyr::select(species) %>% 
+```{r all isolates}
+isolates_recovered$county %>%
   n_distinct()
 
-isolates_species %>% 
-  mutate(percentage = percentage*100) %>%
-  dplyr::select(-genus) %>% 
-  arrange(n) %>% 
+isolates_recovered %>%
+  group_by(identification) %>% 
+  count() %>% 
   pander()
 ```
+
+```{r sequenced isolates}
+sequenced_isolates <-  isolates_recovered %>%
+  filter(identification == "sequence")
+
+sequenced_isolates 
+  
+sequenced_isolates %>% 
+  group_by(year) %>% 
+  count() %>% 
+  mutate(percentage = (n/97)) %>% 
+  pander()
+
+sequenced_isolates$county %>% 
+  n_distinct()
+```
+
+```{r species collected, message=FALSE}
+isolates_species <- sequenced_isolates %>% 
+  dplyr::select(species) %>%
+  group_by(species) %>% 
+  count() %>%  
+  mutate(genus = case_when(
+    grepl("Phyto", species) ~ "Phytophthora spp.",
+    grepl("Pyth", species) ~"Pythium spp.")) %>% 
+  mutate(percentage = (n/97))
+
+isolates_species %>% 
+  group_by(genus) %>% 
+  count() %>% 
+  mutate(percentage = (n/97)) %>% 
+  pander()
+```
+
+```{r species figure}
+isolates_species %>% 
+  ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
+  geom_col(alpha = 0.6) +
+  coord_flip() +
+  labs(x = "", y = "Percent isolates recovered", 
+       title = "Species indentified from Illinois ") +
+  theme_minimal_vgrid() +
+  theme(legend.position = "none",
+        axis.text.y  = element_text(face = "italic")) +
+  scale_fill_manual(values = c("#F8766D", "#BEBEBE")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
+                     labels = percent_format()) 
+
+```
+
+Was phytophthora and pythium isolated from same sample?
 
 ```{r phytophthora and pythium}
 sequenced_isolates %>%
@@ -287,11 +272,11 @@ sequenced_isolates %>%
   count()
 ```
 
-# Pathotype
+# Virulence assays: Pathotype determination
 
 ## Phytophthora sojae
 
-```{r effective Rps}
+```{r effective Rps, message=FALSE}
 # two susceptible controls
 sojae_control <- sojae %>% 
   filter(differential == "Williams") %>% 
@@ -363,6 +348,38 @@ mean_complexity <- complexity_percent %>%
 # ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4.5, height = 5.7)
 ```
 
+```{r diversity indexes}
+# diversity indexes
+diversity %>% pander()
+```
+
+## Table 1 
+
+```{r table 1}
+pathotypes_by_isolate <- diversity$individual_pathotypes %>% 
+  rename(isolate_number = Sample) %>% 
+  arrange(isolate_number)
+
+isolates_ids <- phytophthora_table %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  arrange(isolate_id)
+
+pahtotypes_isolate <- bind_cols(isolates_ids, pathotypes_by_isolate) %>% 
+  dplyr::select(-isolate_number)
+
+## add sansomeana isolates to table 1
+sansomeana_table_one <- phytophthora_table %>% 
+  filter(species == "Phytophthora sansomeana") %>% 
+  mutate(Pathotype = "")
+
+table_one <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>% 
+  arrange(species, year)
+
+table_one %>% pander()
+  
+# write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
+```
+
 ## Table 2
 
 ```{r pathotype}
@@ -381,38 +398,6 @@ pathotype_frequency <- pathotype_frequency %>%
 pathotype_frequency %>% pander()
 ```
 
-
-## Table 1 modified
-
-```{r diversity indexes}
-# diversity indexes
-diversity %>% pander()
-
-pathotypes_by_isolate <- diversity$individual_pathotypes %>% 
-  rename(isolate_number = Sample) %>% 
-  arrange(isolate_number)
-
-isolates_ids <- table_one %>% 
-  filter(species == "Phytophthora sojae") %>% 
-  arrange(isolate_id)
-
-pahtotypes_isolate <- bind_cols(isolates_ids, pathotypes_by_isolate) %>% 
-  dplyr::select(-isolate_number)
-
-## add sansomeana isolates to table 1
-sansomeana_table_one <- table_one %>% 
-  filter(species == "Phytophthora sansomeana") %>% 
-  mutate(Pathotype = NA)
-
-table_one_modified <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>% 
-  arrange(species, year)
-  
-# write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
-
-```
-
-
-
 ## Phytophthora sansomeana
 
 ```{r sansomena effective genes, fig.height=2.85, fig.width=4.5}
@@ -420,45 +405,17 @@ sansomeana <- sansomeana %>%
   mutate(percent.susceptible = (dead/total)*100)
 
 # having trouble to use hagis package for sansomeana data
-# calculate by hand
-
+# calculate manually
 sansomeana_summ <- sansomeana %>% 
   group_by(isolate_id, differential, gene) %>% 
   summarise(percent_susceptible = mean(percent.susceptible))
 
-sansomeana_summ %>%
+sansomeana_summ %>% 
   filter(percent_susceptible > 75)
-
-
-
-sansomeana_rps %>% 
-  mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
-  ggplot(aes(x = gene, y = percent_pathogenic)) +
-  geom_col(alpha = 0.6) +
-  labs(x = "Rps gene", 
-       y = "Percent pathogenic") +
-  scale_y_continuous(
-    expand = expansion(mult = c(0, 0.05)), 
-    labels = percent_format()) +
-    theme_minimal_hgrid()
 ```
-
-Look isolates that cause disease in Rps3a and Rps 1c
-
-```{r}
-sansomeana %>% 
-    filter(gene %in% c("3a", "1c"), 
-           percent.susceptible >75)
-
-diversity_sansomena <- do.call(calculate_diversities, sansomeana_rps)
-
-
-```
-
-
 
 ```{r save pathotype data}
-# combine pathtoyping results
+# combine pathtoype and complexity results
 isolates_complexity <- complexities$indvidual_complexities %>% 
   rename(isolate_number = sample, Complexity = N_samp)
 
@@ -959,7 +916,6 @@ fig_4D <- means_aggressiveness %>%
        color = "") 
 ```
 
-## Figure 4
 
 ```{r fig 4, fig.height= 8, fig.width=5}
 figure_four_AB <- plot_grid(fig_4A, fig_4B, labels = c("A", "B"), nrow  = 1)
