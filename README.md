@@ -1,6 +1,6 @@
 # Characterization of _Phytophthora_ spp. associated with PRR in Illinois
 
-This repository contains data and code used to analyze data for the manuscript XXXX. The repository is divided in the following folders: 
+This repository contains data and code used to analyze data for the manuscript XXXX. The repository is divided in the following folders:  
 [analysis](https://github.com/danielcerritos/phytophthora/tree/master/analysis): Code use for analysis. 
 [code](https://github.com/danielcerritos/phytophthora/tree/master/code): Code used for data cleaning.
 [data](https://github.com/danielcerritos/phytophthora/tree/master/data): All raw data collected. 
