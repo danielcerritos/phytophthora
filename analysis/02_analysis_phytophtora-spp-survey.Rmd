@@ -374,7 +374,7 @@ sansomeana_table_one <- phytophthora_table %>%
 table_one <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>% 
   arrange(species, year)
 
-table_one %>% view()
+table_one %>% pander()
   
 # write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
