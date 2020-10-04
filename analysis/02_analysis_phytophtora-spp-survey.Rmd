@@ -369,12 +369,12 @@ pahtotypes_isolate <- bind_cols(isolates_ids, pathotypes_by_isolate) %>%
 ## add sansomeana isolates to table 1
 sansomeana_table_one <- phytophthora_table %>% 
   filter(species == "Phytophthora sansomeana") %>% 
-  mutate(Pathotype = "")
+  mutate(Pathotype = NA)
 
 table_one <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>% 
   arrange(species, year)
 
-table_one %>% pander()
+table_one %>% view()
   
 # write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
