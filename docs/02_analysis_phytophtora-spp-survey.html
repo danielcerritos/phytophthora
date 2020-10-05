@@ -498,16 +498,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea7024f81cab6e83f816ebb432c3636734fee8439targetblanka7024f8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/a7024f81cab6e83f816ebb432c3636734fee8439" target="_blank">a7024f8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreead038ea259d3e76a78e9d1ff6e644eef2efdb65etargetblankad038eaa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/ad038ea259d3e76a78e9d1ff6e644eef2efdb65e" target="_blank">ad038ea</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea7024f81cab6e83f816ebb432c3636734fee8439targetblanka7024f8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreead038ea259d3e76a78e9d1ff6e644eef2efdb65etargetblankad038eaa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/a7024f81cab6e83f816ebb432c3636734fee8439" target="_blank">a7024f8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/ad038ea259d3e76a78e9d1ff6e644eef2efdb65e" target="_blank">ad038ea</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -557,6 +557,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ad038ea259d3e76a78e9d1ff6e644eef2efdb65e/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ad038ea</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+wflow_publish(“analysis/02_analysis_phytophtora-spp-survey.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/danielcerritos/phytophthora/eee20f2770b70f95495e6b0ac7e59646f184abe0/docs/02_analysis_phytophtora-spp-survey.html" target="_blank">eee20f2</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -4302,7 +4336,7 @@ fig_4C &lt;- means_aggressiveness %&gt;%
   theme(legend.position = &quot;none&quot;, 
         axis.text.y  = element_text(size = rel(0.95))) +
   labs(x = &quot;&quot;,
-       y = &quot;Root length (in)&quot;,
+       y = &quot;Root length (cm)&quot;,
        color = &quot;&quot;) 
 
 fig_4D &lt;- means_aggressiveness %&gt;% 
@@ -4316,7 +4350,7 @@ fig_4D &lt;- means_aggressiveness %&gt;%
   theme(legend.position = &quot;none&quot;, 
         axis.text.y  = element_text(size = rel(0.95))) +
   labs(x = &quot;&quot;,
-       y = expression(&#39;Root area (in&#39;^2*&#39;)&#39;),
+       y = expression(&#39;Root area (cm&#39;^2*&#39;)&#39;),
        color = &quot;&quot;) </code></pre>
 <pre class="r"><code>figure_four_AB &lt;- plot_grid(fig_4A, fig_4B, labels = c(&quot;A&quot;, &quot;B&quot;), nrow  = 1)
 figure_four_CD &lt;- plot_grid(fig_4C, fig_4D, labels = c(&quot;C&quot;, &quot;D&quot;), nrow  = 1)
