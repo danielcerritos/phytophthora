@@ -376,7 +376,7 @@ table_one <- bind_rows(sansomeana_table_one, pahtotypes_isolate) %>%
 
 table_one %>% pander()
   
-# write_csv(table_one_modified, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
+# write_csv(table_one, path = here("output", "results", "02_identification_phytophthora-isolates_table-1.csv"))
 ```
 
 ## Table 2
@@ -798,6 +798,8 @@ emmeans(fm_root_area_sansomeana, ~ isolate, type = "response") %>%
   cld.emmGrid()
 ```
 
+save means
+
 ```{r save sansomeana agg means, message=FALSE}
 m_root_dry_sansomeana <- emmeans(fm_root_dry_sansomeana, ~ isolate) %>% 
   tidy() %>% 
@@ -831,6 +833,7 @@ agg_sansomeana_means <- agg_sansomeana_means %>%
 # write_csv(agg_sansomeana_means, here("output", "results", "02_aggressiveness_sansomeana-means.csv"))
 ```
 
+## Figure 4
 
 ```{r fig 4 parts, message=FALSE}
 fig_4A <- aggressiveness_plots %>% 
@@ -880,7 +883,7 @@ fig_4C <- means_aggressiveness %>%
   coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
-  geom_hline(yintercept = 11.8, linetype="dashed",  size = 0.7) +
+  geom_hline(yintercept = 30.05, linetype="dashed",  size = 0.7) +
   theme_minimal() +
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
@@ -894,7 +897,7 @@ fig_4D <- means_aggressiveness %>%
   coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
-  geom_hline(yintercept = 0.272, linetype="dashed",  size = 0.7) +
+  geom_hline(yintercept = 1.7545, linetype="dashed",  size = 0.7) +
   theme_minimal() +
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
