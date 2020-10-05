@@ -407,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-04
+<strong>Last updated:</strong> 2020-10-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -498,16 +498,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree68dee2a55a414cd8790361bb2b6a1f9583c8cb70targetblank68dee2aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/68dee2a55a414cd8790361bb2b6a1f9583c8cb70" target="_blank">68dee2a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea7024f81cab6e83f816ebb432c3636734fee8439targetblanka7024f8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/a7024f81cab6e83f816ebb432c3636734fee8439" target="_blank">a7024f8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratree68dee2a55a414cd8790361bb2b6a1f9583c8cb70targetblank68dee2aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea7024f81cab6e83f816ebb432c3636734fee8439targetblanka7024f8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/68dee2a55a414cd8790361bb2b6a1f9583c8cb70" target="_blank">68dee2a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/a7024f81cab6e83f816ebb432c3636734fee8439" target="_blank">a7024f8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -557,6 +557,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a7024f81cab6e83f816ebb432c3636734fee8439/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a7024f8</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+wflow_publish(“analysis/02_analysis_phytophtora-spp-survey.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/danielcerritos/phytophthora/09efd8936473f2a2b51921cb470d768a751ac183/docs/02_analysis_phytophtora-spp-survey.html" target="_blank">09efd89</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -3280,7 +3314,7 @@ table_one %&gt;% pander()</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code># write_csv(table_one_modified, path = here(&quot;output&quot;, &quot;results&quot;, &quot;02_identification_phytophthora-isolates_table-1.csv&quot;))</code></pre>
+<pre class="r"><code># write_csv(table_one, path = here(&quot;output&quot;, &quot;results&quot;, &quot;02_identification_phytophthora-isolates_table-1.csv&quot;))</code></pre>
 </div>
 <div id="table-2" class="section level2">
 <h2>Table 2</h2>
@@ -4181,6 +4215,7 @@ Intervals are back-transformed from the log scale
 P value adjustment: tukey method for comparing a family of 9 estimates 
 Tests are performed on the log scale 
 significance level used: alpha = 0.05 </code></pre>
+<p>save means</p>
 <pre class="r"><code>m_root_dry_sansomeana &lt;- emmeans(fm_root_dry_sansomeana, ~ isolate) %&gt;% 
   tidy() %&gt;% 
   mutate(agg_parameter = &quot;Root dry weigth&quot;)
@@ -4211,6 +4246,10 @@ agg_sansomeana_means &lt;- agg_sansomeana_means %&gt;%
       ))
 
 # write_csv(agg_sansomeana_means, here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sansomeana-means.csv&quot;))</code></pre>
+</div>
+</div>
+<div id="figure-4" class="section level2">
+<h2>Figure 4</h2>
 <pre class="r"><code>fig_4A &lt;- aggressiveness_plots %&gt;% 
   ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
   coord_flip() +
@@ -4258,7 +4297,7 @@ fig_4C &lt;- means_aggressiveness %&gt;%
   coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
-  geom_hline(yintercept = 11.8, linetype=&quot;dashed&quot;,  size = 0.7) +
+  geom_hline(yintercept = 30.05, linetype=&quot;dashed&quot;,  size = 0.7) +
   theme_minimal() +
   theme(legend.position = &quot;none&quot;, 
         axis.text.y  = element_text(size = rel(0.95))) +
@@ -4272,7 +4311,7 @@ fig_4D &lt;- means_aggressiveness %&gt;%
   coord_flip() +
   geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
                   alpha = 0.6) +
-  geom_hline(yintercept = 0.272, linetype=&quot;dashed&quot;,  size = 0.7) +
+  geom_hline(yintercept = 1.7545, linetype=&quot;dashed&quot;,  size = 0.7) +
   theme_minimal() +
   theme(legend.position = &quot;none&quot;, 
         axis.text.y  = element_text(size = rel(0.95))) +
@@ -4289,7 +4328,6 @@ legend_four &lt;- get_legend(fig_4A + theme(legend.position = &quot;bottom&quot;
 (figure_four &lt;- plot_grid(figure_four_no_legend, legend_four, ncol = 1, rel_heights = c(1,0.04)))</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%204-1.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># ggsave(&quot;figure4.tiff&quot;, plot = figure_four, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 5, height = 8)</code></pre>
-</div>
 </div>
 </div>
 <div id="fungicide-sensitivity" class="section level1">
