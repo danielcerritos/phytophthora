@@ -888,7 +888,7 @@ fig_4C <- means_aggressiveness %>%
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
   labs(x = "",
-       y = "Root length (in)",
+       y = "Root length (cm)",
        color = "") 
 
 fig_4D <- means_aggressiveness %>% 
@@ -902,7 +902,7 @@ fig_4D <- means_aggressiveness %>%
   theme(legend.position = "none", 
         axis.text.y  = element_text(size = rel(0.95))) +
   labs(x = "",
-       y = expression('Root area (in'^2*')'),
+       y = expression('Root area (cm'^2*')'),
        color = "") 
 ```
 
