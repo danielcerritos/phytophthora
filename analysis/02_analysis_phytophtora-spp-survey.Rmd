@@ -19,10 +19,6 @@ pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata,
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
                Hmisc, corrplot, drc, scales, broom, ggfortify)
 
-theme_set(theme_minimal())
-
-install.packages("gghighlight")
-library(gghighlight)
 ```
 
 # Import data
@@ -502,7 +498,7 @@ agg_temperature_filtered %>%
 ```
 
 ```{r}
-aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
+aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
 
 sojae_complexity <- sojae_pathotype %>% 
@@ -643,7 +639,7 @@ resid_panel(fm_root_length_01)
 # anova and post-hoc
 anova(fm_root_length_01)
 emmeans(fm_root_length_01, ~ species) %>% 
-  cld.emmGrid()
+  cld.emmGrid()  
 emmeans(fm_root_length_01, ~ isolate) %>% 
   cld.emmGrid() 
 
@@ -710,11 +706,9 @@ qplot(fm_shoot_dry_03$residuals) # outlier
 Check the observation # 6, which is an outlier in all the models fitted.
 
 ```{r outlier}
-aggressiveness_3[6, ] %>% view() 
+aggressiveness_3[6, ]
+aggressiveness_3 %>% filter(isolate == "17PR009A.2") # very different from other two reps
 aggressiveness_3_out <- aggressiveness_3[-c(6), ] # remove observation from data
-
-aggressiveness_3 %>% filter(isolate == "17PR009A.2")
-
 
 # fit models without the outlier, let see if it influences the results
 fm_root_length_03_out <- lm(length_cm ~ species + isolate, data = aggressiveness_3_out)
@@ -784,7 +778,8 @@ length_mean <- emmeans(fm_root_length_01, ~ isolate) %>%
 
 area_mean <- emmeans(fm_root_area_01_log, ~ isolate, type = "response") %>%  
   tidy() %>% 
-  mutate(agg_component = "area")
+  mutate(agg_component = "area") %>% 
+  rename(estimate = response)
 
 root_mean <- emmeans(fm_root_dry_01, ~ isolate) %>% 
   tidy() %>% 
@@ -794,7 +789,7 @@ shoot_mean <- emmeans(fm_shoot_dry_01, ~ isolate) %>%
   tidy() %>% 
   mutate(agg_component = "shoot dry")
 
-means_experiment_1_2 <- bind_rows(length_mean, root_mean, root_mean, shoot_mean) %>% 
+means_experiment_1_2 <- bind_rows(length_mean, area_mean, root_mean, shoot_mean) %>% 
   mutate(experiment = "1 and 2")
   
 # Experiment 3
@@ -806,7 +801,7 @@ area_mean_3 <-emmeans(fm_root_area_03_out, ~ isolate) %>%
   tidy() %>% 
   mutate(agg_component = "area")
 
-root_mean_3 <-emmeans(fm_root_dry_03_out, ~ isolate) %>% 
+root_mean_3 <-emmeans(fm_root_dry_03_out, ~ isolate) %>%    
   tidy() %>% 
   mutate(agg_component = "root dry")
 
@@ -814,11 +809,13 @@ shoot_mean_3 <-emmeans(fm_shoot_dry_03_out, ~ isolate) %>%
   tidy() %>% 
   mutate(agg_component= "shoot dry")
 
+means_experiment_3 <- bind_rows(length_mean_3, area_mean_3, root_mean_3, shoot_mean_3) %>% 
+  mutate(experiment = "3")
 
+# combine both 
+aggressiveness_isolates <- bind_rows(means_experiment_1_2, means_experiment_3)
+# write_csv(aggressiveness_isolates, here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 ```
-
-
-
 
 
 ## Figure 3
@@ -922,110 +919,142 @@ legend_three <- get_legend(fig_3A + theme(legend.position = "bottom"))
 ## Figure 4
 
 ```{r fig 4 parts, message=FALSE}
-# root length 
-length_df <- data.frame(temperature = c("1 and 2", "3"), line = c(NA, 27))
+# use emmeans for isolate means plots 
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 
-aggressiveness_complexity %>% 
-  filter(!is.na(length_cm)) %>% 
-  ggplot(aes(x = reorder (isolate, length_cm), y = length_cm, fill = temperature, color = species)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
+means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
+                                          c("Control Agar" = "Control", 
+                                            "Control None" = "Control", 
+                                            "Phytophthora sojae" = "P. sojae", 
+                                            "Phytophthora sansomeana" = "P. sansomeana")
+                                          )
+
+# root length 
+means_aggressiveness %>% 
+  filter(agg_component == "length", 
+         experiment == "1 and 2") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  theme_minimal() +
   theme(legend.position = "bottom", 
         axis.text.x=element_text(angle=45, hjust=1), 
         legend.margin=margin(t = -0.3, unit='cm')) +
-  geom_hline(data = length_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "grey70", "cornflowerblue" )) +
-  facet_wrap(vars(temperature), ncol = 1) +
   labs(x = "Isolate", 
        y = "Root length (cm)", 
        color = "") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  geom_hline(yintercept = 25, linetype="dashed",  size = 0.7, color = "black") +
+  geom_hline(yintercept = 50, linetype="dashed",  size = 0.7, color = "gray50") 
 
-aggressiveness_complexity %>% 
-  filter(!is.na(length_cm)) %>% 
-  ggplot(aes(x = reorder (isolate, length_cm), y = length_cm, color = temperature)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
-  theme(legend.position = "top", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  geom_hline(data = length_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "cornflowerblue" )) +
-  labs(x = "Isolate", 
-       y = "Root length (cm)", 
-       color = "Experiment") 
 
 # root area
-area_df <- data.frame(temperature = c("1 and 2", "3"), line = c(1.8, 2.156))
+area_df <- data.frame(experiment = c("1 and 2", "3"), line = c(1.8, 2.156))
 
-aggressiveness_complexity %>% 
-  filter(!is.na(area_cm.2)) %>% 
-  ggplot(aes(x = reorder (isolate, area_cm.2), y = area_cm.2, fill = temperature, color = species)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
+means_aggressiveness %>% 
+  filter(agg_component == "area") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  theme_minimal() +
   theme(legend.position = "bottom", 
         axis.text.x=element_text(angle=45, hjust=1), 
         legend.margin=margin(t = -0.3, unit='cm')) +
-  geom_hline(data = area_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "grey70", "cornflowerblue" )) +
-  facet_wrap(vars(temperature), ncol = 1) +
   labs(x = "Isolate", 
        y = expression('Root area (cm'^2*')'), 
        color = "") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  facet_wrap (vars(experiment), ncol = 1) +
+  geom_hline(data = area_df, aes(yintercept = line), 
+             linetype="dashed",  size = 0.7, color = "gray50") 
 
-aggressiveness_complexity %>% 
-  filter(!is.na(length_cm)) %>% 
-  ggplot(aes(x = reorder (isolate, length_cm), y = length_cm, color = temperature)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
-  theme(legend.position = "top", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  geom_hline(data = length_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "cornflowerblue" )) +
-  labs(x = "Isolate", 
-       y = expression('Root area (cm'^2*')'), 
-       color = "Experiment") 
 
-# root dry weight 
-root_df <- data.frame(temperature = c("1 and 2", "3"), line = c(25.5, 7.714))
-
-aggressiveness_complexity %>% 
-  filter(!is.na(root_mg)) %>% 
-  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, fill = temperature, color = species)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
+# second option  
+means_aggressiveness %>% 
+  filter(agg_component == "area") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = experiment)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
   theme(legend.position = "bottom", 
         axis.text.x=element_text(angle=45, hjust=1), 
         legend.margin=margin(t = -0.3, unit='cm')) +
-  geom_hline(data = root_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "grey70", "cornflowerblue" )) +
-  facet_wrap(vars(temperature), ncol = 1) +
+  labs(x = "Isolate", 
+       y = expression('Root area (cm'^2*')'), 
+       color = "") +
+  guides(fill = FALSE) +
+  gghighlight(estimate < 2.156)
+
+
+# root dry weight 
+root_df <- data.frame(experiment = c("1 and 2", "3"), line = c(25.5, 7.714))
+
+means_aggressiveness %>% 
+  filter(agg_component == "root dry") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  theme(legend.position = "bottom", 
+        axis.text.x=element_text(angle=45, hjust=1), 
+        legend.margin=margin(t = -0.3, unit='cm')) +
   labs(x = "Isolate", 
        y = "Root dry weight (mg)", 
        color = "") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  facet_wrap (vars(experiment), ncol = 1) +
+  geom_hline(data = root_df, aes(yintercept = line), 
+             linetype="dashed",  size = 0.7, color = "gray50")
 
 
-# shoot dry weight   
-shoot_df <- data.frame(temperature = c("1 and 2", "3"), line = c(47.5, 31.65))
-
-aggressiveness_complexity %>% 
-  filter(!is.na(shoot_mg)) %>% 
-  ggplot(aes(x = reorder (isolate, shoot_mg), y = shoot_mg, fill = temperature, color = species)) + 
-  stat_summary(fun.data = "mean_se", alpha = 0.7,  position = position_dodge(width = .75)) +
+# second option  
+means_aggressiveness %>% 
+  filter(agg_component == "root dry") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = experiment)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
   theme(legend.position = "bottom", 
         axis.text.x=element_text(angle=45, hjust=1), 
         legend.margin=margin(t = -0.3, unit='cm')) +
+  labs(x = "Isolate", 
+       y = "Root dry weight (mg)", 
+       color = "") +
+  guides(fill = FALSE) +
+  gghighlight()
+
+# shoot dry weight   
+shoot_df <- data.frame(experiment = c("1 and 2", "3"), line = c(47.5, 31.65))
+
+means_aggressiveness %>% 
+  filter(agg_component == "shoot dry") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  theme(legend.position = "bottom", 
+        axis.text.x=element_text(angle=45, hjust=1), 
+        legend.margin=margin(t = -0.3, unit='cm')) +
+  labs(x = "Isolate", 
+       y = "Shoot dry weight", 
+       color = "") +
+  guides(fill = FALSE) +
+  facet_wrap (vars(experiment), ncol = 1) +
   geom_hline(data = shoot_df, aes(yintercept = line), 
-             linetype="dashed",  size = 0.7, color = "gray50") +
-  scale_color_manual(values = c("coral1", "grey70", "cornflowerblue" )) +
-  facet_wrap(vars(temperature), ncol = 1) +
+             linetype="dashed",  size = 0.7, color = "gray50")
+
+# weight 
+# second option  
+means_aggressiveness %>% 
+  filter(agg_component == "shoot dry") %>% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  theme(legend.position = "bottom", 
+        axis.text.x=element_text(angle=45, hjust=1), 
+        legend.margin=margin(t = -0.3, unit='cm')) +
   labs(x = "Isolate", 
        y = "Shoot dry weight (mg)", 
        color = "") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  gghighlight(estimate < 47.5)
+
 ```
 
 ## Correlation analysis 
@@ -1073,7 +1102,7 @@ aggressiveness_complexity %>%
   ggplot(aes(x = factor(Complexity), y = length_cm)) +
   geom_boxplot() +
   geom_point(alpha = 0.4) +
-  facet_wrap(vars(temperature), ncol = 1)  +
+  facet_wrap(vars(experiment), ncol = 1)  +
   labs(x = "Compelxity", 
        y = "Length (cm)")
 ```
