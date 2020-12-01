@@ -433,7 +433,7 @@ sojae_pathotype <- left_join(sojae_all, add_isolate_id, by = "isolate_number") %
 # write_csv(sojae_pathotype, here("output", "results", "02_pathotype-psojae_results.csv"))
 ```
 
-# Aggressiveness
+ # Aggressiveness
 
 ## Transform data for analysis
 
@@ -496,7 +496,10 @@ agg_temperature_filtered %>%
         legend.position = "none") 
 ```
 
+## Import transformed data
+
 ```{r}
+# combine with pathotype data 
 aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
 
@@ -578,8 +581,7 @@ qplot(shoot_mg, data = aggressiveness) +
 
 ```{r fm root length}
 # not nesting isolate:species, isolates coded in a way there is no need
-# same coefficient estimates and p values without nesting
-fm_root_length <- lm(log(length_cm) ~ species + isolate + experiment, data = aggressiveness_both)
+fm_root_length <- lm(log(length_cm) ~ species + isolate + experiment, data = aggressiveness)
 # diagnostics
 autoplot(fm_root_length, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_length$residuals)
@@ -591,7 +593,7 @@ emmeans(fm_root_length , ~ experiment, type = "response") %>%
 
 ```{r fm root area}
 # fit again with transformation
-fm_root_area <- lm(log(area_cm.2) ~ experiment, data = aggressiveness_both)
+fm_root_area <- lm(log(area_cm.2) ~ experiment, data = aggressiveness)
 autoplot(fm_root_area, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_area$residuals)
 anova(fm_root_area) 
@@ -600,7 +602,7 @@ emmeans(fm_root_area , ~ experiment, type = "response") %>% # back-transform est
 ```
 
 ```{r fm root dry}
-fm_root_dry <- lm(root_mg ~ species + isolate + experiment, data = aggressiveness_both)
+fm_root_dry <- lm(root_mg ~ species + isolate + experiment, data = aggressiveness)
 autoplot(fm_root_dry, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_dry$residuals)
 anova(fm_root_dry)
@@ -618,7 +620,7 @@ emmeans(fm_shoot_dry, ~ experiment) %>%
   cld.emmGrid()
 ```
 
-The experiment factor is significant for all aggressiveness components. I will analyze it by experiment.
+The experiment factor is significant for all aggressiveness components. I will analyze first two experiments together and the third separate. 
 
 ## Analysis by experiment 
 
@@ -816,6 +818,8 @@ aggressiveness_isolates <- bind_rows(means_experiment_1_2, means_experiment_3)
 # write_csv(aggressiveness_isolates, here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 ```
 
+I would focus on experiments 1 and 2, the third seems different and the temperature was different from   
+this. 
 
 ## Figure 3
 
@@ -897,104 +901,7 @@ legend_three <- get_legend(a3 + theme(legend.position = "bottom"))
 
 ## Figure 4
 
-```{r fig 4 parts, message=FALSE}
-# use emmeans for isolate means plots 
-means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
-
-means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
-                                          c("Control Agar" = "Control", 
-                                            "Control None" = "Control", 
-                                            "Phytophthora sojae" = "P. sojae", 
-                                            "Phytophthora sansomeana" = "P. sansomeana")
-                                          )
-
-# root length 
-means_aggressiveness %>% 
-  filter(experiment == "1 and 2") %>% 
-  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  labs(x = "", 
-       y = "Root length (cm)", 
-       color = "") +
-  guides(fill = FALSE) +
-  facet_grid(vars(agg_component), scales = "free_y")
-
-# root area
-b4 <- means_aggressiveness %>% 
-  filter(agg_component == "area", 
-         experiment == "1 and 2") %>% 
-  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
-  geom_hline(yintercept = 3.245, linetype="dashed",  size = 0.7, color = "grey70") +
-  geom_hline(yintercept = 1.52, linetype="dashed",  size = 0.7, color = "black") +
-  geom_point() +
-  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  labs(x = "", 
-       y = expression('Root area (cm'^2*')'), 
-       color = "") 
-
-# root dry weight 
-c4 <- means_aggressiveness %>% 
-  filter(agg_component == "root dry", 
-         experiment == "1 and 2") %>% 
-  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
-  geom_hline(yintercept = 26, linetype="dashed",  size = 0.7, color = "grey70") +
-  geom_hline(yintercept = 25.5, linetype="dashed",  size = 0.7, color = "black") +
-  geom_point() +
-  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  labs(x = "", 
-       y = "Root dry weight (mg)", 
-       color = "") 
-
-# shoot dry weight   
-d4 <- means_aggressiveness %>% 
-  filter(agg_component == "shoot dry", 
-         experiment == "1 and 2") %>% 
-  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
-  geom_hline(yintercept = 78.4, linetype="dashed",  size = 0.7, color = "grey70") +
-  geom_hline(yintercept = 47.4, linetype="dashed",  size = 0.7, color = "black") +
-  geom_point() +
-  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        axis.text.x=element_text(angle=45, hjust=1), 
-        legend.margin=margin(t = -0.3, unit='cm')) +
-  labs(x = "Isolate", 
-       y = "Shoot dry weight (mg)", 
-       color = "") 
-
-figure_four_no_legend <- plot_grid(
-  a4 + theme(legend.position="none"),
-  b4 + theme(legend.position="none"),
-  c4 + theme(legend.position="none"),
-  d4 + theme(legend.position="none"), 
-  align = "hv", 
-  labels = "", 
-  ncol = 1
-)
-
-legend_three <- get_legend(a3 + theme(legend.position = "bottom"))
-
-(figure_three <- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))
-
-
-
-
-```
-
-```{r}
+```{r figure 4}
 # change facets name
 means_aggressiveness$facets <- factor(means_aggressiveness$agg_component, 
                                       labels = c( 
@@ -1007,17 +914,23 @@ means_aggressiveness$facets <- factor(means_aggressiveness$agg_component,
 # sig difference lines 
 line_most_agg <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)", 
                                        "Root~weight~(mg)", "Shoot~weight~(mg)"), 
-                            value = c(3.245, 91.75, 25.5, 78.4))
+                            value = c(3.245, 91.75, 26, 78.4))
 
 line_control <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)", 
                                        "Root~weight~(mg)", "Shoot~weight~(mg)"), 
-                           value = c(1.52, NA, 24, 47.4))
+                           value = c(1.52, NA, 25, 47.4))
 
 means_aggressiveness %>% 
   filter(experiment == "1 and 2") %>% 
   ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), width = 0.2) +
+  geom_hline(data = line_most_agg, aes(yintercept = value),
+             linetype="dashed",  size = 0.7, color = "gray70") +
+  geom_hline(data = line_control, aes(yintercept = value),
+             linetype="dashed",  size = 0.7, color = "red", alpha = 0.5) +
+
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), 
+                width = 0.2) +
   theme_light() +
   theme(legend.position = "bottom", 
         axis.text.x=element_text(angle=45, hjust=1), 
@@ -1029,60 +942,25 @@ means_aggressiveness %>%
   labs(x = "", 
        y = "", 
        color = "") +
-  facet_wrap(vars(facets), labeller = label_parsed, ncol = 1, 
-             strip.position = "left", scales = "free_y" ) +
-  geom_hline(data = line_most_agg, aes(yintercept = value),
-             linetype="dashed",  size = 0.7, color = "grey70") +
-  geom_hline(data = line_control, aes(yintercept = value),
-             linetype="dashed",  size = 0.7, color = "black")
+  facet_wrap(vars(facets), labeller = label_parsed, 
+             strip.position = "left", scales = "free_y", ncol = 1) 
+
 ```
-
-
-
-
-```{r}
-mt = mtcars
-
-mt$facets = factor(mt$cyl, labels = c(
-    "Root~area~(cm^{2})", 
-    "Temperature~('°C')", 
-    "Light~(µmol~m^{-2}~s^{-1})"))
-
-
-ggplot(mt, aes(mpg,cyl)) +
-  geom_point() +
-  facet_grid(~facets, labeller = label_parsed)
-```
-
-
-
-
+  
 ## Correlation analysis 
-
-```{r}
-aggressiveness_transfrom <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv"))
-sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
-
-sojae_complexity <- sojae_pathotype %>% 
-  dplyr::select(isolate_id, Complexity) %>% 
-  rename(isolate = isolate_id)
-
-regression_sojae <- aggressiveness_transfrom %>% 
-  filter(species == "Phytophthora sojae")
-
-regression_sojae <- inner_join(regression_sojae, sojae_complexity, by = "isolate")
-```
 
 ```{r}
 # correlation
 # experiment 1 and 2
-exp_1 <- regression_sojae %>%
-  filter(!experiment == 3) %>% 
+
+corr_agg_patho <- aggressiveness_complexity %>%
+  filter(species == "P. sojae",
+         !experiment == 3) %>% 
   dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
 
-corrplot(exp_1$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+corrplot(corr_agg_patho$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 ```
 
 ```{r}
@@ -1107,10 +985,6 @@ exp_3 <- regression_sojae %>%
 corrplot(exp_3$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 
 ```
-
-
-
-
 
 
 # Fungicide sensitivity 
