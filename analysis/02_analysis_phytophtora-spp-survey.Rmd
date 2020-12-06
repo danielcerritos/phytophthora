@@ -433,7 +433,7 @@ sojae_pathotype <- left_join(sojae_all, add_isolate_id, by = "isolate_number") %
 # write_csv(sojae_pathotype, here("output", "results", "02_pathotype-psojae_results.csv"))
 ```
 
- # Aggressiveness
+# Aggressiveness
 
 ## Transform data for analysis
 
@@ -460,20 +460,19 @@ aggressiveness  <- aggressiveness %>%
   mutate(length_cm = length_in*2.54, 
          area_cm.2 = area_in.2*6.4516)
 
+# save data
 # write_csv(aggressiveness, here("output", "transform_data", "02_aggressiveness_transform.csv"))
 ```
 
 ```{r temperature}
+# temperature data
 agg_temperature <- agg_temperature %>% 
   mutate(room_temperature = (room_temperature-32) * 5/9) # transform to Celsius
 ```
 
-## Exploratory plots 
+## Exploratory analysis
 
 ```{r average temperature, message=FALSE}
-agg_temperature <- agg_temperature %>% 
-  mutate(room_temperature = (room_temperature-32) * 5/9) # transform to Celsius
-  
 agg_temperature %>% 
 group_by(experiment) %>% 
   summarise(min = min(room_temperature), 
@@ -491,28 +490,17 @@ agg_temperature_filtered <- agg_temperature %>%
 agg_temperature_filtered %>% 
   ggplot(aes(x = date, y = room_temperature, color = as.factor(experiment))) +
   geom_line(group = 1)  +
+  theme_light() +
   facet_grid(~ as.factor(experiment), scales = "free_x") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        legend.position = "none") 
+        legend.position = "none") +
+  labs(x = "Date", y = "Room temperature (°C)")
 ```
 
-## Import transformed data
-
-```{r}
-# combine with pathotype data 
-aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
-sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
-
-sojae_complexity <- sojae_pathotype %>% 
-  dplyr::select(isolate_id, Complexity) %>% 
-  rename(isolate = isolate_id)
-
-aggressiveness_complexity <- left_join(aggressiveness, sojae_complexity, by = "isolate")
-```
 
 Can we combine experiments?
 
-```{r exp plot 1, warning=FALSE}
+```{r plot by experiment, warning=FALSE}
 aggressiveness$experiment <- as.factor(aggressiveness$experiment)
 aggressiveness$isolate <- as.factor(aggressiveness$isolate)
 aggressiveness$species <- as.factor(aggressiveness$species)
@@ -520,7 +508,7 @@ aggressiveness$species <- as.factor(aggressiveness$species)
 exp_plot <- function(y) {
   ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
     geom_boxplot() +
-    theme_cowplot() +
+    theme_light() +
     labs(x = "", 
          y = y) +
     theme(legend.position = "none") 
@@ -535,26 +523,30 @@ plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)
 ```
 
 
-```{r}
+```{r species by experiment}
 ggplot(data = aggressiveness, aes(x = species, y = length_cm, color = species)) +
   geom_boxplot() +
   geom_point() +
+  theme_light() +
   theme(legend.position = "none") +
   facet_wrap(~experiment)
 
 ggplot(data = aggressiveness, aes(x = species, y = area_cm.2, color = species)) +
   geom_boxplot() +
+  theme_light() +
   geom_point(position = position_jitterdodge()) +
   theme(legend.position = "none") +
   facet_wrap(~experiment)
 
 ggplot(data = aggressiveness, aes(x = species, y = root_mg, color = species)) +
   geom_boxplot() +
+  theme_light() +
   geom_point(position = position_jitterdodge()) +
   theme(legend.position = "none") +
   facet_wrap(~ experiment)
 
 ggplot(data = aggressiveness, aes(x = species, y = shoot_mg, color = species)) +
+  theme_light() +
   geom_boxplot() +
   geom_point(position = position_jitterdodge()) +
   theme(legend.position = "none") +
@@ -563,18 +555,24 @@ ggplot(data = aggressiveness, aes(x = species, y = shoot_mg, color = species)) +
 
 Unequal variances in length_cm and area_cm.2. Results seem to vary depending experiment, so I would include experiment as a factor.
 
-```{r}
-qplot(length_cm, data = aggressiveness_1_2) +
-  facet_wrap(~ experiment, ncol = 1)
+Experiment 1 and 2 seem more similar. 
+
+```{r distribution}
+qplot(length_cm, data = aggressiveness) +
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()
   
 qplot(area_cm.2, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1)
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()
 
 qplot(root_mg, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1)
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()
 
 qplot(shoot_mg, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1) 
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()
 ```
 
 ## Fit lm models and ANOVAs
@@ -588,7 +586,7 @@ qplot(fm_root_length$residuals)
 # anova and mean seperation
 anova(fm_root_length) 
 emmeans(fm_root_length , ~ experiment, type = "response") %>%
-  cld.emmGrid()
+  multcomp::cld()
 ```
 
 ```{r fm root area}
@@ -598,7 +596,7 @@ autoplot(fm_root_area, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_area$residuals)
 anova(fm_root_area) 
 emmeans(fm_root_area , ~ experiment, type = "response") %>% # back-transform estimates
-  cld.emmGrid() 
+  multcomp::cld()
 ```
 
 ```{r fm root dry}
@@ -607,9 +605,7 @@ autoplot(fm_root_dry, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_dry$residuals)
 anova(fm_root_dry)
 emmeans(fm_root_dry, ~ isolate|experiment) %>% 
-  cld.emmGrid()
-
-no_outliers <- aggressiveness_both[-c(9, 40, 52, 129, 191), ]
+  multcomp::cld()
 ```
 
 ```{r fm shoot dry}
@@ -617,7 +613,8 @@ fm_shoot_dry <- lm(shoot_mg ~ species + isolate + experiment, data = aggressiven
 autoplot(fm_shoot_dry, which = 1:6, ncol = 3, label.size = 3)
 anova(fm_shoot_dry)
 emmeans(fm_shoot_dry, ~ experiment) %>% 
-  cld.emmGrid()
+  multcomp::cld()
+
 ```
 
 The experiment factor is significant for all aggressiveness components. I will analyze first two experiments together and the third separate. 
@@ -631,7 +628,7 @@ aggressiveness_1_and_2 <- aggressiveness %>%
 
 ### Experiment 1 and 2
 
-```{r experiment 1}
+```{r experiment 1 and 2}
 # root length
 fm_root_length_01 <- lmer(length_cm ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
 summary(fm_root_length_01)
@@ -640,9 +637,9 @@ resid_panel(fm_root_length_01)
 # anova and post-hoc
 anova(fm_root_length_01)
 emmeans(fm_root_length_01, ~ species) %>% 
-  cld.emmGrid()  
+  multcomp::cld()
 emmeans(fm_root_length_01, ~ isolate) %>% 
-  CLD()
+  multcomp::cld()
 
 # root area
 fm_root_area_01 <- lmer(area_cm.2 ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
@@ -654,37 +651,35 @@ summary(fm_root_area_01_log)
 # anova
 anova(fm_root_area_01_log)
 emmeans(fm_root_area_01_log,  ~ species, type = "response") %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_area_01_log, ~ isolate, type = "response") %>%  
-  cld.emmGrid()
+  multcomp::cld()
 
 # root dry weight
 fm_root_dry_01 <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
 resid_panel(fm_root_dry_01)
 anova(fm_root_dry_01)
 emmeans(fm_root_dry_01, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_dry_01, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 
 # shoot dry weight
 fm_shoot_dry_01 <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
 resid_panel(fm_shoot_dry_01)
 anova(fm_shoot_dry_01)
 emmeans(fm_shoot_dry_01, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_shoot_dry_01, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 ```
-
 
 ### Experiment 3
 
-```{r}
+```{r experiment 3 data}
 aggressiveness_3 <- aggressiveness %>% 
   filter(experiment == 3)
 ```
-
 
 ```{r experiment 3}
 fm_root_length_03 <- lm(length_cm  ~ species + isolate, data = aggressiveness_3)
@@ -706,7 +701,7 @@ qplot(fm_shoot_dry_03$residuals) # outlier
 
 Check the observation # 6, which is an outlier in all the models fitted.
 
-```{r outlier}
+```{r analysis with no outlier}
 aggressiveness_3[6, ]
 aggressiveness_3 %>% filter(isolate == "17PR009A.2") # very different from other two reps
 aggressiveness_3_out <- aggressiveness_3[-c(6), ] # remove observation from data
@@ -721,14 +716,13 @@ autoplot(fm_root_length_03_out, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_length_03_out$residuals)
 # mean separation
 emmeans(fm_root_length_03_out, ~ species) %>% 
-  cld.emmGrid()
-emmeans(fm_root_length_03, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
+emmeans(fm_root_length_03, ~ species) %>%
+  multcomp::cld()
 emmeans(fm_root_length_03_out, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_length_03, ~ isolate) %>% 
-  cld.emmGrid()
-
+  multcomp::cld()
 
 fm_root_area_03_out <- lm(area_cm.2 ~ species + isolate, data = aggressiveness_3_out)
 # compare anova results 
@@ -737,9 +731,9 @@ anova(fm_root_area_03_out)
 autoplot(fm_root_area_03_out, which = 1:6, ncol = 3, label.size = 3) 
 qplot(fm_root_area_03_out$residuals) 
 emmeans(fm_root_area_03_out, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_area_03_out, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 
 fm_root_dry_03_out <- lm(root_mg ~ species + isolate, data = aggressiveness_3_out)
 # compare anova results 
@@ -748,11 +742,11 @@ anova(fm_root_dry_03_out)
 autoplot(fm_root_dry_03_out, which = 1:6, ncol = 3, label.size = 3) 
 qplot(fm_root_dry_03_out$residuals) 
 emmeans(fm_root_dry_03_out, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_dry_03_out, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_root_dry_03, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 
 # shoot dry weight  
 fm_shoot_dry_03_out <- lm(shoot_mg ~ species + isolate, data = aggressiveness_3_out)
@@ -762,16 +756,16 @@ qplot(fm_shoot_dry_03_out$residuals) # outlier
 anova(fm_shoot_dry_03)
 anova(fm_shoot_dry_03_out)
 emmeans(fm_shoot_dry_03_out, ~ species) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_shoot_dry_03_out, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 emmeans(fm_shoot_dry_03, ~ isolate) %>% 
-  cld.emmGrid()
+  multcomp::cld()
 ```
 
-## save means 
+### Save results
 
-```{r}
+```{r aggressiveness means}
 # Experiment 1 and 2
 length_mean <- emmeans(fm_root_length_01, ~ isolate) %>% 
   tidy() %>% 
@@ -818,14 +812,14 @@ aggressiveness_isolates <- bind_rows(means_experiment_1_2, means_experiment_3)
 # write_csv(aggressiveness_isolates, here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 ```
 
-I would focus on experiments 1 and 2, the third seems different and the temperature was different from   
-this. 
+I would focus on experiments 1 and 2, the third is different and also the environment (temperature)  
+was different from the first two. 
 
 ## Figure 3
 
 ```{r agg data}
 # combine the two controls for plotting
-aggressiveness_complexity$species <- str_replace_all(aggressiveness_complexity$species, 
+aggressiveness$species <- str_replace_all(aggressiveness$species, 
                                           c("Control Agar" = "Control", 
                                             "Control None" = "Control", 
                                             "Phytophthora sojae" = "P. sojae", 
@@ -835,7 +829,7 @@ aggressiveness_complexity$species <- str_replace_all(aggressiveness_complexity$s
 
 ```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
 
-a3 <- aggressiveness_complexity %>% 
+a3 <- aggressiveness %>% 
   ggplot(aes(x = species, y = length_cm, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
@@ -844,10 +838,10 @@ a3 <- aggressiveness_complexity %>%
        color = "") + 
   theme_light() +
   theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size=1.2,
-                 position=position_dodge(width=0.75), color="black")
+  stat_summary(fun ="mean", geom="point", size = 1.2,
+                 position=position_dodge(width = 0.75), color="black")
 
-b3 <- aggressiveness_complexity %>% 
+b3 <- aggressiveness %>% 
   ggplot(aes(x = species, y = area_cm.2, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
@@ -856,10 +850,10 @@ b3 <- aggressiveness_complexity %>%
        color = "") + 
   theme_light() +
   theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size=1.2,
-                 position=position_dodge(width=0.75), color="black")
+  stat_summary(fun ="mean", geom="point", size = 1.2,
+                 position=position_dodge(width = 0.75), color="black")
 
-c3 <- aggressiveness_complexity %>% 
+c3 <- aggressiveness %>% 
   ggplot(aes(x = species, y = root_mg, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
@@ -868,10 +862,10 @@ c3 <- aggressiveness_complexity %>%
        color = "") + 
   theme_light() +
   theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size=1.2,
-                 position=position_dodge(width=0.75), color="black")
+  stat_summary(fun ="mean", geom="point", size = 1.2,
+                 position=position_dodge(width = 0.75), color="black")
 
-d3 <- aggressiveness_complexity %>% 
+d3 <- aggressiveness %>% 
   ggplot(aes(x = species, y = shoot_mg, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
@@ -880,8 +874,8 @@ d3 <- aggressiveness_complexity %>%
        color = "") + 
   theme_light() +
   theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size=1.2,
-                 position=position_dodge(width=0.75), color="black")
+  stat_summary(fun ="mean", geom="point", size = 1.2,
+                 position=position_dodge(width = 0.75), color="black")
 
 figure_three_no_legend <- plot_grid(
   a3 + theme(legend.position="none"),
@@ -901,7 +895,9 @@ legend_three <- get_legend(a3 + theme(legend.position = "bottom"))
 
 ## Figure 4
 
-```{r figure 4}
+```{r figure 4, fig 3, fig.height=6, fig.width=6.8,  warning=FALSE, message=FALSE}
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
+
 # change facets name
 means_aggressiveness$facets <- factor(means_aggressiveness$agg_component, 
                                       labels = c( 
@@ -910,6 +906,14 @@ means_aggressiveness$facets <- factor(means_aggressiveness$agg_component,
                                         "Root~weight~(mg)", 
                                         "Shoot~weight~(mg)"
                                         ))
+
+# change for color
+means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
+                                          c("Control Agar" = "Control", 
+                                            "Control None" = "Control", 
+                                            "Phytophthora sojae" = "P. sojae", 
+                                            "Phytophthora sansomeana" = "P. sansomeana")                
+                                          )
 
 # sig difference lines 
 line_most_agg <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)", 
@@ -920,7 +924,7 @@ line_control <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)",
                                        "Root~weight~(mg)", "Shoot~weight~(mg)"), 
                            value = c(1.52, NA, 25, 47.4))
 
-means_aggressiveness %>% 
+figure_four <- means_aggressiveness %>% 
   filter(experiment == "1 and 2") %>% 
   ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
   geom_hline(data = line_most_agg, aes(yintercept = value),
@@ -945,46 +949,67 @@ means_aggressiveness %>%
   facet_wrap(vars(facets), labeller = label_parsed, 
              strip.position = "left", scales = "free_y", ncol = 1) 
 
+
+# ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 6, height = 6.8) 
 ```
   
-## Correlation analysis 
+## Correlation b/w aggressiveness and complexity
 
-```{r}
+```{r corr data}
+# combine with pathotype data 
+aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
+sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
+
+sojae_complexity <- sojae_pathotype %>% 
+  dplyr::select(isolate_id, Complexity) %>% 
+  rename(isolate = isolate_id)
+
+aggressiveness_complexity <- left_join(aggressiveness, sojae_complexity, by = "isolate")
+```
+
+```{r correlation }
 # correlation
 # experiment 1 and 2
-
 corr_agg_patho <- aggressiveness_complexity %>%
-  filter(species == "P. sojae",
+  filter(species == "Phytophthora sojae",
          !experiment == 3) %>% 
   dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
 
 corrplot(corr_agg_patho$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+# p-values
+corr_agg_patho$P
 ```
 
-```{r}
-aggressiveness_complexity %>% 
-  filter(!is.na(Complexity)) %>% 
+```{r corr box plot}
+box_corr1 <- aggressiveness_complexity %>% 
+  filter(!experiment == 3,
+    !is.na(Complexity)) %>% 
   ggplot(aes(x = factor(Complexity), y = length_cm)) +
   geom_boxplot() +
-  geom_point(alpha = 0.4) +
-  facet_wrap(vars(experiment), ncol = 1)  +
+  geom_point(alpha = 0.2) +
   labs(x = "Compelxity", 
-       y = "Length (cm)")
-```
+       y = "Length (cm)") +
+  theme_light() +
+  theme(panel.grid.minor = element_blank(), 
+        axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
 
-```{r}
-# experiment 3
-exp_3 <- regression_sojae %>%
-  filter(experiment == 3) %>% 
-  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
-  as.matrix() %>%
-  rcorr(type = "pearson")
+box_corr2 <- aggressiveness_complexity %>% 
+  filter(!experiment == 3,
+    !is.na(Complexity)) %>% 
+  ggplot(aes(x = factor(Complexity), y = root_mg)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2) +
+  labs(x = "Complexity", 
+       y = "Root weight (mg)") +
+  theme_light() +
+  theme(panel.grid.minor = element_blank())
 
-corrplot(exp_3$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 
-```
+plot_grid(box_corr1, box_corr2, ncol = 1, align = "v", rel_heights = c(1, 1.1))
+``` 
 
 
 # Fungicide sensitivity 
@@ -1332,7 +1357,7 @@ compare_EC50_id <- compare_EC50_id %>%
 
 ```
 
-## Figure 6
+## Figure 5
 
 ```{r figure 5,fig.height=5, fig.width=5.5, message=FALSE}
 fungicide_EC50 <- read_csv(here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
@@ -1371,16 +1396,45 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
 ```
 
 
-## Figure 5
+## Correlation b/w fungicide sensitivity, aggressiveness and complexity
 
-```{r corr plot}
+```{r combine fungicide, agg and patho}
+# combine all data
+EC50_sojae <- fungicide_EC50 %>% 
+  filter(species == "Phytophthora sojae") %>% 
+  dplyr::select(fungicide, isolate_id, EC50, county) %>% 
+  spread(fungicide, EC50)
+
+sojae_agg_comp <- aggressiveness_complexity %>% 
+  filter(species == "Phytophthora sojae", 
+         !experiment == 3) %>% 
+  dplyr::select(experiment, isolate, shoot_mg, root_mg, length_cm, area_cm.2, Complexity, )
+
+sojae_all_data <- left_join(sojae_agg_comp, EC50_sojae, by = c("isolate" = "isolate_id"))
+```
+
+```{r corr all sojae data}
+# correlation all data including NAs
+corr_sojae_all <- sojae_all_data %>%
+  dplyr::select(Complexity, azoxystrobin, ethaboxam, mefenoxam, metalaxyl, shoot_mg, root_mg, length_cm,
+                area_cm.2) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
+corrplot(corr_sojae_all$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+# p-values
+corr_sojae_all$P
+
+```
+
+```{r corr plot sample}
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
-corrplot(sojae_corr$r, method = "color", col = col(200),
+corrplot(corr_sojae_all$r, method = "color", col = col(200),
          type = "upper", order = "hclust", number.cex = 1.5,
          addCoef.col = "black", # Add coefficient of correlation
          tl.col = "black", tl.srt = 90, # Text label color and rotation
          # Combine with significance
-         p.mat = sojae_corr$P, sig.level = 0.05, insig = "blank", 
+         p.mat = corr_sojae_all$P, sig.level = 0.05, insig = "blank", 
          # hide correlation coefficient on the principal diagonal
          diag = FALSE, tl.cex = 1)
 ```
