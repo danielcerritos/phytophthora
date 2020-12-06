@@ -1438,5 +1438,3 @@ corrplot(corr_sojae_all$r, method = "color", col = col(200),
          # hide correlation coefficient on the principal diagonal
          diag = FALSE, tl.cex = 1)
 ```
-
-
