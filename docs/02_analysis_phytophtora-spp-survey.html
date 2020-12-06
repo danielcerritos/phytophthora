@@ -26,6 +26,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -34,6 +36,15 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -407,7 +418,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-05
+<strong>Last updated:</strong> 2020-12-06
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -498,16 +509,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreead038ea259d3e76a78e9d1ff6e644eef2efdb65etargetblankad038eaa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/ad038ea259d3e76a78e9d1ff6e644eef2efdb65e" target="_blank">ad038ea</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea09366b7dfa761f3dc5bc7037c777b6d3b6265dftargetblanka09366ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/danielcerritos/phytophthora/tree/a09366b7dfa761f3dc5bc7037c777b6d3b6265df" target="_blank">a09366b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreead038ea259d3e76a78e9d1ff6e644eef2efdb65etargetblankad038eaa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdanielcerritosphytophthoratreea09366b7dfa761f3dc5bc7037c777b6d3b6265dftargetblanka09366ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/ad038ea259d3e76a78e9d1ff6e644eef2efdb65e" target="_blank">ad038ea</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/danielcerritos/phytophthora/tree/a09366b7dfa761f3dc5bc7037c777b6d3b6265df" target="_blank">a09366b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -515,9 +526,11 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/~$2018 soypocalypse.xlsx
+    Untracked:  output/results/02_aggressiveness-means-isolates_results.csv
     Untracked:  output/results/tables for manuscript/
 
 </code></pre>
@@ -557,6 +570,125 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a09366b7dfa761f3dc5bc7037c777b6d3b6265df/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a09366b</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-12-06
+</td>
+<td>
+wflow_publish(“analysis/02_analysis_phytophtora-spp-survey.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/b1ecf1546195e52a747465a64536f19c45be5a25/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">b1ecf15</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-12-01
+</td>
+<td>
+change significance line color in figure 3
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/961d6a84a4eeb872c50b6cc673565a85666885e1/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">961d6a8</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-11-28
+</td>
+<td>
+figure 3 with facet_wrap, common x-axis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/ef15f78753cfb93127c596b012f2106c59a91121/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">ef15f78</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-11-21
+</td>
+<td>
+agg isolates plot, no experiment 3
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/147b5c693c6dfa6f514c1d22849f148852cf03ce/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">147b5c6</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-11-17
+</td>
+<td>
+final aggressiveness analysis, save means for plots
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/danielcerritos/phytophthora/blob/a3857c365ad88bd59d22c69803d5d0d0bf079b5e/analysis/02_analysis_phytophtora-spp-survey.Rmd" target="_blank">a3857c3</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-07
+</td>
+<td>
+scatter plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/danielcerritos/phytophthora/18b9fae8bf35417e968fe0ec5faeeffadc2cd563/docs/02_analysis_phytophtora-spp-survey.html" target="_blank">18b9fae</a>
+</td>
+<td>
+Daniel Guillermo Cerritos
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2264,12 +2396,12 @@ start analysis
 </div>
 </div>
 </div>
-<pre class="r"><code># install.packages(&quot;pacman&quot;)
+<pre class="r"><code># install.packages  (&quot;pacman&quot;)
 # install.packages(c(&quot;googleway&quot;, &quot;ggrepel&quot;,&quot;ggspatial&quot;, &quot;libwgeom&quot;, &quot;sf&quot;, &quot;rnaturalearth&quot;, 
 # &quot;rnaturalearthdata&quot;,&quot;hagis&quot;, &quot;corrplot&quot;, &quot;Hmisc&quot;, &quot;drc&quot;, &quot;rgeos&quot;, &quot;scales&quot;))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
-               Hmisc, corrplot, drc, scales, broom)</code></pre>
+               Hmisc, corrplot, drc, scales, broom, ggfortify)</code></pre>
 <div id="import-data" class="section level1">
 <h1>Import data</h1>
 <pre class="r"><code>all_data &lt;- list.files(here(&quot;output&quot;, &quot;clean_data&quot;), full.names = TRUE)
@@ -2406,6 +2538,7 @@ map_plant &lt;- map_plant %&gt;%
 <h2>Phytophthora spp isolates</h2>
 <pre class="r"><code>sequenced_isolates &lt;-  isolates_recovered %&gt;%
   filter(identification == &quot;sequence&quot;)
+ isolates_recovered %&gt;% view()
 
 phytophthora_isolates &lt;- sequenced_isolates %&gt;% 
   filter(species %in% c(&quot;Phytophthora sansomeana&quot;, &quot;Phytophthora sojae&quot;)) 
@@ -2413,6 +2546,13 @@ phytophthora_isolates &lt;- sequenced_isolates %&gt;%
 phytophthora_isolates %&gt;% 
   group_by(year) %&gt;% 
   count()</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
 <pre><code># A tibble: 3 x 2
 # Groups:   year [3]
    year     n
@@ -2440,6 +2580,13 @@ phytophthora_isolates %&gt;%
   filter(year == 2018) %&gt;% 
   group_by(source) %&gt;% 
   count()</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
 <pre><code># A tibble: 2 x 2
 # Groups:   source [2]
   source           n
@@ -2770,19 +2917,17 @@ isolates_species %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>isolates_species %&gt;% 
+<pre class="r"><code>fig_sant &lt;- isolates_species %&gt;% 
   ggplot(aes(x = reorder(species, percentage), y = percentage, fill = genus)) +
   geom_col(alpha = 0.6) +
   coord_flip() +
-  labs(x = &quot;&quot;, y = &quot;Percent isolates recovered&quot;, 
-       title = &quot;Species indentified from Illinois &quot;) +
+  labs(x = &quot;&quot;, y = &quot;Percent isolates recovered&quot;) +
   theme_minimal_vgrid() +
   theme(legend.position = &quot;none&quot;,
         axis.text.y  = element_text(face = &quot;italic&quot;)) +
   scale_fill_manual(values = c(&quot;#F8766D&quot;, &quot;#BEBEBE&quot;)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), 
                      labels = percent_format()) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20figure-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Was phytophthora and pythium isolated from same sample?</p>
 <pre class="r"><code>sequenced_isolates %&gt;%
   group_by(sample_id, species) %&gt;% 
@@ -2802,6 +2947,13 @@ isolates_species %&gt;%
   filter(sample_id %in% c(&quot;17PR013&quot;, &quot;17PR009&quot;)) %&gt;% 
   group_by(sample_id, species, county) %&gt;% 
   count()</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
 <pre><code># A tibble: 6 x 4
 # Groups:   sample_id, species, county [6]
   sample_id species                      county       n
@@ -3474,6 +3626,13 @@ sansomeana_summ &lt;- sansomeana %&gt;%
 <pre><code>`summarise()` regrouping output by &#39;isolate_id&#39;, &#39;differential&#39; (override with `.groups` argument)</code></pre>
 <pre class="r"><code>sansomeana_summ %&gt;% 
   filter(percent_susceptible &gt; 75)</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
 <pre><code># A tibble: 4 x 4
 # Groups:   isolate_id, differential [4]
   isolate_id  differential gene  percent_susceptible
@@ -3502,6 +3661,8 @@ sojae_pathotype &lt;- left_join(sojae_all, add_isolate_id, by = &quot;isolate_nu
 </div>
 <div id="aggressiveness" class="section level1">
 <h1>Aggressiveness</h1>
+<div id="transform-data-for-analysis" class="section level2">
+<h2>Transform data for analysis</h2>
 <pre class="r"><code># some pots had two images in experiment 1 because they did not fit
 area_length &lt;- area_length %&gt;% 
   group_by(experiment, pot) %&gt;% 
@@ -3524,13 +3685,15 @@ aggressiveness  &lt;- aggressiveness %&gt;%
   mutate(length_cm = length_in*2.54, 
          area_cm.2 = area_in.2*6.4516)
 
+# save data
 # write_csv(aggressiveness, here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_aggressiveness_transform.csv&quot;))</code></pre>
-<div id="exploratory-plots" class="section level2">
-<h2>Exploratory plots</h2>
-<pre class="r"><code>agg_temperature &lt;- agg_temperature %&gt;% 
-  mutate(room_temperature = (room_temperature-32) * 5/9)   # transform to Celsius
-  
-agg_temperature %&gt;% 
+<pre class="r"><code># temperature data
+agg_temperature &lt;- agg_temperature %&gt;% 
+  mutate(room_temperature = (room_temperature-32) * 5/9) # transform to Celsius</code></pre>
+</div>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory analysis</h2>
+<pre class="r"><code>agg_temperature %&gt;% 
 group_by(experiment) %&gt;% 
   summarise(min = min(room_temperature), 
             max = max(room_temperature), 
@@ -3580,11 +3743,13 @@ agg_temperature_filtered &lt;- agg_temperature %&gt;%
 agg_temperature_filtered %&gt;% 
   ggplot(aes(x = date, y = room_temperature, color = as.factor(experiment))) +
   geom_line(group = 1)  +
+  theme_light() +
   facet_grid(~ as.factor(experiment), scales = &quot;free_x&quot;) +
-  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        legend.position = &quot;none&quot;) </code></pre>
+        legend.position = &quot;none&quot;) +
+  labs(x = &quot;Date&quot;, y = &quot;Room temperature (°C)&quot;)</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/temperature%20agg-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Can we combine experiments?</p>
 <pre class="r"><code>aggressiveness$experiment &lt;- as.factor(aggressiveness$experiment)
 aggressiveness$isolate &lt;- as.factor(aggressiveness$isolate)
 aggressiveness$species &lt;- as.factor(aggressiveness$species)
@@ -3592,10 +3757,10 @@ aggressiveness$species &lt;- as.factor(aggressiveness$species)
 exp_plot &lt;- function(y) {
   ggplot(data = aggressiveness, aes(x = experiment, y = .data[[y]])) +
     geom_boxplot() +
-    theme_minimal() +
+    theme_light() +
     labs(x = &quot;&quot;, 
          y = y) +
-    theme(legend.position = &quot;none&quot;)
+    theme(legend.position = &quot;none&quot;) 
   }
 
 by_exp_shoot &lt;- exp_plot(&quot;shoot_mg&quot;)
@@ -3604,79 +3769,696 @@ by_exp_length &lt;- exp_plot(&quot;length_cm&quot;)
 by_exp_area &lt;- exp_plot(&quot;area_cm.2&quot;)
 
 plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/exp%20plot%201-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>dis_shoot &lt;- qplot(shoot_mg, data = aggressiveness) +
-  theme_minimal()
-dis_dry &lt;- qplot(root_mg, data = aggressiveness) +
-    theme_minimal()
-dis_length &lt;- qplot(length_cm, data = aggressiveness) +
-  theme_minimal() # skew to the left, some transformation needed
-dis_area &lt;- qplot(area_cm.2, data = aggressiveness) +
-  theme_minimal() # also skew
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/plot%20by%20experiment-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = aggressiveness, aes(x = species, y = length_cm, color = species)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_light() +
+  theme(legend.position = &quot;none&quot;) +
+  facet_wrap(~experiment)</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 8 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20by%20experiment-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = aggressiveness, aes(x = species, y = area_cm.2, color = species)) +
+  geom_boxplot() +
+  theme_light() +
+  geom_point(position = position_jitterdodge()) +
+  theme(legend.position = &quot;none&quot;) +
+  facet_wrap(~experiment)</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_boxplot).
 
-plot_grid(dis_shoot, dis_dry, dis_length, dis_area)</code></pre>
+Warning: Removed 8 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20by%20experiment-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = aggressiveness, aes(x = species, y = root_mg, color = species)) +
+  geom_boxplot() +
+  theme_light() +
+  geom_point(position = position_jitterdodge()) +
+  theme(legend.position = &quot;none&quot;) +
+  facet_wrap(~ experiment)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20by%20experiment-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = aggressiveness, aes(x = species, y = shoot_mg, color = species)) +
+  theme_light() +
+  geom_boxplot() +
+  geom_point(position = position_jitterdodge()) +
+  theme(legend.position = &quot;none&quot;) +
+  facet_wrap(~experiment)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/species%20by%20experiment-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Unequal variances in length_cm and area_cm.2. Results seem to vary depending experiment, so I would include experiment as a factor.</p>
+<p>Experiment 1 and 2 seem more similar.</p>
+<pre class="r"><code>qplot(length_cm, data = aggressiveness) +
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>dis_length_log &lt;- qplot(log(length_cm), data = aggressiveness) +
-  theme_minimal() 
-dis_area_log &lt;- qplot(log(area_cm.2), data = aggressiveness) +
-  theme_minimal() 
-
-plot_grid(dis_length_log, dis_area_log) #improves with log transformation</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/log%20transform-1.png" width="720" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(area_cm.2, data = aggressiveness) +
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 8 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(root_mg, data = aggressiveness) +
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(shoot_mg, data = aggressiveness) +
+  facet_wrap(~ experiment, ncol = 1) +
+  theme_light()</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/distribution-4.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="difference-between-species" class="section level2">
-<h2>Difference between species</h2>
-<pre class="r"><code># not nesting isolate:species, isolates coded in a way there is no needed
-# same coefficient estimates and p values without nesting
-# log transformation for normality and slight difference in variances
-fm_root_length &lt;- lmer(log(length_cm) ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
-<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
-<pre class="r"><code>resid_panel(fm_root_length ) # diagnostic plots look fine</code></pre>
+<div id="fit-lm-models-and-anovas" class="section level2">
+<h2>Fit lm models and ANOVAs</h2>
+<pre class="r"><code># not nesting isolate:species, isolates coded in a way there is no need
+fm_root_length &lt;- lm(log(length_cm) ~ species + isolate + experiment, data = aggressiveness)
+# diagnostics
+autoplot(fm_root_length, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<pre><code>Warning: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette(&#39;programming&#39;) for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20length-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_length )</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
-species 12.687  4.2288     3 254.01 15.2707 3.638e-09 ***
-isolate 22.764  0.7850    29 254.00  2.8346 6.339e-06 ***
+<pre class="r"><code>qplot(fm_root_length$residuals)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20length-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># anova and mean seperation
+anova(fm_root_length) </code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: log(length_cm)
+            Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+species      3 52.252  17.417  62.8954 &lt; 2.2e-16 ***
+isolate     29 22.809   0.787   2.8402 6.078e-06 ***
+experiment   2 80.186  40.093 144.7804 &lt; 2.2e-16 ***
+Residuals  254 70.339   0.277                       
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_length , ~ species, type = &quot;response&quot;) %&gt;% # back-transform estimates
-  cld.emmGrid()</code></pre>
+<pre class="r"><code>emmeans(fm_root_length , ~ experiment, type = &quot;response&quot;) %&gt;%
+  multcomp::cld()</code></pre>
 <pre><code>NOTE: A nesting structure was detected in the fitted model:
     isolate %in% species</code></pre>
-<pre><code> species                 response   SE   df lower.CL upper.CL .group
- Phytophthora sojae          28.8 10.7 2.01     5.88      141  1    
- Control None                63.4 25.9 2.96    17.12      235   2   
- Phytophthora sansomeana     78.8 29.6 2.11    16.97      366   2   
- Control Agar                84.7 35.5 3.29    23.77      302   2   
+<pre><code> experiment response   SE  df lower.CL upper.CL .group
+ 3              28.2 2.27 254     24.0     33.0  1    
+ 2              83.9 7.08 254     71.1     99.1   2   
+ 1              87.2 7.05 254     74.4    102.2   2   
+
+Results are averaged over the levels of: isolate, species 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 3 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># fit again with transformation
+fm_root_area &lt;- lm(log(area_cm.2) ~ experiment, data = aggressiveness)
+autoplot(fm_root_area, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20area-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_area$residuals)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20area-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_area) </code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: log(area_cm.2)
+            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+experiment   2  71.56  35.780  70.961 &lt; 2.2e-16 ***
+Residuals  286 144.21   0.504                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_area , ~ experiment, type = &quot;response&quot;) %&gt;% # back-transform estimates
+  multcomp::cld()</code></pre>
+<pre><code> experiment response     SE  df lower.CL upper.CL .group
+ 3              1.04 0.0745 286    0.907     1.20  1    
+ 2              1.86 0.1374 286    1.605     2.15   2   
+ 1              3.48 0.2500 286    3.026     4.01    3  
+
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 3 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_root_dry &lt;- lm(root_mg ~ species + isolate + experiment, data = aggressiveness)
+autoplot(fm_root_dry, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_dry$residuals)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20dry-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_dry)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: root_mg
+            Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
+species      3 13383.7  4461.2 112.9138 &lt; 2.2e-16 ***
+isolate     29  3095.1   106.7   2.7013 1.629e-05 ***
+experiment   2  3446.4  1723.2  43.6137 &lt; 2.2e-16 ***
+Residuals  262 10351.6    39.5                       
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_dry, ~ isolate|experiment) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code>experiment = 1:
+ isolate      species                 emmean   SE  df lower.CL upper.CL
+ 18PR017      Phytophthora sojae       10.48 2.16 262    6.233    14.73
+ 18PR010      Phytophthora sojae       10.82 2.16 262    6.576    15.07
+ 18PR009      Phytophthora sojae       12.03 2.16 262    7.783    16.28
+ 16PR009.1    Phytophthora sojae       13.32 2.16 262    9.068    17.57
+ 16PR009.2    Phytophthora sojae       13.93 2.16 262    9.685    18.18
+ 18PR008      Phytophthora sojae       14.42 2.16 262   10.175    18.67
+ 18PR011      Phytophthora sojae       14.86 2.16 262   10.615    19.11
+ 18PR012      Phytophthora sojae       15.10 2.16 262   10.849    19.35
+ 18PR016      Phytophthora sojae       15.20 2.16 262   10.949    19.45
+ 18PR013      Phytophthora sojae       15.32 2.16 262   11.069    19.57
+ 18PR007      Phytophthora sojae       15.49 2.16 262   11.244    19.74
+ 17PR018F.1   Phytophthora sojae       16.24 2.16 262   11.990    20.49
+ 17PR009A.2   Phytophthora sojae       16.76 2.16 262   12.515    21.01
+ 17PR009A.1   Phytophthora sojae       16.89 2.16 262   12.641    21.14
+ 18PR006      Phytophthora sojae       17.06 2.16 262   12.807    21.30
+ 18PR014      Phytophthora sojae       17.34 2.16 262   13.093    21.59
+ 17PR018H.1   Phytophthora sojae       17.92 2.16 262   13.668    22.17
+ 17PR018F.2   Phytophthora sojae       18.64 2.16 262   14.394    22.89
+ 17PR018J.3   Phytophthora sojae       19.09 2.16 262   14.841    23.34
+ 18PR015      Phytophthora sojae       19.44 2.16 262   15.191    23.69
+ 16PR027C.2   Phytophthora sojae       21.42 2.16 262   17.173    25.67
+ 18PR001      Phytophthora sojae       22.03 2.16 262   17.782    26.28
+ 16PR027C.1   Phytophthora sojae       23.26 2.16 262   19.010    27.51
+ 17PR013G.3   Phytophthora sojae       26.13 2.16 262   21.879    30.38
+ Control None Control None             29.47 2.16 262   25.221    33.72
+ 18PR004      Phytophthora sansomeana  30.17 2.16 262   25.918    34.42
+ 16PR018B.1   Phytophthora sansomeana  30.41 2.16 262   26.160    34.66
+ 18PR003      Phytophthora sansomeana  30.97 2.16 262   26.725    35.22
+ 16PR024C.1   Phytophthora sansomeana  31.01 2.16 262   26.760    35.26
+ 18PR005      Phytophthora sansomeana  32.05 2.16 262   27.802    36.30
+ 16PR024C.2   Phytophthora sansomeana  33.18 2.16 262   28.930    37.43
+ 17PR006L.1   Phytophthora sansomeana  33.73 2.16 262   29.480    37.98
+ Control Agar Control Agar             35.11 2.16 262   30.864    39.36
+ .group    
+  1        
+  1        
+  12       
+  12       
+  12       
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  1234     
+  1234     
+  12345    
+  123456   
+  123456   
+  1234567  
+  12345678 
+   23456789
+    3456789
+     456789
+      56789
+      56789
+       6789
+       6789
+        789
+        789
+         89
+          9
+
+experiment = 2:
+ isolate      species                 emmean   SE  df lower.CL upper.CL
+ 18PR017      Phytophthora sojae       12.79 2.16 262    8.537    17.03
+ 18PR010      Phytophthora sojae       13.13 2.16 262    8.880    17.38
+ 18PR009      Phytophthora sojae       14.34 2.16 262   10.087    18.58
+ 16PR009.1    Phytophthora sojae       15.62 2.16 262   11.372    19.87
+ 16PR009.2    Phytophthora sojae       16.24 2.16 262   11.989    20.49
+ 18PR008      Phytophthora sojae       16.73 2.16 262   12.479    20.98
+ 18PR011      Phytophthora sojae       17.17 2.16 262   12.919    21.42
+ 18PR012      Phytophthora sojae       17.40 2.16 262   13.153    21.65
+ 18PR016      Phytophthora sojae       17.50 2.16 262   13.254    21.75
+ 18PR013      Phytophthora sojae       17.62 2.16 262   13.374    21.87
+ 18PR007      Phytophthora sojae       17.80 2.16 262   13.548    22.05
+ 17PR018F.1   Phytophthora sojae       18.54 2.16 262   14.294    22.79
+ 17PR009A.2   Phytophthora sojae       19.07 2.16 262   14.820    23.32
+ 17PR009A.1   Phytophthora sojae       19.19 2.16 262   14.946    23.44
+ 18PR006      Phytophthora sojae       19.36 2.16 262   15.112    23.61
+ 18PR014      Phytophthora sojae       19.65 2.16 262   15.398    23.90
+ 17PR018H.1   Phytophthora sojae       20.22 2.16 262   15.972    24.47
+ 17PR018F.2   Phytophthora sojae       20.95 2.16 262   16.698    25.20
+ 17PR018J.3   Phytophthora sojae       21.39 2.16 262   17.146    25.64
+ 18PR015      Phytophthora sojae       21.74 2.16 262   17.496    25.99
+ 16PR027C.2   Phytophthora sojae       23.73 2.16 262   19.477    27.98
+ 18PR001      Phytophthora sojae       24.34 2.16 262   20.086    28.58
+ 16PR027C.1   Phytophthora sojae       25.56 2.16 262   21.314    29.81
+ 17PR013G.3   Phytophthora sojae       28.43 2.16 262   24.183    32.68
+ Control None Control None             31.77 2.16 262   27.525    36.02
+ 18PR004      Phytophthora sansomeana  32.47 2.16 262   28.222    36.72
+ 16PR018B.1   Phytophthora sansomeana  32.71 2.16 262   28.464    36.96
+ 18PR003      Phytophthora sansomeana  33.28 2.16 262   29.030    37.53
+ 16PR024C.1   Phytophthora sansomeana  33.31 2.16 262   29.064    37.56
+ 18PR005      Phytophthora sansomeana  34.35 2.16 262   30.106    38.60
+ 16PR024C.2   Phytophthora sansomeana  35.48 2.16 262   31.235    39.73
+ 17PR006L.1   Phytophthora sansomeana  36.03 2.16 262   31.784    40.28
+ Control Agar Control Agar             37.42 2.16 262   33.168    41.67
+ .group    
+  1        
+  1        
+  12       
+  12       
+  12       
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  1234     
+  1234     
+  12345    
+  123456   
+  123456   
+  1234567  
+  12345678 
+   23456789
+    3456789
+     456789
+      56789
+      56789
+       6789
+       6789
+        789
+        789
+         89
+          9
+
+experiment = 3:
+ isolate      species                 emmean   SE  df lower.CL upper.CL
+ 18PR017      Phytophthora sojae        4.69 2.16 262    0.439     8.94
+ 18PR010      Phytophthora sojae        5.03 2.16 262    0.783     9.28
+ 18PR009      Phytophthora sojae        6.24 2.16 262    1.990    10.49
+ 16PR009.1    Phytophthora sojae        7.52 2.16 262    3.275    11.77
+ 16PR009.2    Phytophthora sojae        8.14 2.16 262    3.892    12.39
+ 18PR008      Phytophthora sojae        8.63 2.16 262    4.382    12.88
+ 18PR011      Phytophthora sojae        9.07 2.16 262    4.822    13.32
+ 18PR012      Phytophthora sojae        9.30 2.16 262    5.056    13.55
+ 18PR016      Phytophthora sojae        9.41 2.16 262    5.156    13.65
+ 18PR013      Phytophthora sojae        9.53 2.16 262    5.276    13.77
+ 18PR007      Phytophthora sojae        9.70 2.16 262    5.451    13.95
+ 17PR018F.1   Phytophthora sojae       10.45 2.16 262    6.197    14.69
+ 17PR009A.2   Phytophthora sojae       10.97 2.16 262    6.722    15.22
+ 17PR009A.1   Phytophthora sojae       11.10 2.16 262    6.848    15.35
+ 18PR006      Phytophthora sojae       11.26 2.16 262    7.014    15.51
+ 18PR014      Phytophthora sojae       11.55 2.16 262    7.300    15.80
+ 17PR018H.1   Phytophthora sojae       12.12 2.16 262    7.875    16.37
+ 17PR018F.2   Phytophthora sojae       12.85 2.16 262    8.601    17.10
+ 17PR018J.3   Phytophthora sojae       13.30 2.16 262    9.048    17.55
+ 18PR015      Phytophthora sojae       13.65 2.16 262    9.398    17.90
+ 16PR027C.2   Phytophthora sojae       15.63 2.16 262   11.380    19.88
+ 18PR001      Phytophthora sojae       16.24 2.16 262   11.989    20.49
+ 16PR027C.1   Phytophthora sojae       17.47 2.16 262   13.216    21.71
+ 17PR013G.3   Phytophthora sojae       20.33 2.16 262   16.086    24.58
+ Control None Control None             23.68 2.16 262   19.427    27.93
+ 18PR004      Phytophthora sansomeana  24.37 2.16 262   20.125    28.62
+ 16PR018B.1   Phytophthora sansomeana  24.62 2.16 262   20.367    28.86
+ 18PR003      Phytophthora sansomeana  25.18 2.16 262   20.932    29.43
+ 16PR024C.1   Phytophthora sansomeana  25.22 2.16 262   20.967    29.46
+ 18PR005      Phytophthora sansomeana  26.26 2.16 262   22.009    30.51
+ 16PR024C.2   Phytophthora sansomeana  27.39 2.16 262   23.137    31.63
+ 17PR006L.1   Phytophthora sansomeana  27.94 2.16 262   23.687    32.18
+ Control Agar Control Agar             29.32 2.16 262   25.071    33.57
+ .group    
+  1        
+  1        
+  12       
+  12       
+  12       
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  123      
+  1234     
+  1234     
+  12345    
+  123456   
+  123456   
+  1234567  
+  12345678 
+   23456789
+    3456789
+     456789
+      56789
+      56789
+       6789
+       6789
+        789
+        789
+         89
+          9
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 56.787 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_shoot_dry &lt;- lm(shoot_mg ~ species + isolate + experiment, data = aggressiveness)
+autoplot(fm_shoot_dry, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20shoot%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_shoot_dry)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: shoot_mg
+            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+species      3  46649 15549.8 54.8527 &lt; 2.2e-16 ***
+isolate     29  13226   456.1  1.6088   0.02879 *  
+experiment   2  18985  9492.6 33.4855 1.122e-13 ***
+Residuals  262  74272   283.5                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry, ~ experiment) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> experiment emmean   SE  df lower.CL upper.CL .group
+ 3            53.6 2.49 262     48.7     58.5  1    
+ 1            69.2 2.49 262     64.3     74.1   2   
+ 2            71.6 2.49 262     66.7     76.6   2   
+
+Results are averaged over the levels of: isolate, species 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 3 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<p>The experiment factor is significant for all aggressiveness components. I will analyze first two experiments together and the third separate.</p>
+</div>
+<div id="analysis-by-experiment" class="section level2">
+<h2>Analysis by experiment</h2>
+<pre class="r"><code>aggressiveness_1_and_2 &lt;- aggressiveness %&gt;% 
+  filter(!experiment == 3)</code></pre>
+<div id="experiment-1-and-2" class="section level3">
+<h3>Experiment 1 and 2</h3>
+<pre class="r"><code># root length
+fm_root_length_01 &lt;- lmer(length_cm ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre><code>boundary (singular) fit: see ?isSingular</code></pre>
+<pre class="r"><code>summary(fm_root_length_01)</code></pre>
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: length_cm ~ species + isolate + (1 | experiment)
+   Data: aggressiveness_1_and_2
+
+REML criterion at convergence: 1557.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.9503 -0.5985 -0.1028  0.4690  3.0552 
+
+Random effects:
+ Groups     Name        Variance Std.Dev.
+ experiment (Intercept)   0.0     0.00   
+ Residual               826.9    28.76   
+Number of obs: 190, groups:  experiment, 2
+
+Fixed effects:
+                                Estimate Std. Error        df t value Pr(&gt;|t|)
+(Intercept)                     90.15762   14.37781 157.00000   6.271 3.33e-09
+speciesControl None            -16.36812   18.56167 157.00000  -0.882 0.379220
+speciesPhytophthora sansomeana  -3.43465   20.33330 157.00000  -0.169 0.866079
+speciesPhytophthora sojae      -44.18037   18.56167 157.00000  -2.380 0.018503
+isolate16PR009.2                 6.51888   16.60207 157.00000   0.393 0.695107
+isolate16PR018B.1                2.93782   18.56167 157.00000   0.158 0.874445
+isolate16PR024C.1               12.97968   18.56167 157.00000   0.699 0.485416
+isolate16PR024C.2               12.24346   19.28986 157.00000   0.635 0.526542
+isolate16PR027C.1               49.62635   16.60207 157.00000   2.989 0.003248
+isolate16PR027C.2               21.53512   16.60207 157.00000   1.297 0.196488
+isolate17PR006L.1               27.57322   18.56167 157.00000   1.485 0.139419
+isolate17PR009A.1                0.03729   16.60207 157.00000   0.002 0.998211
+isolate17PR009A.2              -12.39756   16.60207 157.00000  -0.747 0.456332
+isolate17PR013G.3               47.31869   16.60207 157.00000   2.850 0.004957
+isolate17PR018F.1                4.58500   16.60207 157.00000   0.276 0.782780
+isolate17PR018F.2               19.99902   16.60207 157.00000   1.205 0.230166
+isolate17PR018H.1               12.75844   16.60207 157.00000   0.768 0.443354
+isolate17PR018J.3               16.35037   16.60207 157.00000   0.985 0.326218
+isolate18PR001                  60.56953   17.41239 157.00000   3.479 0.000653
+isolate18PR003                  11.87008   18.56167 157.00000   0.639 0.523434
+isolate18PR004                  23.00875   19.28986 157.00000   1.193 0.234751
+isolate18PR006                   2.68424   16.60207 157.00000   0.162 0.871765
+isolate18PR007                  -3.79705   16.60207 157.00000  -0.229 0.819392
+isolate18PR008                  -6.98440   16.60207 157.00000  -0.421 0.674553
+isolate18PR009                 -11.98870   16.60207 157.00000  -0.722 0.471294
+isolate18PR010                  -7.32897   17.41239 157.00000  -0.421 0.674400
+isolate18PR011                 -18.51007   16.60207 157.00000  -1.115 0.266586
+isolate18PR012                  -2.36040   16.60207 157.00000  -0.142 0.887124
+isolate18PR013                  -7.49090   16.60207 157.00000  -0.451 0.652466
+isolate18PR014                   1.95224   16.60207 157.00000   0.118 0.906543
+isolate18PR015                   8.38354   16.60207 157.00000   0.505 0.614288
+isolate18PR016                  -9.98056   16.60207 157.00000  -0.601 0.548598
+isolate18PR017                  -4.19798   16.60207 157.00000  -0.253 0.800708
+                                  
+(Intercept)                    ***
+speciesControl None               
+speciesPhytophthora sansomeana    
+speciesPhytophthora sojae      *  
+isolate16PR009.2                  
+isolate16PR018B.1                 
+isolate16PR024C.1                 
+isolate16PR024C.2                 
+isolate16PR027C.1              ** 
+isolate16PR027C.2                 
+isolate17PR006L.1                 
+isolate17PR009A.1                 
+isolate17PR009A.2                 
+isolate17PR013G.3              ** 
+isolate17PR018F.1                 
+isolate17PR018F.2                 
+isolate17PR018H.1                 
+isolate17PR018J.3                 
+isolate18PR001                 ***
+isolate18PR003                    
+isolate18PR004                    
+isolate18PR006                    
+isolate18PR007                    
+isolate18PR008                    
+isolate18PR009                    
+isolate18PR010                    
+isolate18PR011                    
+isolate18PR012                    
+isolate18PR013                    
+isolate18PR014                    
+isolate18PR015                    
+isolate18PR016                    
+isolate18PR017                    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>
+Correlation matrix not shown by default, as p = 33 &gt; 12.
+Use print(x, correlation=TRUE)  or
+    vcov(x)        if you need it</code></pre>
+<pre><code>fit warnings:
+fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients
+convergence code: 0
+boundary (singular) fit: see ?isSingular</code></pre>
+<pre class="r"><code># diagnostics
+resid_panel(fm_root_length_01) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%201%20and%202-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># anova and post-hoc
+anova(fm_root_length_01)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+        Sum Sq Mean Sq NumDF DenDF F value   Pr(&gt;F)    
+species   6259  2086.2     3   157  2.5229 0.059772 .  
+isolate  57450  1981.0    29   157  2.3958 0.000322 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_length_01, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean    SE     df lower.CL upper.CL .group
+ Phytophthora sojae        52.9  2.42   1.74     40.9       65  1    
+ Control None              73.8 11.74 142.18     50.6       97  12   
+ Control Agar              90.2 14.53 147.37     61.4      119  12   
+ Phytophthora sansomeana   99.7  4.72  22.71     89.9      109   2   
 
 Results are averaged over the levels of: isolate 
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 
-Intervals are back-transformed from the log scale 
 P value adjustment: tukey method for comparing a family of 4 estimates 
-Tests are performed on the log scale 
 significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_root_area &lt;- lmer(log(area_cm.2) ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre class="r"><code>emmeans(fm_root_length_01, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE  df lower.CL upper.CL .group 
+ 18PR011      Phytophthora sojae        27.5 11.7 142     4.26     50.7  1     
+ 17PR009A.2   Phytophthora sojae        33.6 11.7 142    10.37     56.8  12    
+ 18PR009      Phytophthora sojae        34.0 11.7 142    10.78     57.2  12    
+ 18PR016      Phytophthora sojae        36.0 11.7 142    12.79     59.2  123   
+ 18PR013      Phytophthora sojae        38.5 11.7 142    15.28     61.7  123   
+ 18PR010      Phytophthora sojae        38.6 12.9 146    13.18     64.1  1234  
+ 18PR008      Phytophthora sojae        39.0 11.7 142    15.79     62.2  123   
+ 18PR017      Phytophthora sojae        41.8 11.7 142    18.57     65.0  1234  
+ 18PR007      Phytophthora sojae        42.2 11.7 142    18.97     65.4  1234  
+ 18PR012      Phytophthora sojae        43.6 11.7 142    20.41     66.8  12345 
+ 16PR009.1    Phytophthora sojae        46.0 11.7 142    22.77     69.2  12345 
+ 17PR009A.1   Phytophthora sojae        46.0 11.7 142    22.81     69.2  12345 
+ 18PR014      Phytophthora sojae        47.9 11.7 142    24.72     71.1  12345 
+ 18PR006      Phytophthora sojae        48.7 11.7 142    25.46     71.9  12345 
+ 17PR018F.1   Phytophthora sojae        50.6 11.7 142    27.36     73.8  123456
+ 16PR009.2    Phytophthora sojae        52.5 11.7 142    29.29     75.7  123456
+ 18PR015      Phytophthora sojae        54.4 11.7 142    31.15     77.6  123456
+ 17PR018H.1   Phytophthora sojae        58.7 11.7 142    35.53     81.9  123456
+ 17PR018J.3   Phytophthora sojae        62.3 11.7 142    39.12     85.5  123456
+ 17PR018F.2   Phytophthora sojae        66.0 11.7 142    42.77     89.2  123456
+ 16PR027C.2   Phytophthora sojae        67.5 11.7 142    44.31     90.7  123456
+ Control None Control None              73.8 11.7 142    50.58     97.0  123456
+ 18PR005      Phytophthora sansomeana   86.7 14.5 147    58.01    115.4  123456
+ 16PR018B.1   Phytophthora sansomeana   89.7 11.7 142    66.45    112.9  123456
+ Control Agar Control Agar              90.2 14.5 147    61.44    118.9  123456
+ 17PR013G.3   Phytophthora sojae        93.3 11.7 142    70.09    116.5   23456
+ 16PR027C.1   Phytophthora sojae        95.6 11.7 142    72.40    118.8   23456
+ 18PR003      Phytophthora sansomeana   98.6 11.7 142    75.39    121.8    3456
+ 16PR024C.2   Phytophthora sansomeana   99.0 12.9 146    73.50    124.4   23456
+ 16PR024C.1   Phytophthora sansomeana   99.7 11.7 142    76.50    122.9    3456
+ 18PR001      Phytophthora sojae       106.5 12.9 146    81.08    132.0     456
+ 18PR004      Phytophthora sansomeana  109.7 12.9 146    84.26    135.2      56
+ 17PR006L.1   Phytophthora sansomeana  114.3 11.7 142    91.09    137.5       6
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># root area
+fm_root_area_01 &lt;- lmer(area_cm.2 ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)</code></pre>
 <pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
-<pre class="r"><code>resid_panel(fm_root_area) # transformation also worked </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20area-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_area)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
-species  12.83  4.2768     3 254.01 16.0131 1.449e-09 ***
-isolate  21.89  0.7548    29 254.00  2.8262 6.752e-06 ***
+<pre class="r"><code>resid_panel(fm_root_area_01) # non-constant variance</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%201%20and%202-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># log-transformation
+fm_root_area_01_log &lt;- lmer(log(area_cm.2) ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code>resid_panel(fm_root_area_01_log)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%201%20and%202-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>summary(fm_root_area_01_log)</code></pre>
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: log(area_cm.2) ~ species + isolate + (1 | experiment)
+   Data: aggressiveness_1_and_2
+
+REML criterion at convergence: 267.3
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-2.92015 -0.57190  0.00509  0.56896  2.61047 
+
+Random effects:
+ Groups     Name        Variance Std.Dev.
+ experiment (Intercept) 0.1823   0.4269  
+ Residual               0.2165   0.4653  
+Number of obs: 190, groups:  experiment, 2
+
+Fixed effects:
+                                 Estimate Std. Error         df t value
+(Intercept)                      1.560842   0.381505   2.481539   4.091
+speciesControl None             -0.221394   0.300824 156.012454  -0.736
+speciesPhytophthora sansomeana  -0.217300   0.329016 156.000000  -0.660
+speciesPhytophthora sojae       -1.012224   0.300824 156.012454  -3.365
+isolate16PR009.2                -0.153681   0.268641 156.000000  -0.572
+isolate16PR018B.1                0.001319   0.300824 156.012454   0.004
+isolate16PR024C.1                0.103255   0.300824 156.012454   0.343
+isolate16PR024C.2                0.154304   0.312297 156.004168   0.494
+isolate16PR027C.1                0.863148   0.268641 156.000000   3.213
+isolate16PR027C.2                0.397040   0.268641 156.000000   1.478
+isolate17PR006L.1                0.266663   0.300824 156.012454   0.886
+isolate17PR009A.1                0.208565   0.268641 156.000000   0.776
+isolate17PR009A.2               -0.150063   0.268641 156.000000  -0.559
+isolate17PR013G.3                0.885352   0.268641 156.000000   3.296
+isolate17PR018F.1                0.082292   0.268641 156.000000   0.306
+isolate17PR018F.2                0.433419   0.268641 156.000000   1.613
+isolate17PR018H.1                0.373041   0.268641 156.000000   1.389
+isolate17PR018J.3                0.282122   0.268641 156.000000   1.050
+isolate18PR001                   0.989538   0.281834 156.002276   3.511
+isolate18PR003                   0.089584   0.300824 156.012454   0.298
+isolate18PR004                   0.210962   0.313028 156.022487   0.674
+isolate18PR006                   0.226854   0.268641 156.000000   0.844
+isolate18PR007                   0.114747   0.268641 156.000000   0.427
+isolate18PR008                   0.247678   0.268641 156.000000   0.922
+isolate18PR009                  -0.152318   0.268641 156.000000  -0.567
+isolate18PR010                  -0.111551   0.281834 156.002276  -0.396
+isolate18PR011                  -0.270533   0.268641 156.000000  -1.007
+isolate18PR012                   0.194203   0.268641 156.000000   0.723
+isolate18PR013                  -0.044051   0.268641 156.000000  -0.164
+isolate18PR014                   0.242039   0.268641 156.000000   0.901
+isolate18PR015                   0.420661   0.268641 156.000000   1.566
+isolate18PR016                  -0.031322   0.268641 156.000000  -0.117
+isolate18PR017                   0.037321   0.268641 156.000000   0.139
+                               Pr(&gt;|t|)    
+(Intercept)                    0.037593 *  
+speciesControl None            0.462861    
+speciesPhytophthora sansomeana 0.509937    
+speciesPhytophthora sojae      0.000964 ***
+isolate16PR009.2               0.568099    
+isolate16PR018B.1              0.996506    
+isolate16PR024C.1              0.731880    
+isolate16PR024C.2              0.621936    
+isolate16PR027C.1              0.001596 ** 
+isolate16PR027C.2              0.141435    
+isolate17PR006L.1              0.376745    
+isolate17PR009A.1              0.438706    
+isolate17PR009A.2              0.577234    
+isolate17PR013G.3              0.001216 ** 
+isolate17PR018F.1              0.759764    
+isolate17PR018F.2              0.108684    
+isolate17PR018H.1              0.166927    
+isolate17PR018J.3              0.295258    
+isolate18PR001                 0.000584 ***
+isolate18PR003                 0.766256    
+isolate18PR004                 0.501346    
+isolate18PR006                 0.399711    
+isolate18PR007                 0.669866    
+isolate18PR008                 0.357969    
+isolate18PR009                 0.571533    
+isolate18PR010                 0.692790    
+isolate18PR011                 0.315474    
+isolate18PR012                 0.470817    
+isolate18PR013                 0.869962    
+isolate18PR014                 0.368991    
+isolate18PR015                 0.119401    
+isolate18PR016                 0.907331    
+isolate18PR017                 0.889688    
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_area, ~ species, type = &quot;response&quot;) %&gt;% 
-  cld.emmGrid()</code></pre>
+<pre><code>
+Correlation matrix not shown by default, as p = 33 &gt; 12.
+Use print(x, correlation=TRUE)  or
+    vcov(x)        if you need it</code></pre>
+<pre><code>fit warnings:
+fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
+<pre class="r"><code># anova
+anova(fm_root_area_01_log)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+         Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
+species  3.2024 1.06745     3 156.01  4.9304 0.0026748 ** 
+isolate 15.2381 0.52545    29 156.00  2.4270 0.0002668 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_root_area_01_log,  ~ species, type = &quot;response&quot;) %&gt;% 
+  multcomp::cld()</code></pre>
 <pre><code>NOTE: A nesting structure was detected in the fitted model:
     isolate %in% species</code></pre>
 <pre><code> species                 response    SE   df lower.CL upper.CL .group
- Phytophthora sojae          1.47 0.514 2.01    0.326     6.58  1    
- Control None                3.46 1.348 3.05    1.014    11.82   2   
- Phytophthora sansomeana     3.93 1.396 2.12    0.922    16.73   2   
- Control Agar                4.66 1.865 3.40    1.414    15.36   2   
+ Phytophthora sojae          2.14 0.651 1.01   0.0481     95.2  1    
+ Control None                3.82 1.361 1.90   0.7583     19.2   2   
+ Phytophthora sansomeana     4.31 1.343 1.10   0.1797    103.5   2   
+ Control Agar                4.76 1.817 2.48   1.2089     18.8   2   
 
 Results are averaged over the levels of: isolate 
 Degrees-of-freedom method: kenward-roger 
@@ -3685,164 +4467,1025 @@ Intervals are back-transformed from the log scale
 P value adjustment: tukey method for comparing a family of 4 estimates 
 Tests are performed on the log scale 
 significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_root_dry &lt;- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
+<pre class="r"><code>emmeans(fm_root_area_01_log, ~ isolate, type = &quot;response&quot;) %&gt;%  
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 response    SE   df lower.CL upper.CL
+ 18PR011      Phytophthora sojae          1.32 0.471 1.90    0.262     6.65
+ 16PR009.2    Phytophthora sojae          1.48 0.529 1.90    0.295     7.47
+ 18PR009      Phytophthora sojae          1.49 0.530 1.90    0.295     7.48
+ 17PR009A.2   Phytophthora sojae          1.49 0.531 1.90    0.296     7.50
+ 18PR010      Phytophthora sojae          1.55 0.568 2.12    0.347     6.90
+ 18PR013      Phytophthora sojae          1.66 0.591 1.90    0.329     8.34
+ 18PR016      Phytophthora sojae          1.68 0.598 1.90    0.333     8.44
+ 16PR009.1    Phytophthora sojae          1.73 0.617 1.90    0.344     8.71
+ 18PR017      Phytophthora sojae          1.80 0.641 1.90    0.357     9.04
+ 17PR018F.1   Phytophthora sojae          1.88 0.670 1.90    0.373     9.46
+ 18PR007      Phytophthora sojae          1.94 0.692 1.90    0.386     9.77
+ 18PR012      Phytophthora sojae          2.10 0.750 1.90    0.418    10.58
+ 17PR009A.1   Phytophthora sojae          2.13 0.761 1.90    0.424    10.73
+ 18PR006      Phytophthora sojae          2.17 0.775 1.90    0.431    10.93
+ 18PR014      Phytophthora sojae          2.20 0.786 1.90    0.438    11.10
+ 18PR008      Phytophthora sojae          2.22 0.791 1.90    0.441    11.16
+ 17PR018J.3   Phytophthora sojae          2.30 0.819 1.90    0.456    11.55
+ 17PR018H.1   Phytophthora sojae          2.51 0.896 1.90    0.499    12.65
+ 16PR027C.2   Phytophthora sojae          2.57 0.918 1.90    0.511    12.96
+ 18PR015      Phytophthora sojae          2.64 0.940 1.90    0.524    13.27
+ 17PR018F.2   Phytophthora sojae          2.67 0.952 1.90    0.530    13.44
+ Control None Control None                3.82 1.361 1.90    0.758    19.21
+ 18PR005      Phytophthora sansomeana     3.83 1.462 2.48    0.973    15.10
+ 16PR018B.1   Phytophthora sansomeana     3.84 1.369 1.90    0.762    19.32
+ 16PR027C.1   Phytophthora sojae          4.10 1.464 1.90    0.815    20.65
+ 18PR003      Phytophthora sansomeana     4.19 1.495 1.90    0.833    21.10
+ 17PR013G.3   Phytophthora sojae          4.20 1.496 1.90    0.833    21.12
+ 16PR024C.1   Phytophthora sansomeana     4.25 1.516 1.90    0.844    21.39
+ 16PR024C.2   Phytophthora sansomeana     4.47 1.640 2.12    1.003    19.94
+ 18PR001      Phytophthora sojae          4.66 1.707 2.12    1.044    20.76
+ 18PR004      Phytophthora sansomeana     4.73 1.736 2.12    1.061    21.11
+ Control Agar Control Agar                4.76 1.817 2.48    1.209    18.76
+ 17PR006L.1   Phytophthora sansomeana     5.00 1.785 1.90    0.994    25.19
+ .group
+  1    
+  12   
+  12   
+  123  
+  1234 
+  1234 
+  1234 
+  1234 
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+  12345
+   2345
+  12345
+   2345
+   2345
+   2345
+   2345
+     45
+     45
+     45
+     45
+    345
+      5
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Intervals are back-transformed from the log scale 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+Tests are performed on the log scale 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># root dry weight
+fm_root_dry_01 &lt;- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)</code></pre>
 <pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
-<pre class="r"><code>resid_panel(fm_root_dry) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20root%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_dry)</code></pre>
+<pre class="r"><code>resid_panel(fm_root_dry_01)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%201%20and%202-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_root_dry_01)</code></pre>
 <pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
         Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-species 2553.3  851.10     3   262 21.5413 1.676e-12 ***
-isolate 3095.1  106.73    29   262  2.7013 1.629e-05 ***
+species 2073.8  691.27     3   164 17.2960 8.323e-10 ***
+isolate 3041.4  104.88    29   164  2.6241 6.775e-05 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_dry, ~ species) %&gt;% 
-  cld.emmGrid() </code></pre>
+<pre class="r"><code>emmeans(fm_root_dry_01, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
 <pre><code>NOTE: A nesting structure was detected in the fitted model:
     isolate %in% species</code></pre>
-<pre><code> species                 emmean   SE   df lower.CL upper.CL .group
- Phytophthora sojae        15.6 2.42 2.03      5.4     25.9  1    
- Control None              28.3 3.17 5.99     20.5     36.1   2   
- Phytophthora sansomeana   30.5 2.51 2.36     21.1     39.9   2   
- Control Agar              34.0 3.17 5.99     26.2     41.7   2   
+<pre><code> species                 emmean   SE    df lower.CL upper.CL .group
+ Phytophthora sojae        17.3 1.18  1.12     5.55     29.1  1    
+ Control None              31.4 2.79 30.07    25.66     37.1   2   
+ Phytophthora sansomeana   34.5 1.44  2.44    29.28     39.8   2   
+ Control Agar              38.4 2.79 30.07    32.73     44.1   2   
 
 Results are averaged over the levels of: isolate 
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 
 P value adjustment: tukey method for comparing a family of 4 estimates 
 significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_shoot_dry &lt;- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)</code></pre>
-<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients</code></pre>
-<pre class="r"><code>resid_panel(fm_shoot_dry) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fm%20shoot%20dry-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_shoot_dry)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-         Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-species  7171.1 2390.38     3   262  8.4322 2.275e-05 ***
-isolate 13225.6  456.06    29   262  1.6088   0.02879 *  
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_shoot_dry, ~ species) %&gt;% 
-  cld.emmGrid()</code></pre>
+<pre class="r"><code>emmeans(fm_root_dry_01, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
 <pre><code>NOTE: A nesting structure was detected in the fitted model:
     isolate %in% species</code></pre>
-<pre><code> species                 emmean   SE   df lower.CL upper.CL .group
- Phytophthora sojae        43.8 5.69 2.05     19.8     67.7  1    
- Control None              61.0 7.91 7.60     42.6     79.4   2   
- Phytophthora sansomeana   70.9 5.96 2.47     49.4     92.4   23  
- Control Agar              83.5 7.91 7.60     65.1    101.9    3  
+<pre><code> isolate      species                 emmean   SE   df lower.CL upper.CL
+ 18PR010      Phytophthora sojae        10.7 2.79 30.1     5.03     16.4
+ 18PR017      Phytophthora sojae        11.2 2.79 30.1     5.47     16.9
+ 18PR009      Phytophthora sojae        12.4 2.79 30.1     6.65     18.0
+ 18PR011      Phytophthora sojae        13.8 2.79 30.1     8.14     19.5
+ 18PR016      Phytophthora sojae        14.1 2.79 30.1     8.36     19.8
+ 16PR009.2    Phytophthora sojae        14.4 2.79 30.1     8.70     20.1
+ 16PR009.1    Phytophthora sojae        14.6 2.79 30.1     8.86     20.3
+ 18PR008      Phytophthora sojae        14.6 2.79 30.1     8.90     20.3
+ 17PR009A.1   Phytophthora sojae        14.9 2.79 30.1     9.16     20.6
+ 18PR012      Phytophthora sojae        15.1 2.79 30.1     9.39     20.8
+ 18PR013      Phytophthora sojae        15.3 2.79 30.1     9.56     21.0
+ 17PR009A.2   Phytophthora sojae        15.4 2.79 30.1     9.68     21.1
+ 18PR007      Phytophthora sojae        16.1 2.79 30.1    10.37     21.8
+ 17PR018F.1   Phytophthora sojae        16.9 2.79 30.1    11.19     22.6
+ 18PR014      Phytophthora sojae        17.1 2.79 30.1    11.38     22.8
+ 18PR006      Phytophthora sojae        17.2 2.79 30.1    11.54     22.9
+ 17PR018J.3   Phytophthora sojae        19.4 2.79 30.1    13.69     25.1
+ 17PR018H.1   Phytophthora sojae        19.7 2.79 30.1    14.03     25.4
+ 17PR018F.2   Phytophthora sojae        20.8 2.79 30.1    15.14     26.5
+ 18PR015      Phytophthora sojae        21.3 2.79 30.1    15.57     27.0
+ 16PR027C.2   Phytophthora sojae        22.1 2.79 30.1    16.44     27.8
+ 18PR001      Phytophthora sojae        24.0 2.79 30.1    18.34     29.7
+ 16PR027C.1   Phytophthora sojae        27.0 2.79 30.1    21.35     32.7
+ 17PR013G.3   Phytophthora sojae        27.9 2.79 30.1    22.21     33.6
+ Control None Control None              31.4 2.79 30.1    25.66     37.1
+ 18PR004      Phytophthora sansomeana   31.4 2.79 30.1    25.69     37.1
+ 18PR003      Phytophthora sansomeana   32.8 2.79 30.1    27.11     38.5
+ 16PR018B.1   Phytophthora sansomeana   34.3 2.79 30.1    28.63     40.0
+ 16PR024C.1   Phytophthora sansomeana   34.7 2.79 30.1    29.05     40.4
+ 18PR005      Phytophthora sansomeana   35.9 2.79 30.1    30.16     41.6
+ 16PR024C.2   Phytophthora sansomeana   36.1 2.79 30.1    30.39     41.8
+ 17PR006L.1   Phytophthora sansomeana   36.4 2.79 30.1    30.68     42.1
+ Control Agar Control Agar              38.4 2.79 30.1    32.73     44.1
+ .group  
+  1      
+  1      
+  1      
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  12     
+  123    
+  123    
+  1234   
+  1234   
+  12345  
+  123456 
+   234567
+   234567
+    34567
+    34567
+    34567
+     4567
+     4567
+      567
+      567
+       67
+        7
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># shoot dry weight
+fm_shoot_dry_01 &lt;- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)</code></pre>
+<pre><code>fixed-effect model matrix is rank deficient so dropping 3 columns / coefficients
+boundary (singular) fit: see ?isSingular</code></pre>
+<pre class="r"><code>resid_panel(fm_shoot_dry_01)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%201%20and%202-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>anova(fm_shoot_dry_01)</code></pre>
+<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
+         Sum Sq Mean Sq NumDF DenDF F value   Pr(&gt;F)   
+species  4198.6 1399.52     3   165  4.2815 0.006114 **
+isolate 14420.5  497.26    29   165  1.5212 0.054043 . 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry_01, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE     df lower.CL upper.CL .group
+ Phytophthora sojae        50.0 1.51   1.89     43.1     56.8  1    
+ Control None              58.8 7.38 150.33     44.2     73.4  12   
+ Phytophthora sansomeana   75.8 2.79  20.50     70.0     81.6   23  
+ Control Agar              88.2 7.38 150.33     73.6    102.8    3  
 
 Results are averaged over the levels of: isolate 
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 
 P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry_01, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE  df lower.CL upper.CL .group
+ 18PR013      Phytophthora sojae        37.4 7.38 150     22.8     52.0  1    
+ 17PR009A.2   Phytophthora sojae        37.7 7.38 150     23.2     52.3  1    
+ 18PR010      Phytophthora sojae        39.9 7.38 150     25.3     54.5  12   
+ 17PR018F.1   Phytophthora sojae        40.7 7.38 150     26.1     55.3  12   
+ 16PR027C.2   Phytophthora sojae        41.9 7.38 150     27.4     56.5  123  
+ 18PR016      Phytophthora sojae        42.4 7.38 150     27.9     57.0  123  
+ 18PR011      Phytophthora sojae        43.5 7.38 150     28.9     58.1  123  
+ 18PR017      Phytophthora sojae        43.6 7.38 150     29.0     58.2  123  
+ 18PR008      Phytophthora sojae        44.5 7.38 150     29.9     59.1  123  
+ 17PR018J.3   Phytophthora sojae        46.9 7.38 150     32.3     61.5  1234 
+ 18PR009      Phytophthora sojae        47.9 7.38 150     33.3     62.4  12345
+ 18PR006      Phytophthora sojae        48.0 7.38 150     33.5     62.6  12345
+ 18PR012      Phytophthora sojae        50.5 7.38 150     35.9     65.1  12345
+ 18PR007      Phytophthora sojae        51.0 7.38 150     36.4     65.6  12345
+ 17PR018H.1   Phytophthora sojae        51.6 7.38 150     37.0     66.2  12345
+ 18PR014      Phytophthora sojae        52.2 7.38 150     37.6     66.8  12345
+ 16PR009.2    Phytophthora sojae        54.1 7.38 150     39.6     68.7  12345
+ 16PR009.1    Phytophthora sojae        54.7 7.38 150     40.2     69.3  12345
+ 18PR015      Phytophthora sojae        55.1 7.38 150     40.5     69.7  12345
+ 17PR009A.1   Phytophthora sojae        55.6 7.38 150     41.0     70.2  12345
+ 17PR018F.2   Phytophthora sojae        55.8 7.38 150     41.2     70.4  12345
+ Control None Control None              58.8 7.38 150     44.2     73.4  12345
+ 18PR001      Phytophthora sojae        59.3 7.38 150     44.7     73.8  12345
+ 16PR027C.1   Phytophthora sojae        59.6 7.38 150     45.0     74.2  12345
+ 18PR004      Phytophthora sansomeana   70.5 7.38 150     55.9     85.1  12345
+ 17PR006L.1   Phytophthora sansomeana   72.5 7.38 150     57.9     87.0  12345
+ 18PR005      Phytophthora sansomeana   73.9 7.38 150     59.3     88.5  12345
+ 16PR018B.1   Phytophthora sansomeana   75.6 7.38 150     61.0     90.2  12345
+ 18PR003      Phytophthora sansomeana   77.6 7.38 150     63.1     92.2  12345
+ 16PR024C.2   Phytophthora sansomeana   79.2 7.38 150     64.6     93.8   2345
+ 16PR024C.1   Phytophthora sansomeana   81.4 7.38 150     66.8     96.0    345
+ 17PR013G.3   Phytophthora sojae        85.3 7.38 150     70.7     99.9     45
+ Control Agar Control Agar              88.2 7.38 150     73.6    102.8      5
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
 significance level used: alpha = 0.05 </code></pre>
 </div>
-<div id="results-summary" class="section level2">
-<h2>Results summary</h2>
-<pre class="r"><code># save means to see effect size
-m_root_dry &lt;- emmeans(fm_root_dry, ~ species) %&gt;% 
+<div id="experiment-3" class="section level3">
+<h3>Experiment 3</h3>
+<pre class="r"><code>aggressiveness_3 &lt;- aggressiveness %&gt;% 
+  filter(experiment == 3)</code></pre>
+<pre class="r"><code>fm_root_length_03 &lt;- lm(length_cm  ~ species + isolate, data = aggressiveness_3)
+autoplot(fm_root_length_03, which = 1:6, ncol = 3, label.size = 3)  # outlier</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_length_03$residuals)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fm_root_area_03 &lt;- lm(area_cm.2 ~ species + isolate, data = aggressiveness_3)
+autoplot(fm_root_area_03, which = 1:6, ncol = 3, label.size = 3) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_area_03$residuals) # outlier</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fm_root_dry_03 &lt;- lm(root_mg ~ species + isolate, data = aggressiveness_3)
+autoplot(fm_root_dry_03, which = 1:6, ncol = 3, label.size = 3) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_dry_03$residuals) # outliers</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fm_shoot_dry_03 &lt;- lm(shoot_mg ~ species + isolate, data = aggressiveness_3)
+autoplot(fm_shoot_dry_03, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_shoot_dry_03$residuals) # outlier</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/experiment%203-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Check the observation # 6, which is an outlier in all the models fitted.</p>
+<pre class="r"><code>aggressiveness_3[6, ]</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
+<pre><code># A tibble: 1 x 13
+  experiment   pot   rep isolate species isolate_id germination length_in
+  &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;
+1 3              6     1 17PR00~ Phytop~ 10                   1      26.6
+# ... with 5 more variables: area_in.2 &lt;dbl&gt;, shoot_mg &lt;dbl&gt;, root_mg &lt;dbl&gt;,
+#   length_cm &lt;dbl&gt;, area_cm.2 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>aggressiveness_3 %&gt;% filter(isolate == &quot;17PR009A.2&quot;) # very different from other two reps</code></pre>
+<pre><code>Warning: `...` is not empty.
+
+We detected these problematic arguments:
+* `needs_dots`
+
+These dots only exist to allow future extensions and should be empty.
+Did you misspecify an argument?</code></pre>
+<pre><code># A tibble: 3 x 13
+  experiment   pot   rep isolate species isolate_id germination length_in
+  &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;
+1 3              6     1 17PR00~ Phytop~ 10                   1     26.6 
+2 3             39     2 17PR00~ Phytop~ 10                   8      1.60
+3 3             94     3 17PR00~ Phytop~ 10                   7      3.76
+# ... with 5 more variables: area_in.2 &lt;dbl&gt;, shoot_mg &lt;dbl&gt;, root_mg &lt;dbl&gt;,
+#   length_cm &lt;dbl&gt;, area_cm.2 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>aggressiveness_3_out &lt;- aggressiveness_3[-c(6), ] # remove observation from data
+
+# fit models without the outlier, let see if it influences the results
+fm_root_length_03_out &lt;- lm(length_cm ~ species + isolate, data = aggressiveness_3_out)
+# compare anova results 
+anova(fm_root_length_03) # with outlier</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: length_cm
+          Df Sum Sq Mean Sq F value Pr(&gt;F)    
+species    3  31779 10592.9 97.7089 &lt;2e-16 ***
+isolate   29   3913   134.9  1.2446 0.2294    
+Residuals 66   7155   108.4                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(fm_root_length_03_out) # without </code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: length_cm
+          Df Sum Sq Mean Sq  F value  Pr(&gt;F)    
+species    3  32829 10942.9 151.2827 &lt; 2e-16 ***
+isolate   29   3568   123.0   1.7008 0.03905 *  
+Residuals 65   4702    72.3                     
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># isolate p-value changed
+autoplot(fm_root_length_03_out, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_length_03_out$residuals)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># mean separation
+emmeans(fm_root_length_03_out, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE df lower.CL upper.CL .group
+ Phytophthora sojae        14.1 1.01 65     12.1     16.1  1    
+ Control None              53.7 4.91 65     43.9     63.5   2   
+ Phytophthora sansomeana   54.0 1.86 65     50.2     57.7   2   
+ Control Agar              63.6 4.91 65     53.8     73.4   2   
+
+Results are averaged over the levels of: isolate 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_length_03, ~ species) %&gt;%
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE df lower.CL upper.CL .group
+ Phytophthora sojae        14.9 1.23 66     12.5     17.4  1    
+ Control None              53.7 6.01 66     41.7     65.7   2   
+ Phytophthora sansomeana   54.0 2.27 66     49.4     58.5   2   
+ Control Agar              63.6 6.01 66     51.6     75.6   2   
+
+Results are averaged over the levels of: isolate 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_length_03_out, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group
+ 16PR009.1    Phytophthora sojae        4.98 4.91 65  -4.8293     14.8  1    
+ 18PR009      Phytophthora sojae        5.27 4.91 65  -4.5369     15.1  1    
+ 18PR017      Phytophthora sojae        5.30 4.91 65  -4.5111     15.1  1    
+ 17PR009A.2   Phytophthora sojae        6.80 6.01 65  -5.2136     18.8  1    
+ 18PR013      Phytophthora sojae        7.01 4.91 65  -2.7968     16.8  1    
+ 18PR016      Phytophthora sojae        9.78 4.91 65  -0.0288     19.6  1    
+ 16PR009.2    Phytophthora sojae       10.15 4.91 65   0.3413     20.0  1    
+ 17PR018J.3   Phytophthora sojae       10.55 4.91 65   0.7444     20.4  1    
+ 18PR001      Phytophthora sojae       10.68 4.91 65   0.8759     20.5  1    
+ 18PR008      Phytophthora sojae       12.30 4.91 65   2.4931     22.1  1    
+ 18PR011      Phytophthora sojae       13.20 4.91 65   3.3965     23.0  1    
+ 17PR009A.1   Phytophthora sojae       14.30 4.91 65   4.4894     24.1  1    
+ 18PR006      Phytophthora sojae       15.69 4.91 65   5.8846     25.5  1    
+ 18PR010      Phytophthora sojae       15.70 4.91 65   5.8936     25.5  1    
+ 17PR018F.1   Phytophthora sojae       16.37 4.91 65   6.5639     26.2  1    
+ 17PR018F.2   Phytophthora sojae       16.51 4.91 65   6.7007     26.3  1    
+ 17PR018H.1   Phytophthora sojae       16.94 4.91 65   7.1301     26.7  1    
+ 18PR014      Phytophthora sojae       17.69 4.91 65   7.8879     27.5  1    
+ 18PR012      Phytophthora sojae       18.35 4.91 65   8.5448     28.2  1    
+ 18PR007      Phytophthora sojae       18.43 4.91 65   8.6241     28.2  1    
+ 18PR015      Phytophthora sojae       18.58 4.91 65   8.7697     28.4  1    
+ 16PR027C.2   Phytophthora sojae       22.15 4.91 65  12.3433     32.0  12   
+ 16PR027C.1   Phytophthora sojae       24.75 4.91 65  14.9428     34.6  12   
+ 17PR013G.3   Phytophthora sojae       26.59 4.91 65  16.7816     36.4  123  
+ 16PR024C.1   Phytophthora sansomeana  47.18 4.91 65  37.3687     57.0   234 
+ 18PR005      Phytophthora sansomeana  47.51 4.91 65  37.7003     57.3   234 
+ 16PR024C.2   Phytophthora sansomeana  48.97 4.91 65  39.1633     58.8   234 
+ 18PR004      Phytophthora sansomeana  53.59 4.91 65  43.7820     63.4    34 
+ Control None Control None             53.70 4.91 65  43.8890     63.5    34 
+ 16PR018B.1   Phytophthora sansomeana  55.16 4.91 65  45.3491     65.0     4 
+ 17PR006L.1   Phytophthora sansomeana  55.22 4.91 65  45.4100     65.0     4 
+ Control Agar Control Agar             63.63 4.91 65  53.8229     73.4     4 
+ 18PR003      Phytophthora sansomeana  70.04 4.91 65  60.2311     79.8     4 
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_length_03, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group
+ 16PR009.1    Phytophthora sojae        4.98 6.01 66   -7.025     17.0  1    
+ 18PR009      Phytophthora sojae        5.27 6.01 66   -6.733     17.3  1    
+ 18PR017      Phytophthora sojae        5.30 6.01 66   -6.707     17.3  1    
+ 18PR013      Phytophthora sojae        7.01 6.01 66   -4.992     19.0  1    
+ 18PR016      Phytophthora sojae        9.78 6.01 66   -2.224     21.8  1    
+ 16PR009.2    Phytophthora sojae       10.15 6.01 66   -1.854     22.2  1    
+ 17PR018J.3   Phytophthora sojae       10.55 6.01 66   -1.451     22.6  1    
+ 18PR001      Phytophthora sojae       10.68 6.01 66   -1.320     22.7  1    
+ 18PR008      Phytophthora sojae       12.30 6.01 66    0.297     24.3  1    
+ 18PR011      Phytophthora sojae       13.20 6.01 66    1.201     25.2  1    
+ 17PR009A.1   Phytophthora sojae       14.30 6.01 66    2.294     26.3  12   
+ 18PR006      Phytophthora sojae       15.69 6.01 66    3.689     27.7  123  
+ 18PR010      Phytophthora sojae       15.70 6.01 66    3.698     27.7  123  
+ 17PR018F.1   Phytophthora sojae       16.37 6.01 66    4.368     28.4  123  
+ 17PR018F.2   Phytophthora sojae       16.51 6.01 66    4.505     28.5  123  
+ 17PR018H.1   Phytophthora sojae       16.94 6.01 66    4.934     28.9  123  
+ 18PR014      Phytophthora sojae       17.69 6.01 66    5.692     29.7  123  
+ 18PR012      Phytophthora sojae       18.35 6.01 66    6.349     30.4  123  
+ 18PR007      Phytophthora sojae       18.43 6.01 66    6.428     30.4  123  
+ 18PR015      Phytophthora sojae       18.58 6.01 66    6.574     30.6  123  
+ 16PR027C.2   Phytophthora sojae       22.15 6.01 66   10.148     34.2  1234 
+ 16PR027C.1   Phytophthora sojae       24.75 6.01 66   12.747     36.8  1234 
+ 17PR013G.3   Phytophthora sojae       26.59 6.01 66   14.586     38.6  1234 
+ 17PR009A.2   Phytophthora sojae       27.02 6.01 66   15.017     39.0  1234 
+ 16PR024C.1   Phytophthora sansomeana  47.18 6.01 66   35.173     59.2   2345
+ 18PR005      Phytophthora sansomeana  47.51 6.01 66   35.505     59.5   2345
+ 16PR024C.2   Phytophthora sansomeana  48.97 6.01 66   36.968     61.0    345
+ 18PR004      Phytophthora sansomeana  53.59 6.01 66   41.586     65.6     45
+ Control None Control None             53.70 6.01 66   41.693     65.7     45
+ 16PR018B.1   Phytophthora sansomeana  55.16 6.01 66   43.153     67.2     45
+ 17PR006L.1   Phytophthora sansomeana  55.22 6.01 66   43.214     67.2     45
+ Control Agar Control Agar             63.63 6.01 66   51.627     75.6      5
+ 18PR003      Phytophthora sansomeana  70.04 6.01 66   58.035     82.0      5
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_root_area_03_out &lt;- lm(area_cm.2 ~ species + isolate, data = aggressiveness_3_out)
+# compare anova results 
+anova(fm_root_area_03)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: area_cm.2
+          Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+species    3 108.549  36.183 99.5874 &lt;2e-16 ***
+isolate   29  11.909   0.411  1.1303 0.3334    
+Residuals 66  23.980   0.363                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(fm_root_area_03_out)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: area_cm.2
+          Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+species    3 111.316  37.105 132.580 &lt;2e-16 ***
+isolate   29  11.623   0.401   1.432 0.1161    
+Residuals 65  18.192   0.280                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>autoplot(fm_root_area_03_out, which = 1:6, ncol = 3, label.size = 3) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_area_03_out$residuals) </code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>emmeans(fm_root_area_03_out, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean    SE df lower.CL upper.CL .group
+ Phytophthora sojae       0.821 0.063 65    0.696    0.947  1    
+ Control None             2.881 0.305 65    2.271    3.491   2   
+ Phytophthora sansomeana  3.175 0.115 65    2.945    3.406   2   
+ Control Agar             3.707 0.305 65    3.097    4.317   2   
+
+Results are averaged over the levels of: isolate 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_area_03_out, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean    SE df  lower.CL upper.CL
+ 18PR017      Phytophthora sojae       0.297 0.305 65 -0.312905    0.907
+ 16PR009.1    Phytophthora sojae       0.310 0.305 65 -0.300032    0.920
+ 18PR009      Phytophthora sojae       0.316 0.305 65 -0.294001    0.926
+ 17PR009A.2   Phytophthora sojae       0.363 0.374 65 -0.383956    1.110
+ 18PR013      Phytophthora sojae       0.437 0.305 65 -0.173092    1.047
+ 18PR016      Phytophthora sojae       0.539 0.305 65 -0.070673    1.149
+ 16PR009.2    Phytophthora sojae       0.611 0.305 65  0.000756    1.221
+ 17PR018J.3   Phytophthora sojae       0.624 0.305 65  0.013966    1.234
+ 18PR001      Phytophthora sojae       0.665 0.305 65  0.055441    1.275
+ 18PR008      Phytophthora sojae       0.675 0.305 65  0.064964    1.285
+ 18PR011      Phytophthora sojae       0.743 0.305 65  0.133013    1.353
+ 17PR009A.1   Phytophthora sojae       0.792 0.305 65  0.182476    1.402
+ 18PR006      Phytophthora sojae       0.882 0.305 65  0.272207    1.492
+ 17PR018F.1   Phytophthora sojae       0.932 0.305 65  0.321902    1.542
+ 17PR018F.2   Phytophthora sojae       0.942 0.305 65  0.331695    1.552
+ 18PR010      Phytophthora sojae       0.948 0.305 65  0.338185    1.558
+ 17PR018H.1   Phytophthora sojae       0.969 0.305 65  0.358704    1.579
+ 18PR014      Phytophthora sojae       1.018 0.305 65  0.408067    1.628
+ 18PR012      Phytophthora sojae       1.018 0.305 65  0.408087    1.628
+ 18PR007      Phytophthora sojae       1.076 0.305 65  0.465639    1.686
+ 18PR015      Phytophthora sojae       1.239 0.305 65  0.629019    1.849
+ 16PR027C.2   Phytophthora sojae       1.312 0.305 65  0.701829    1.922
+ 16PR027C.1   Phytophthora sojae       1.417 0.305 65  0.806888    2.027
+ 17PR013G.3   Phytophthora sojae       1.586 0.305 65  0.976330    2.196
+ 16PR024C.1   Phytophthora sansomeana  2.727 0.305 65  2.117444    3.337
+ 16PR024C.2   Phytophthora sansomeana  2.829 0.305 65  2.219389    3.439
+ Control None Control None             2.881 0.305 65  2.271360    3.491
+ 18PR005      Phytophthora sansomeana  2.979 0.305 65  2.369158    3.589
+ 16PR018B.1   Phytophthora sansomeana  3.193 0.305 65  2.582983    3.803
+ 17PR006L.1   Phytophthora sansomeana  3.200 0.305 65  2.589691    3.810
+ 18PR004      Phytophthora sansomeana  3.327 0.305 65  2.716623    3.937
+ Control Agar Control Agar             3.707 0.305 65  3.096986    4.317
+ 18PR003      Phytophthora sansomeana  3.971 0.305 65  3.360606    4.581
+ .group 
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  1     
+  12    
+  12    
+  12    
+  123   
+  1234  
+  1234  
+  12345 
+   23456
+    3456
+    3456
+     456
+      56
+      56
+       6
+       6
+       6
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>fm_root_dry_03_out &lt;- lm(root_mg ~ species + isolate, data = aggressiveness_3_out)
+# compare anova results 
+anova(fm_root_dry_03)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: root_mg
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+species    3 2154.02  718.01 20.1423 2.225e-09 ***
+isolate   29  865.38   29.84  0.8371    0.6961    
+Residuals 66 2352.68   35.65                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(fm_root_dry_03_out)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: root_mg
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+species    3 2275.63  758.54  26.770 2.161e-11 ***
+isolate   29  874.27   30.15   1.064    0.4066    
+Residuals 65 1841.78   28.34                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>autoplot(fm_root_dry_03_out, which = 1:6, ncol = 3, label.size = 3) </code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_root_dry_03_out$residuals) </code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>emmeans(fm_root_dry_03_out, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean    SE df lower.CL upper.CL .group
+ Phytophthora sojae        11.9 0.634 65     10.6     13.1  1    
+ Control None              22.2 3.073 65     16.1     28.3   2   
+ Phytophthora sansomeana   22.4 1.162 65     20.1     24.7   2   
+ Control Agar              25.0 3.073 65     18.9     31.1   2   
+
+Results are averaged over the levels of: isolate 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_dry_03_out, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group
+ 18PR017      Phytophthora sojae        5.61 3.07 65   -0.525     11.8  1    
+ 17PR009A.2   Phytophthora sojae        6.82 3.76 65   -0.700     14.3  123  
+ 16PR009.1    Phytophthora sojae        7.35 3.07 65    1.211     13.5  12   
+ 18PR010      Phytophthora sojae        7.53 3.07 65    1.388     13.7  12   
+ 18PR009      Phytophthora sojae        7.90 3.07 65    1.766     14.0  123  
+ 16PR009.2    Phytophthora sojae        9.51 3.07 65    3.374     15.6  123  
+ 18PR008      Phytophthora sojae       10.58 3.07 65    4.443     16.7  123  
+ 17PR018F.2   Phytophthora sojae       10.76 3.07 65    4.619     16.9  123  
+ 17PR018H.1   Phytophthora sojae       10.81 3.07 65    4.672     16.9  123  
+ 18PR007      Phytophthora sojae       10.85 3.07 65    4.713     17.0  123  
+ 17PR018F.1   Phytophthora sojae       11.45 3.07 65    5.310     17.6  123  
+ 18PR012      Phytophthora sojae       11.62 3.07 65    5.485     17.8  123  
+ 18PR013      Phytophthora sojae       11.95 3.07 65    5.812     18.1  123  
+ 16PR027C.1   Phytophthora sojae       12.19 3.07 65    6.053     18.3  123  
+ 18PR015      Phytophthora sojae       12.30 3.07 65    6.159     18.4  123  
+ 18PR006      Phytophthora sojae       13.20 3.07 65    7.057     19.3  123  
+ 18PR011      Phytophthora sojae       13.43 3.07 65    7.290     19.6  123  
+ 18PR016      Phytophthora sojae       14.00 3.07 65    7.861     20.1  123  
+ 18PR014      Phytophthora sojae       14.37 3.07 65    8.234     20.5  123  
+ 18PR001      Phytophthora sojae       14.52 3.07 65    8.381     20.7  123  
+ 17PR018J.3   Phytophthora sojae       15.01 3.07 65    8.869     21.1  123  
+ 16PR027C.2   Phytophthora sojae       16.51 3.07 65   10.371     22.6  123  
+ 17PR009A.1   Phytophthora sojae       17.46 3.07 65   11.326     23.6  123  
+ 17PR013G.3   Phytophthora sojae       19.07 3.07 65   12.931     25.2  123  
+ 16PR018B.1   Phytophthora sansomeana  19.08 3.07 65   12.938     25.2  123  
+ 16PR024C.1   Phytophthora sansomeana  20.04 3.07 65   13.902     26.2  123  
+ 18PR005      Phytophthora sansomeana  20.95 3.07 65   14.811     27.1  123  
+ Control None Control None             22.20 3.07 65   16.062     28.3  123  
+ 18PR003      Phytophthora sansomeana  23.82 3.07 65   17.678     30.0   23  
+ 16PR024C.2   Phytophthora sansomeana  23.86 3.07 65   17.726     30.0   23  
+ 18PR004      Phytophthora sansomeana  24.23 3.07 65   18.092     30.4   23  
+ 17PR006L.1   Phytophthora sansomeana  24.94 3.07 65   18.807     31.1    3  
+ Control Agar Control Agar             25.00 3.07 65   18.861     31.1    3  
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_root_dry_03, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group
+ 18PR017      Phytophthora sojae        5.61 3.45 66   -1.270     12.5  1    
+ 16PR009.1    Phytophthora sojae        7.35 3.45 66    0.467     14.2  12   
+ 18PR010      Phytophthora sojae        7.53 3.45 66    0.644     14.4  12   
+ 18PR009      Phytophthora sojae        7.90 3.45 66    1.021     14.8  12   
+ 16PR009.2    Phytophthora sojae        9.51 3.45 66    2.629     16.4  12   
+ 18PR008      Phytophthora sojae       10.58 3.45 66    3.699     17.5  12   
+ 17PR018F.2   Phytophthora sojae       10.76 3.45 66    3.875     17.6  12   
+ 17PR018H.1   Phytophthora sojae       10.81 3.45 66    3.928     17.7  12   
+ 18PR007      Phytophthora sojae       10.85 3.45 66    3.968     17.7  12   
+ 17PR018F.1   Phytophthora sojae       11.45 3.45 66    4.565     18.3  12   
+ 18PR012      Phytophthora sojae       11.62 3.45 66    4.741     18.5  12   
+ 18PR013      Phytophthora sojae       11.95 3.45 66    5.068     18.8  12   
+ 16PR027C.1   Phytophthora sojae       12.19 3.45 66    5.309     19.1  12   
+ 18PR015      Phytophthora sojae       12.30 3.45 66    5.415     19.2  12   
+ 18PR006      Phytophthora sojae       13.20 3.45 66    6.313     20.1  12   
+ 18PR011      Phytophthora sojae       13.43 3.45 66    6.545     20.3  12   
+ 18PR016      Phytophthora sojae       14.00 3.45 66    7.116     20.9  12   
+ 18PR014      Phytophthora sojae       14.37 3.45 66    7.490     21.3  12   
+ 18PR001      Phytophthora sojae       14.52 3.45 66    7.637     21.4  12   
+ 17PR018J.3   Phytophthora sojae       15.01 3.45 66    8.125     21.9  12   
+ 17PR009A.2   Phytophthora sojae       16.04 3.45 66    9.162     22.9  12   
+ 16PR027C.2   Phytophthora sojae       16.51 3.45 66    9.626     23.4  12   
+ 17PR009A.1   Phytophthora sojae       17.46 3.45 66   10.581     24.3  12   
+ 17PR013G.3   Phytophthora sojae       19.07 3.45 66   12.187     26.0  12   
+ 16PR018B.1   Phytophthora sansomeana  19.08 3.45 66   12.194     26.0  12   
+ 16PR024C.1   Phytophthora sansomeana  20.04 3.45 66   13.157     26.9  12   
+ 18PR005      Phytophthora sansomeana  20.95 3.45 66   14.066     27.8  12   
+ Control None Control None             22.20 3.45 66   15.318     29.1  12   
+ 18PR003      Phytophthora sansomeana  23.82 3.45 66   16.933     30.7  12   
+ 16PR024C.2   Phytophthora sansomeana  23.86 3.45 66   16.982     30.7  12   
+ 18PR004      Phytophthora sansomeana  24.23 3.45 66   17.348     31.1  12   
+ 17PR006L.1   Phytophthora sansomeana  24.94 3.45 66   18.062     31.8  12   
+ Control Agar Control Agar             25.00 3.45 66   18.116     31.9   2   
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code># shoot dry weight  
+fm_shoot_dry_03_out &lt;- lm(shoot_mg ~ species + isolate, data = aggressiveness_3_out)
+autoplot(fm_shoot_dry_03_out, which = 1:6, ncol = 3, label.size = 3)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qplot(fm_shoot_dry_03_out$residuals) # outlier</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/analysis%20with%20no%20outlier-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># compare results
+anova(fm_shoot_dry_03)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: shoot_mg
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+species    3 20139.4  6713.1 38.2835 1.884e-14 ***
+isolate   29  6538.3   225.5  1.2857    0.1987    
+Residuals 66 11573.3   175.4                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(fm_shoot_dry_03_out)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: shoot_mg
+          Df  Sum Sq Mean Sq F value  Pr(&gt;F)    
+species    3 21424.9  7141.6 65.9340 &lt; 2e-16 ***
+isolate   29  5108.1   176.1  1.6262 0.05335 .  
+Residuals 65  7040.5   108.3                    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry_03_out, ~ species) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> species                 emmean   SE df lower.CL upper.CL .group
+ Phytophthora sojae        30.3 1.24 65     27.8     32.7  1    
+ Phytophthora sansomeana   61.2 2.27 65     56.6     65.7   2   
+ Control None              65.5 6.01 65     53.5     77.5   2   
+ Control Agar              74.0 6.01 65     62.0     86.0   2   
+
+Results are averaged over the levels of: isolate 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry_03_out, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group  
+ 18PR017      Phytophthora sojae        17.1 6.01 65     5.14     29.1  1      
+ 17PR018J.3   Phytophthora sojae        19.6 6.01 65     7.62     31.6  12     
+ 18PR011      Phytophthora sojae        21.5 6.01 65     9.47     33.5  123    
+ 18PR009      Phytophthora sojae        21.8 6.01 65     9.79     33.8  123    
+ 16PR009.1    Phytophthora sojae        22.1 6.01 65    10.14     34.1  123    
+ 18PR001      Phytophthora sojae        22.9 6.01 65    10.93     34.9  123    
+ 18PR016      Phytophthora sojae        25.4 6.01 65    13.41     37.4  123    
+ 17PR009A.2   Phytophthora sojae        25.6 7.36 65    10.94     40.3  1234   
+ 18PR006      Phytophthora sojae        26.7 6.01 65    14.70     38.7  123    
+ 18PR013      Phytophthora sojae        26.8 6.01 65    14.81     38.8  123    
+ 17PR009A.1   Phytophthora sojae        26.8 6.01 65    14.84     38.8  123    
+ 17PR018F.1   Phytophthora sojae        29.6 6.01 65    17.58     41.6  1234   
+ 18PR014      Phytophthora sojae        30.1 6.01 65    18.14     42.1  1234   
+ 16PR009.2    Phytophthora sojae        33.2 6.01 65    21.21     45.2  12345  
+ 18PR007      Phytophthora sojae        34.4 6.01 65    22.41     46.4  12345  
+ 18PR010      Phytophthora sojae        34.7 6.01 65    22.71     46.7  12345  
+ 18PR015      Phytophthora sojae        34.9 6.01 65    22.92     46.9  12345  
+ 18PR012      Phytophthora sojae        35.2 6.01 65    23.18     47.2  12345  
+ 17PR018F.2   Phytophthora sojae        35.2 6.01 65    23.21     47.2  12345  
+ 18PR008      Phytophthora sojae        39.0 6.01 65    26.99     51.0  12345  
+ 16PR027C.2   Phytophthora sojae        39.8 6.01 65    27.79     51.8  12345  
+ 17PR018H.1   Phytophthora sojae        40.3 6.01 65    28.31     52.3  123456 
+ 16PR027C.1   Phytophthora sojae        40.7 6.01 65    28.68     52.7  123456 
+ 17PR013G.3   Phytophthora sojae        42.9 6.01 65    30.90     54.9  123456 
+ 18PR005      Phytophthora sansomeana   50.9 6.01 65    38.93     62.9   234567
+ 16PR024C.1   Phytophthora sansomeana   54.3 6.01 65    42.35     66.3    34567
+ 18PR004      Phytophthora sansomeana   61.1 6.01 65    49.06     73.1     4567
+ 16PR018B.1   Phytophthora sansomeana   61.1 6.01 65    49.06     73.1     4567
+ 17PR006L.1   Phytophthora sansomeana   61.2 6.01 65    49.24     73.2     4567
+ 16PR024C.2   Phytophthora sansomeana   62.0 6.01 65    50.01     74.0     4567
+ Control None Control None              65.5 6.01 65    53.53     77.5      567
+ Control Agar Control Agar              74.0 6.01 65    61.98     86.0       67
+ 18PR003      Phytophthora sansomeana   77.6 6.01 65    65.59     89.6        7
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+<pre class="r"><code>emmeans(fm_shoot_dry_03, ~ isolate) %&gt;% 
+  multcomp::cld()</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre><code> isolate      species                 emmean   SE df lower.CL upper.CL .group
+ 18PR017      Phytophthora sojae        17.1 7.65 66     1.88     32.4  1    
+ 17PR018J.3   Phytophthora sojae        19.6 7.65 66     4.35     34.9  12   
+ 18PR011      Phytophthora sojae        21.5 7.65 66     6.21     36.7  12   
+ 18PR009      Phytophthora sojae        21.8 7.65 66     6.53     37.1  12   
+ 16PR009.1    Phytophthora sojae        22.1 7.65 66     6.88     37.4  12   
+ 18PR001      Phytophthora sojae        22.9 7.65 66     7.66     38.2  123  
+ 18PR016      Phytophthora sojae        25.4 7.65 66    10.14     40.7  123  
+ 18PR006      Phytophthora sojae        26.7 7.65 66    11.43     42.0  123  
+ 18PR013      Phytophthora sojae        26.8 7.65 66    11.54     42.1  123  
+ 17PR009A.1   Phytophthora sojae        26.8 7.65 66    11.58     42.1  123  
+ 17PR018F.1   Phytophthora sojae        29.6 7.65 66    14.31     44.8  123  
+ 18PR014      Phytophthora sojae        30.1 7.65 66    14.88     45.4  123  
+ 16PR009.2    Phytophthora sojae        33.2 7.65 66    17.95     48.5  1234 
+ 18PR007      Phytophthora sojae        34.4 7.65 66    19.14     49.7  1234 
+ 18PR010      Phytophthora sojae        34.7 7.65 66    19.45     50.0  12345
+ 18PR015      Phytophthora sojae        34.9 7.65 66    19.66     50.2  12345
+ 18PR012      Phytophthora sojae        35.2 7.65 66    19.92     50.4  12345
+ 17PR018F.2   Phytophthora sojae        35.2 7.65 66    19.95     50.5  12345
+ 18PR008      Phytophthora sojae        39.0 7.65 66    23.73     54.3  12345
+ 16PR027C.2   Phytophthora sojae        39.8 7.65 66    24.53     55.1  12345
+ 17PR018H.1   Phytophthora sojae        40.3 7.65 66    25.04     55.6  12345
+ 16PR027C.1   Phytophthora sojae        40.7 7.65 66    25.42     55.9  12345
+ 17PR013G.3   Phytophthora sojae        42.9 7.65 66    27.63     58.2  12345
+ 18PR005      Phytophthora sansomeana   50.9 7.65 66    35.66     66.2  12345
+ 17PR009A.2   Phytophthora sojae        53.1 7.65 66    37.86     68.4  12345
+ 16PR024C.1   Phytophthora sansomeana   54.3 7.65 66    39.08     69.6  12345
+ 18PR004      Phytophthora sansomeana   61.1 7.65 66    45.79     76.3   2345
+ 16PR018B.1   Phytophthora sansomeana   61.1 7.65 66    45.79     76.3   2345
+ 17PR006L.1   Phytophthora sansomeana   61.2 7.65 66    45.97     76.5   2345
+ 16PR024C.2   Phytophthora sansomeana   62.0 7.65 66    46.75     77.3   2345
+ Control None Control None              65.5 7.65 66    50.26     80.8    345
+ Control Agar Control Agar              74.0 7.65 66    58.72     89.2     45
+ 18PR003      Phytophthora sansomeana   77.6 7.65 66    62.33     92.9      5
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 33 estimates 
+significance level used: alpha = 0.05 </code></pre>
+</div>
+<div id="save-results" class="section level3">
+<h3>Save results</h3>
+<pre class="r"><code># Experiment 1 and 2
+length_mean &lt;- emmeans(fm_root_length_01, ~ isolate) %&gt;% 
   tidy() %&gt;% 
-  mutate(agg_parameter = &quot;root dry&quot;, 
-         relative_growth = (estimate/33.95000)*100) # relative growth compared to control
-
-m_shoot_dry &lt;- emmeans(fm_shoot_dry, ~ species) %&gt;% 
+  mutate(agg_component = &quot;length&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>area_mean &lt;- emmeans(fm_root_area_01_log, ~ isolate, type = &quot;response&quot;) %&gt;%  
   tidy() %&gt;% 
-  mutate(agg_parameter = &quot;shoot dry&quot;, 
-         relative_growth = (estimate/83.45671)*100)
-
-m_root_length &lt;- emmeans(fm_root_length , ~ species, type = &quot;response&quot;) %&gt;% 
+  mutate(agg_component = &quot;area&quot;) %&gt;% 
+  rename(estimate = response)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>root_mean &lt;- emmeans(fm_root_dry_01, ~ isolate) %&gt;% 
   tidy() %&gt;% 
-  mutate(agg_parameter = &quot;root length&quot;, 
-         relative_growth = (response/84.7)*100) %&gt;% 
-  rename(estimate = response)
-
-m_root_area &lt;- emmeans(fm_root_area, ~ species, type = &quot;response&quot;) %&gt;% 
+  mutate(agg_component = &quot;root dry&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>shoot_mean &lt;- emmeans(fm_shoot_dry_01, ~ isolate) %&gt;% 
   tidy() %&gt;% 
-  mutate(agg_parameter = &quot;root area&quot;, 
-         relative_growth = (response/4.66)*100)%&gt;% 
-  rename(estimate = response)
+  mutate(agg_component = &quot;shoot dry&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>means_experiment_1_2 &lt;- bind_rows(length_mean, area_mean, root_mean, shoot_mean) %&gt;% 
+  mutate(experiment = &quot;1 and 2&quot;)
+  
+# Experiment 3
+length_mean_3 &lt;- emmeans(fm_root_length_03_out, ~ isolate) %&gt;% 
+  tidy() %&gt;% 
+  mutate(agg_component = &quot;length&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>area_mean_3 &lt;-emmeans(fm_root_area_03_out, ~ isolate) %&gt;% 
+  tidy() %&gt;% 
+  mutate(agg_component = &quot;area&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>root_mean_3 &lt;-emmeans(fm_root_dry_03_out, ~ isolate) %&gt;%    
+  tidy() %&gt;% 
+  mutate(agg_component = &quot;root dry&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>shoot_mean_3 &lt;-emmeans(fm_shoot_dry_03_out, ~ isolate) %&gt;% 
+  tidy() %&gt;% 
+  mutate(agg_component= &quot;shoot dry&quot;)</code></pre>
+<pre><code>NOTE: A nesting structure was detected in the fitted model:
+    isolate %in% species</code></pre>
+<pre class="r"><code>means_experiment_3 &lt;- bind_rows(length_mean_3, area_mean_3, root_mean_3, shoot_mean_3) %&gt;% 
+  mutate(experiment = &quot;3&quot;)
 
-agg_species_means &lt;- rbind(m_root_dry, m_shoot_dry, 
-                           m_root_length, m_root_area) %&gt;% 
-  mutate(reduction = 100-relative_growth )
-
-
-agg_species_means %&gt;% 
-  dplyr::select(agg_parameter, species, relative_growth, reduction) %&gt;% 
-  filter(species %in% c(&quot;Phytophthora sansomeana&quot;, &quot;Phytophthora sojae&quot;)) %&gt;% 
-  pander()</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="22%" />
-<col width="36%" />
-<col width="25%" />
-<col width="16%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">agg_parameter</th>
-<th align="center">species</th>
-<th align="center">relative_growth</th>
-<th align="center">reduction</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">root dry</td>
-<td align="center">Phytophthora sansomeana</td>
-<td align="center">89.79</td>
-<td align="center">10.21</td>
-</tr>
-<tr class="even">
-<td align="center">root dry</td>
-<td align="center">Phytophthora sojae</td>
-<td align="center">46.06</td>
-<td align="center">53.94</td>
-</tr>
-<tr class="odd">
-<td align="center">shoot dry</td>
-<td align="center">Phytophthora sansomeana</td>
-<td align="center">85</td>
-<td align="center">15</td>
-</tr>
-<tr class="even">
-<td align="center">shoot dry</td>
-<td align="center">Phytophthora sojae</td>
-<td align="center">52.47</td>
-<td align="center">47.53</td>
-</tr>
-<tr class="odd">
-<td align="center">root length</td>
-<td align="center">Phytophthora sansomeana</td>
-<td align="center">93.03</td>
-<td align="center">6.968</td>
-</tr>
-<tr class="even">
-<td align="center">root length</td>
-<td align="center">Phytophthora sojae</td>
-<td align="center">33.96</td>
-<td align="center">66.04</td>
-</tr>
-<tr class="odd">
-<td align="center">root area</td>
-<td align="center">Phytophthora sansomeana</td>
-<td align="center">84.25</td>
-<td align="center">15.75</td>
-</tr>
-<tr class="even">
-<td align="center">root area</td>
-<td align="center">Phytophthora sojae</td>
-<td align="center">31.44</td>
-<td align="center">68.56</td>
-</tr>
-</tbody>
-</table>
+# combine both 
+aggressiveness_isolates &lt;- bind_rows(means_experiment_1_2, means_experiment_3)
+# write_csv(aggressiveness_isolates, here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness-means-isolates_results.csv&quot;))</code></pre>
+<p>I would focus on experiments 1 and 2, the third is different and also the environment (temperature)<br />
+was different from the first two.</p>
+</div>
 </div>
 <div id="figure-3" class="section level2">
 <h2>Figure 3</h2>
 <pre class="r"><code># combine the two controls for plotting
-aggressiveness_plots &lt;- read_csv(here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_aggressiveness_transform.csv&quot;))</code></pre>
+aggressiveness$species &lt;- str_replace_all(aggressiveness$species, 
+                                          c(&quot;Control Agar&quot; = &quot;Control&quot;, 
+                                            &quot;Control None&quot; = &quot;Control&quot;, 
+                                            &quot;Phytophthora sojae&quot; = &quot;P. sojae&quot;, 
+                                            &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)                
+                                          )</code></pre>
+<pre class="r"><code>a3 &lt;- aggressiveness %&gt;% 
+  ggplot(aes(x = species, y = length_cm, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+       y = &quot;Root length (cm)&quot;, 
+       color = &quot;&quot;) + 
+  theme_light() +
+  theme(axis.text.x = element_blank()) +
+  stat_summary(fun =&quot;mean&quot;, geom=&quot;point&quot;, size = 1.2,
+                 position=position_dodge(width = 0.75), color=&quot;black&quot;)
+
+b3 &lt;- aggressiveness %&gt;% 
+  ggplot(aes(x = species, y = area_cm.2, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+       y = expression(&#39;Root area (cm&#39;^2*&#39;)&#39;), 
+       color = &quot;&quot;) + 
+  theme_light() +
+  theme(axis.text.x = element_blank()) +
+  stat_summary(fun =&quot;mean&quot;, geom=&quot;point&quot;, size = 1.2,
+                 position=position_dodge(width = 0.75), color=&quot;black&quot;)
+
+c3 &lt;- aggressiveness %&gt;% 
+  ggplot(aes(x = species, y = root_mg, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+       y = &quot;Root weight (mg)&quot;, 
+       color = &quot;&quot;) + 
+  theme_light() +
+  theme(axis.text.x = element_blank()) +
+  stat_summary(fun =&quot;mean&quot;, geom=&quot;point&quot;, size = 1.2,
+                 position=position_dodge(width = 0.75), color=&quot;black&quot;)
+
+d3 &lt;- aggressiveness %&gt;% 
+  ggplot(aes(x = species, y = shoot_mg, color =  species)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
+  labs(x = &quot;&quot;, 
+       y = &quot;Shoot dry weight (mg)&quot;, 
+       color = &quot;&quot;) + 
+  theme_light() +
+  theme(axis.text.x = element_blank()) +
+  stat_summary(fun =&quot;mean&quot;, geom=&quot;point&quot;, size = 1.2,
+                 position=position_dodge(width = 0.75), color=&quot;black&quot;)
+
+figure_three_no_legend &lt;- plot_grid(
+  a3 + theme(legend.position=&quot;none&quot;),
+  b3 + theme(legend.position=&quot;none&quot;),
+  c3 + theme(legend.position=&quot;none&quot;),
+  d3 + theme(legend.position=&quot;none&quot;), 
+  align = &quot;hv&quot;, 
+  labels = &quot;&quot;
+)
+
+legend_three &lt;- get_legend(a3 + theme(legend.position = &quot;bottom&quot;))
+
+(figure_three &lt;- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%203-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># ggsave(&quot;figure3.tiff&quot;, plot = figure_three, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 6, height = 5) </code></pre>
+</div>
+<div id="figure-4" class="section level2">
+<h2>Figure 4</h2>
+<pre class="r"><code>means_aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness-means-isolates_results.csv&quot;))
+
+# change facets name
+means_aggressiveness$facets &lt;- factor(means_aggressiveness$agg_component, 
+                                      labels = c( 
+                                        &quot;Root~area~(cm^{2})&quot;, 
+                                        &quot;Root~length~(cm)&quot;, 
+                                        &quot;Root~weight~(mg)&quot;, 
+                                        &quot;Shoot~weight~(mg)&quot;
+                                        ))
+
+# change for color
+means_aggressiveness$species &lt;- str_replace_all(means_aggressiveness$species, 
+                                          c(&quot;Control Agar&quot; = &quot;Control&quot;, 
+                                            &quot;Control None&quot; = &quot;Control&quot;, 
+                                            &quot;Phytophthora sojae&quot; = &quot;P. sojae&quot;, 
+                                            &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)                
+                                          )
+
+# sig difference lines 
+line_most_agg &lt;- data.frame(facets = c(&quot;Root~area~(cm^{2})&quot;, &quot;Root~length~(cm)&quot;, 
+                                       &quot;Root~weight~(mg)&quot;, &quot;Shoot~weight~(mg)&quot;), 
+                            value = c(3.245, 91.75, 26, 78.4))
+
+line_control &lt;- data.frame(facets = c(&quot;Root~area~(cm^{2})&quot;, &quot;Root~length~(cm)&quot;, 
+                                       &quot;Root~weight~(mg)&quot;, &quot;Shoot~weight~(mg)&quot;), 
+                           value = c(1.52, NA, 25, 47.4))
+
+figure_four &lt;- means_aggressiveness %&gt;% 
+  filter(experiment == &quot;1 and 2&quot;) %&gt;% 
+  ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
+  geom_hline(data = line_most_agg, aes(yintercept = value),
+             linetype=&quot;dashed&quot;,  size = 0.7, color = &quot;gray70&quot;) +
+  geom_hline(data = line_control, aes(yintercept = value),
+             linetype=&quot;dashed&quot;,  size = 0.7, color = &quot;red&quot;, alpha = 0.5) +
+
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), 
+                width = 0.2) +
+  theme_light() +
+  theme(legend.position = &quot;bottom&quot;, 
+        axis.text.x=element_text(angle=45, hjust=1), 
+        legend.margin=margin(t = -0.3, unit=&#39;cm&#39;), 
+        strip.background = element_blank(), 
+        strip.text = element_text(color = &quot;black&quot;),
+        panel.grid.minor = element_blank(), 
+        strip.placement = &quot;outside&quot;) +
+  labs(x = &quot;&quot;, 
+       y = &quot;&quot;, 
+       color = &quot;&quot;) +
+  facet_wrap(vars(facets), labeller = label_parsed, 
+             strip.position = &quot;left&quot;, scales = &quot;free_y&quot;, ncol = 1) 
+
+
+# ggsave(&quot;figure4.tiff&quot;, plot = figure_four, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 6, height = 6.8) </code></pre>
+</div>
+<div id="correlation-bw-aggressiveness-and-complexity" class="section level2">
+<h2>Correlation b/w aggressiveness and complexity</h2>
+<pre class="r"><code># combine with pathotype data 
+aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_aggressiveness_transform.csv&quot;)) </code></pre>
 <pre><code>Parsed with column specification:
 cols(
   experiment = col_double(),
@@ -3859,515 +5502,73 @@ cols(
   length_cm = col_double(),
   area_cm.2 = col_double()
 )</code></pre>
-<pre class="r"><code>aggressiveness_plots$species &lt;- str_replace_all(aggressiveness_plots$species, 
-                                          c(&quot;Control Agar&quot; = &quot;Control&quot;, 
-                                            &quot;Control None&quot; = &quot;Control&quot;, 
-                                            &quot;Phytophthora sojae&quot; = &quot;P. sojae&quot;, 
-                                            &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)
-                                          )</code></pre>
-<pre class="r"><code>fig_3A &lt;- aggressiveness_plots %&gt;% 
-  ggplot(aes(x = species, y = length_cm, color =  species)) +
-  geom_boxplot(alpha = 0.6) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
-  labs(x = &quot;&quot;, 
-       y = &quot;Root length (cm)&quot;, 
-       color = &quot;&quot;) + 
-  theme_bw() +
-  theme(axis.text.x = element_blank()) +
-  stat_summary(fun.y=&quot;mean&quot;, geom=&quot;point&quot;, size=1.2,
-                 position=position_dodge(width=0.75), color=&quot;black&quot;)
+<pre class="r"><code>sojae_pathotype &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  isolate_number = col_double(),
+  isolate_id = col_character(),
+  Complexity = col_double(),
+  Pathotype = col_character()
+)</code></pre>
+<pre class="r"><code>sojae_complexity &lt;- sojae_pathotype %&gt;% 
+  dplyr::select(isolate_id, Complexity) %&gt;% 
+  rename(isolate = isolate_id)
+
+aggressiveness_complexity &lt;- left_join(aggressiveness, sojae_complexity, by = &quot;isolate&quot;)</code></pre>
+<pre class="r"><code># correlation
+# experiment 1 and 2
+corr_agg_patho &lt;- aggressiveness_complexity %&gt;%
+  filter(species == &quot;Phytophthora sojae&quot;,
+         !experiment == 3) %&gt;% 
+  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %&gt;%
+  as.matrix() %&gt;%
+  rcorr(type = &quot;pearson&quot;)
+
+corrplot(corr_agg_patho$r, method = &quot;number&quot;, type = &quot;upper&quot;, order = &quot;hclust&quot;, tl.col = &quot;black&quot;, diag = FALSE)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/correlation-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># p-values
+corr_agg_patho$P</code></pre>
+<pre><code>            Complexity     shoot_mg      root_mg    length_cm    area_cm.2
+Complexity          NA 5.781882e-03 2.701316e-03 1.098032e-03 2.432946e-03
+shoot_mg   0.005781882           NA 2.368815e-08 1.098495e-07 2.466435e-07
+root_mg    0.002701316 2.368815e-08           NA 0.000000e+00 2.220446e-16
+length_cm  0.001098032 1.098495e-07 0.000000e+00           NA 0.000000e+00
+area_cm.2  0.002432946 2.466435e-07 2.220446e-16 0.000000e+00           NA</code></pre>
+<pre class="r"><code>box_corr1 &lt;- aggressiveness_complexity %&gt;% 
+  filter(!experiment == 3,
+    !is.na(Complexity)) %&gt;% 
+  ggplot(aes(x = factor(Complexity), y = length_cm)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2) +
+  labs(x = &quot;Compelxity&quot;, 
+       y = &quot;Length (cm)&quot;) +
+  theme_light() +
+  theme(panel.grid.minor = element_blank(), 
+        axis.text.x = element_blank(), 
+        axis.title.x = element_blank())
+
+box_corr2 &lt;- aggressiveness_complexity %&gt;% 
+  filter(!experiment == 3,
+    !is.na(Complexity)) %&gt;% 
+  ggplot(aes(x = factor(Complexity), y = root_mg)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2) +
+  labs(x = &quot;Complexity&quot;, 
+       y = &quot;Root weight (mg)&quot;) +
+  theme_light() +
+  theme(panel.grid.minor = element_blank())
 
 
-fig_3B &lt;- aggressiveness_plots %&gt;% 
-  ggplot(aes(x = species, y = area_cm.2, color =  species)) +
-  geom_boxplot(alpha = 0.6) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
-  labs(y = expression(&#39;Root area (cm&#39;^2*&#39;)&#39;), 
-       x = &quot;&quot;)  + 
-  theme_bw() +
-  theme(axis.text.x = element_blank())  +
-  stat_summary(fun.y=&quot;mean&quot;, geom=&quot;point&quot;, size=1.2,
-                 position=position_dodge(width=0.75), color=&quot;black&quot;)
-
-fig_3C &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = root_mg, color =  species)) +
-  geom_boxplot(alpha = 0.8) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
-  labs(x = &quot;&quot;, 
-       y = &quot;Root dry weigth (mg)&quot;) + 
-  theme_bw() +
-  theme(axis.text.x = element_blank())  +
-  stat_summary(fun.y=&quot;mean&quot;, geom=&quot;point&quot;, size=1.2,
-                 position=position_dodge(width=0.75), color=&quot;black&quot;)
-
-fig_3D &lt;- ggplot(data = aggressiveness_plots, aes(x = species, y = shoot_mg, color =  species)) +
-  geom_boxplot(alpha = 0.8) +
-  geom_point(position = position_jitter(), alpha = 0.15, color = &quot;gray50&quot;) +
-  labs(x = &quot;&quot;, 
-       y = &quot;Shoot dry weigth (mg)&quot;) + 
-  theme_bw() +
-  theme(axis.text.x = element_blank())  +
-  stat_summary(fun.y=&quot;mean&quot;, geom=&quot;point&quot;, size=1.2,
-                 position=position_dodge(width=0.75), color=&quot;black&quot;)
-
-
-figure_three_no_legend &lt;- plot_grid(
-  fig_3A + theme(legend.position=&quot;none&quot;),
-  fig_3B + theme(legend.position=&quot;none&quot;),
-  fig_3C + theme(legend.position=&quot;none&quot;),
-  fig_3D + theme(legend.position=&quot;none&quot;), 
-  labels = &quot;AUTO&quot; 
-)
-
-legend_three &lt;- get_legend(fig_3A + theme(legend.position = &quot;bottom&quot;))
-
-(figure_three &lt;- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%203-1.png" width="576" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># ggsave(&quot;figure3.tiff&quot;, plot = figure_three, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 6, height = 5)</code></pre>
-</div>
-<div id="difference-within-species-between-isolates" class="section level2">
-<h2>Difference within species (between isolates)</h2>
-<pre class="r"><code># subset data by species
-aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;transform_data&quot;, &quot;02_aggressiveness_transform.csv&quot;))
-
-sojae_aggressiveness &lt;- aggressiveness %&gt;% 
-  filter(!species == &quot;Phytophthora sansomeana&quot;)
-
-sansomeana_aggressiveness &lt;- aggressiveness %&gt;% 
-  filter(!species == &quot;Phytophthora sojae&quot;)</code></pre>
-<div id="phytophthora-sojae-1" class="section level3">
-<h3>Phytophthora sojae</h3>
-<pre class="r"><code>fm_root_dry_sojae &lt;- lmer(root_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_dry_sojae) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sojae%20dry%20root-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_dry_sojae)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-isolate 7122.7  284.91    25   206  7.2288 &lt; 2.2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_dry_sojae, ~ isolate) %&gt;%  
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      emmean   SE  df lower.CL upper.CL .group 
- 18PR017        9.32 2.77 9.7     3.12     15.5  1     
- 18PR010        9.66 2.77 9.7     3.47     15.9  1     
- 18PR009       10.87 2.77 9.7     4.67     17.1  12    
- 16PR009.1     12.15 2.77 9.7     5.96     18.4  123   
- 16PR009.2     12.77 2.77 9.7     6.57     19.0  123   
- 18PR008       13.26 2.77 9.7     7.06     19.5  123   
- 18PR011       13.70 2.77 9.7     7.50     19.9  123   
- 18PR012       13.93 2.77 9.7     7.74     20.1  1234  
- 18PR016       14.04 2.77 9.7     7.84     20.2  1234  
- 18PR013       14.16 2.77 9.7     7.96     20.4  1234  
- 18PR007       14.33 2.77 9.7     8.13     20.5  1234  
- 17PR018F.1    15.08 2.77 9.7     8.88     21.3  1234  
- 17PR009A.2    15.60 2.77 9.7     9.40     21.8  1234  
- 17PR009A.1    15.73 2.77 9.7     9.53     21.9  1234  
- 18PR006       15.89 2.77 9.7     9.70     22.1  1234  
- 18PR014       16.18 2.77 9.7     9.98     22.4  1234  
- 17PR018H.1    16.75 2.77 9.7    10.56     23.0  1234  
- 17PR018F.2    17.48 2.77 9.7    11.28     23.7  12345 
- 17PR018J.3    17.93 2.77 9.7    11.73     24.1  12345 
- 18PR015       18.28 2.77 9.7    12.08     24.5  12345 
- 16PR027C.2    20.26 2.77 9.7    14.06     26.5  12345 
- 18PR001       20.87 2.77 9.7    14.67     27.1   2345 
- 16PR027C.1    22.10 2.77 9.7    15.90     28.3    345 
- 17PR013G.3    24.96 2.77 9.7    18.77     31.2     456
- Control None  28.31 2.77 9.7    22.11     34.5      56
- Control Agar  33.95 2.77 9.7    27.75     40.1       6
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-P value adjustment: tukey method for comparing a family of 26 estimates 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_shoot_dry_sojae &lt;- lmer(shoot_mg ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_shoot_dry_sojae) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/shoot%20dry%20root-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_shoot_dry_sojae)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-isolate  28111  1124.5    25   206  3.9115 2.384e-08 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_shoot_dry_sojae, ~ isolate) %&gt;% 
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      emmean   SE   df lower.CL upper.CL .group
- 18PR013        33.9 8.09 7.03     14.7     53.0  1    
- 18PR017        34.8 8.09 7.03     15.7     53.9  1    
- 18PR011        36.1 8.09 7.03     17.0     55.3  1    
- 18PR016        36.8 8.09 7.03     17.6     55.9  1    
- 17PR018F.1     37.0 8.09 7.03     17.9     56.1  1    
- 17PR018J.3     37.8 8.09 7.03     18.7     56.9  1    
- 18PR010        38.2 8.09 7.03     19.1     57.3  1    
- 18PR009        39.2 8.09 7.03     20.1     58.3  1    
- 18PR006        40.9 8.09 7.03     21.8     60.1  1    
- 16PR027C.2     41.2 8.09 7.03     22.1     60.3  1    
- 18PR008        42.7 8.09 7.03     23.5     61.8  12   
- 17PR009A.2     42.9 8.09 7.03     23.7     62.0  12   
- 16PR009.1      43.9 8.09 7.03     24.8     63.0  12   
- 18PR014        44.8 8.09 7.03     25.7     64.0  12   
- 18PR012        45.4 8.09 7.03     26.3     64.5  12   
- 18PR007        45.4 8.09 7.03     26.3     64.6  12   
- 17PR009A.1     46.0 8.09 7.03     26.9     65.2  12   
- 18PR001        47.2 8.09 7.03     28.0     66.3  12   
- 16PR009.2      47.2 8.09 7.03     28.0     66.3  12   
- 17PR018H.1     47.8 8.09 7.03     28.7     67.0  12   
- 18PR015        48.4 8.09 7.03     29.2     67.5  12   
- 17PR018F.2     48.9 8.09 7.03     29.8     68.0  12   
- 16PR027C.1     53.3 8.09 7.03     34.2     72.4  12   
- Control None   61.0 8.09 7.03     41.9     80.2  123  
- 17PR013G.3     71.2 8.09 7.03     52.0     90.3   23  
- Control Agar   83.5 8.09 7.03     64.3    102.6    3  
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-P value adjustment: tukey method for comparing a family of 26 estimates 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code># log transformation for normality and slight difference in variances
-fm_root_length_sojae &lt;- lmer(log(length_cm) ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_length_sojae) # diagnostic plots look fine</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/length%20sojae-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_length_sojae)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-isolate 35.172  1.4069    25   202  4.7218 1.363e-10 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_length_sojae, ~ isolate, type = &quot;response&quot;) %&gt;% # back-transform estimates
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      response    SE   df lower.CL upper.CL .group
- 18PR009          17.1  7.78 2.79     3.78     77.4  1    
- 16PR009.1        17.8  8.11 2.79     3.94     80.7  1    
- 18PR017          18.7  8.52 2.79     4.14     84.8  1    
- 18PR011          19.5  8.87 2.79     4.31     88.3  1    
- 18PR013          20.6  9.36 2.79     4.55     93.2  1    
- 18PR016          22.4 10.16 2.79     4.94    101.1  12   
- 16PR009.2        23.5 10.68 2.79     5.19    106.3  12   
- 18PR010          23.7 10.87 2.91     5.34    104.8  123  
- 17PR009A.2       24.0 10.90 2.79     5.30    108.5  12   
- 18PR008          25.7 11.67 2.79     5.67    116.2  123  
- 18PR007          29.0 13.19 2.79     6.41    131.3  123  
- 17PR018F.1       29.2 13.27 2.79     6.45    132.1  123  
- 17PR009A.1       29.8 13.54 2.79     6.58    134.8  123  
- 18PR006          30.3 13.76 2.79     6.69    137.0  1234 
- 17PR018J.3       30.3 13.77 2.79     6.69    137.0  1234 
- 18PR012          31.4 14.28 2.79     6.94    142.1  1234 
- 18PR014          32.0 14.57 2.79     7.08    145.0  1234 
- 17PR018H.1       33.4 15.20 2.79     7.39    151.3  1234 
- 18PR015          35.6 16.16 2.79     7.86    160.9  1234 
- 17PR018F.2       36.0 16.39 2.79     7.97    163.1  1234 
- 16PR027C.2       40.3 18.30 2.79     8.90    182.1  1234 
- 18PR001          45.7 20.99 2.91    10.32    202.5  1234 
- 16PR027C.1       55.8 25.37 2.79    12.33    252.5   234 
- 17PR013G.3       57.0 25.91 2.79    12.60    257.9   234 
- Control None     63.4 28.82 2.79    14.01    286.9    34 
- Control Agar     84.6 39.34 3.06    19.56    365.7     4 
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-Intervals are back-transformed from the log scale 
-P value adjustment: tukey method for comparing a family of 26 estimates 
-Tests are performed on the log scale 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code># log transformation for normality and slight difference in variances
-fm_root_area_sojae &lt;- lmer(log(area_cm.2) ~ isolate + (1|experiment), data = sojae_aggressiveness)
-resid_panel(fm_root_area_sojae) # diagnostic plots look fine</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/area%20sojea-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_area_sojae)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-isolate 36.454  1.4582    25   202  5.3922 1.957e-12 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_root_area_sojae, ~ isolate, type = &quot;response&quot;) %&gt;% # back-transform estimates
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      response    SE   df lower.CL upper.CL .group
- 18PR009         0.886 0.396 2.73    0.197     3.99  1    
- 16PR009.1       0.966 0.432 2.73    0.215     4.35  12   
- 18PR017         0.983 0.439 2.73    0.218     4.43  12   
- 18PR011         1.039 0.464 2.73    0.231     4.68  12   
- 18PR013         1.055 0.472 2.73    0.234     4.75  12   
- 16PR009.2       1.099 0.491 2.73    0.244     4.95  123  
- 18PR016         1.132 0.506 2.73    0.251     5.10  123  
- 18PR010         1.138 0.513 2.84    0.258     5.02  123  
- 17PR009A.2      1.173 0.524 2.73    0.260     5.28  123  
- 17PR018F.1      1.430 0.639 2.73    0.317     6.44  1234 
- 17PR018J.3      1.436 0.642 2.73    0.319     6.47  1234 
- 18PR007         1.451 0.649 2.73    0.322     6.54  1234 
- 18PR008         1.490 0.666 2.73    0.331     6.71  1234 
- 17PR009A.1      1.524 0.681 2.73    0.338     6.86  1234 
- 18PR006         1.570 0.702 2.73    0.349     7.07  1234 
- 18PR014         1.623 0.725 2.73    0.360     7.31  1234 
- 18PR012         1.636 0.731 2.73    0.363     7.37  1234 
- 17PR018F.2      1.739 0.777 2.73    0.386     7.83  1234 
- 17PR018H.1      1.770 0.791 2.73    0.393     7.97  12345
- 18PR015         1.948 0.871 2.73    0.432     8.77  12345
- 16PR027C.2      1.974 0.882 2.73    0.438     8.89  12345
- 18PR001         2.323 1.048 2.84    0.527    10.25   2345
- 16PR027C.1      2.646 1.183 2.73    0.588    11.92    345
- 17PR013G.3      3.032 1.355 2.73    0.673    13.66     45
- Control None    3.462 1.548 2.73    0.769    15.59     45
- Control Agar    4.640 2.119 2.98    1.077    19.98      5
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-Intervals are back-transformed from the log scale 
-P value adjustment: tukey method for comparing a family of 26 estimates 
-Tests are performed on the log scale 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>m_root_dry_sojae &lt;- emmeans(fm_root_dry_sojae, ~ isolate) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root dry weigth&quot;)
-
-m_shoot_dry_sojae &lt;- emmeans(fm_shoot_dry_sojae, ~ isolate) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Shoot dry weigth&quot;)
-
-m_root_length_sojae &lt;- emmeans(fm_root_length_sojae, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root length&quot;) %&gt;% 
-  rename(estimate = response)
-
-m_root_area_sojae &lt;- emmeans(fm_root_area_sojae, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root area&quot;) %&gt;% 
-  rename(estimate = response)
-
-agg_sojae_means &lt;- bind_rows(m_root_dry_sojae, m_shoot_dry_sojae,
-                             m_root_length_sojae, m_root_area_sojae)
-
-# add species to isolates
-agg_sojae_means &lt;- agg_sojae_means %&gt;% 
-  mutate(species = case_when(
-    isolate == &quot;Control None&quot; ~ &quot;Control None&quot;, 
-    isolate == &quot;Control Agar&quot; ~ &quot;Control Agar&quot;, 
-    TRUE ~ &quot;Phytophthora sojae&quot;
-      ))
-
-# write_csv(agg_sojae_means, here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sojae-means.csv&quot;))</code></pre>
-</div>
-<div id="phytophthora-sansomeana-1" class="section level3">
-<h3>Phytophthora sansomeana</h3>
-<pre class="r"><code>fm_root_dry_sansomeana &lt;- lmer(root_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_dry_sansomeana) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sansomeana%20dry%20root-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_dry_sansomeana)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
-isolate 252.04  31.505     8    70  1.3392  0.239</code></pre>
-<pre class="r"><code>emmeans(fm_root_dry_sansomeana, ~ isolate) %&gt;% 
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      emmean   SE   df lower.CL upper.CL .group
- Control None   28.3 4.87 2.46     10.7     45.9  1    
- 18PR004        29.0 4.87 2.46     11.4     46.6  1    
- 16PR018B.1     29.2 4.87 2.46     11.6     46.9  1    
- 18PR003        29.8 4.87 2.46     12.2     47.4  1    
- 16PR024C.1     29.8 4.87 2.46     12.2     47.5  1    
- 18PR005        30.9 4.87 2.46     13.3     48.5  1    
- 16PR024C.2     32.0 4.87 2.46     14.4     49.7  1    
- 17PR006L.1     32.6 4.87 2.46     14.9     50.2  1    
- Control Agar   34.0 4.87 2.46     16.3     51.6  1    
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-P value adjustment: tukey method for comparing a family of 9 estimates 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_shoot_dry_sansomeana &lt;- lmer(shoot_mg ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_shoot_dry_sansomeana) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sansomeana%20dry%20shoot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_shoot_dry_sansomeana)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-        Sum Sq Mean Sq NumDF DenDF F value  Pr(&gt;F)  
-isolate 3121.6   390.2     8    70  2.2461 0.03386 *
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>emmeans(fm_shoot_dry_sansomeana, ~ isolate) %&gt;% 
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      emmean   SE   df lower.CL upper.CL .group
- Control None   61.0 8.68 3.35     35.0     87.1  1    
- 18PR005        66.3 8.68 3.35     40.2     92.3  12   
- 18PR004        67.3 8.68 3.35     41.3     93.4  12   
- 17PR006L.1     68.7 8.68 3.35     42.7     94.8  12   
- 16PR018B.1     70.8 8.68 3.35     44.7     96.8  12   
- 16PR024C.1     72.4 8.68 3.35     46.3     98.5  12   
- 16PR024C.2     73.5 8.68 3.35     47.4     99.5  12   
- 18PR003        77.6 8.68 3.35     51.6    103.7  12   
- Control Agar   83.5 8.68 3.35     57.4    109.5   2   
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-P value adjustment: tukey method for comparing a family of 9 estimates 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_root_length_sansomeana &lt;- lmer(log(length_cm) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_length_sansomeana) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sansomeana%20length-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_length_sansomeana)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-         Sum Sq  Mean Sq NumDF  DenDF F value Pr(&gt;F)
-isolate 0.78499 0.098124     8 64.009  1.4606 0.1894</code></pre>
-<pre class="r"><code>emmeans(fm_root_length_sansomeana, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      response   SE   df lower.CL upper.CL .group
- Control None     63.4 14.1 2.66     29.6      136  1    
- 18PR005          69.4 15.8 2.90     33.2      145  1    
- 16PR018B.1       72.1 16.0 2.66     33.6      155  1    
- 16PR024C.2       76.7 17.2 2.76     36.2      162  1    
- 16PR024C.1       76.8 17.1 2.66     35.8      165  1    
- 18PR004          82.1 18.4 2.76     38.8      174  1    
- Control Agar     84.8 19.3 2.90     40.6      177  1    
- 18PR003          85.9 19.1 2.66     40.1      184  1    
- 17PR006L.1       86.6 19.3 2.66     40.4      186  1    
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-Intervals are back-transformed from the log scale 
-P value adjustment: tukey method for comparing a family of 9 estimates 
-Tests are performed on the log scale 
-significance level used: alpha = 0.05 </code></pre>
-<pre class="r"><code>fm_root_area_sansomeana &lt;- lmer(log(area_cm.2) ~ isolate + (1|experiment), data = sansomeana_aggressiveness)
-resid_panel(fm_root_area_sansomeana) </code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/sansomeana%20area-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>anova(fm_root_area_sansomeana)</code></pre>
-<pre><code>Type III Analysis of Variance Table with Satterthwaite&#39;s method
-         Sum Sq  Mean Sq NumDF  DenDF F value Pr(&gt;F)
-isolate 0.59503 0.074378     8 64.059  0.9672 0.4695</code></pre>
-<pre class="r"><code>emmeans(fm_root_area_sansomeana, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  cld.emmGrid()</code></pre>
-<pre><code> isolate      response    SE   df lower.CL upper.CL .group
- Control None     3.46 0.517 4.49     2.33     5.15  1    
- 16PR018B.1       3.59 0.536 4.49     2.41     5.34  1    
- 16PR024C.1       3.65 0.545 4.49     2.45     5.43  1    
- 18PR005          3.76 0.594 5.56     2.54     5.58  1    
- 16PR024C.2       3.92 0.600 4.93     2.64     5.82  1    
- 18PR004          4.08 0.624 4.93     2.75     6.05  1    
- 18PR003          4.09 0.612 4.49     2.75     6.09  1    
- 17PR006L.1       4.28 0.640 4.49     2.88     6.37  1    
- Control Agar     4.70 0.742 5.56     3.17     6.97  1    
-
-Degrees-of-freedom method: kenward-roger 
-Confidence level used: 0.95 
-Intervals are back-transformed from the log scale 
-P value adjustment: tukey method for comparing a family of 9 estimates 
-Tests are performed on the log scale 
-significance level used: alpha = 0.05 </code></pre>
-<p>save means</p>
-<pre class="r"><code>m_root_dry_sansomeana &lt;- emmeans(fm_root_dry_sansomeana, ~ isolate) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root dry weigth&quot;)
-
-m_shoot_dry_sansomeana &lt;- emmeans(fm_shoot_dry_sansomeana, ~ isolate) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Shoot dry weigth&quot;)
-
-m_root_length_sansomeana &lt;- emmeans(fm_root_length_sansomeana, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root length&quot;) %&gt;% 
-  rename(estimate = response)
-
-m_root_area_sansomeana &lt;- emmeans(fm_root_area_sansomeana, ~ isolate, type = &quot;response&quot;) %&gt;% 
-  tidy() %&gt;% 
-  mutate(agg_parameter = &quot;Root area&quot;) %&gt;% 
-  rename(estimate = response)
-
-agg_sansomeana_means &lt;- bind_rows(m_root_dry_sansomeana, m_shoot_dry_sansomeana,
-                             m_root_length_sansomeana, m_root_area_sansomeana)
-
-# add species to isolates
-agg_sansomeana_means &lt;- agg_sansomeana_means %&gt;% 
-  mutate(species = case_when(
-    isolate == &quot;Control None&quot; ~ &quot;Control None sansomena&quot;, 
-    isolate == &quot;Control Agar&quot; ~ &quot;Control Agar sansomeana&quot;, 
-    TRUE ~ &quot;Phytophthora sansomeana&quot;
-      ))
-
-# write_csv(agg_sansomeana_means, here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sansomeana-means.csv&quot;))</code></pre>
-</div>
-</div>
-<div id="figure-4" class="section level2">
-<h2>Figure 4</h2>
-<pre class="r"><code>fig_4A &lt;- aggressiveness_plots %&gt;% 
-  ggplot(aes(x = reorder (isolate, root_mg), y = root_mg, color = species)) + 
-  coord_flip() +
-  stat_summary(fun.data = &quot;mean_se&quot;, aes(colour = species), alpha = 0.6) +
-  geom_hline(yintercept = 23.5, linetype=&quot;dashed&quot;,  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = &quot;none&quot;, 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = &quot;&quot;,
-       y = &quot;Root dry weigth (mg)&quot;,
-       color = &quot;&quot;) 
-
-fig_4B &lt;- aggressiveness_plots %&gt;% 
-  ggplot(aes(x = reorder (isolate, shoot_mg), y = shoot_mg, color = species)) + 
-  coord_flip() +
-  stat_summary(fun.data = &quot;mean_se&quot;, aes(colour = species), alpha = 0.6) +
-  geom_hline(yintercept = 57.15, linetype=&quot;dashed&quot;,  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = &quot;none&quot;, 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = &quot;&quot;,
-       y = &quot;Shoot dry weigth (mg)&quot;,
-       color = &quot;&quot;) 
-
-# use back-transform means from emmeans output
-# means bit different from raw data, some missing data
-means_sojae &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sojae-means.csv&quot;))
-means_sansomeana &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sansomeana-means.csv&quot;)) %&gt;% 
-  filter(!species == &quot;Control Agar sansomeana&quot;, 
-         !species == &quot;Control None sansomena&quot;)
-
-# combine the two for plotting
-means_aggressiveness &lt;- rbind(means_sojae, means_sansomeana) 
-
-means_aggressiveness$species &lt;- str_replace_all(means_aggressiveness$species, 
-                                                c(&quot;Control Agar&quot; = &quot;Control&quot;, 
-                                                  &quot;Control None&quot; = &quot;Control&quot;, 
-                                                  &quot;Phytophthora sojae&quot; = &quot;P. sojae&quot;, 
-                                                  &quot;Phytophthora sansomeana&quot; = &quot;P. sansomeana&quot;)
-                                                )
-
-fig_4C &lt;- means_aggressiveness %&gt;% 
-  filter(agg_parameter == &quot;Root length&quot;) %&gt;% 
-  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() +
-  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-                  alpha = 0.6) +
-  geom_hline(yintercept = 30.05, linetype=&quot;dashed&quot;,  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = &quot;none&quot;, 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = &quot;&quot;,
-       y = &quot;Root length (cm)&quot;,
-       color = &quot;&quot;) 
-
-fig_4D &lt;- means_aggressiveness %&gt;% 
-  filter(agg_parameter == &quot;Root area&quot;) %&gt;% 
-  ggplot(aes(x = reorder (isolate, estimate), y = estimate, color = species)) + 
-  coord_flip() +
-  geom_pointrange(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-                  alpha = 0.6) +
-  geom_hline(yintercept = 1.7545, linetype=&quot;dashed&quot;,  size = 0.7) +
-  theme_minimal() +
-  theme(legend.position = &quot;none&quot;, 
-        axis.text.y  = element_text(size = rel(0.95))) +
-  labs(x = &quot;&quot;,
-       y = expression(&#39;Root area (cm&#39;^2*&#39;)&#39;),
-       color = &quot;&quot;) </code></pre>
-<pre class="r"><code>figure_four_AB &lt;- plot_grid(fig_4A, fig_4B, labels = c(&quot;A&quot;, &quot;B&quot;), nrow  = 1)
-figure_four_CD &lt;- plot_grid(fig_4C, fig_4D, labels = c(&quot;C&quot;, &quot;D&quot;), nrow  = 1)
-
-figure_four_no_legend &lt;- plot_grid(figure_four_AB, figure_four_CD, ncol = 1)
-
-legend_four &lt;- get_legend(fig_4A + theme(legend.position = &quot;bottom&quot;))
-
-(figure_four &lt;- plot_grid(figure_four_no_legend, legend_four, ncol = 1, rel_heights = c(1,0.04)))</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/fig%204-1.png" width="480" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># ggsave(&quot;figure4.tiff&quot;, plot = figure_four, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 5, height = 8)</code></pre>
+plot_grid(box_corr1, box_corr2, ncol = 1, align = &quot;v&quot;, rel_heights = c(1, 1.1))</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/corr%20box%20plot-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="fungicide-sensitivity" class="section level1">
 <h1>Fungicide sensitivity</h1>
-<div id="clean-and-transform-data-for-analysis" class="section level2">
-<h2>Clean and transform data for analysis</h2>
+<div id="clean-data" class="section level2">
+<h2>Clean data</h2>
 <pre class="r"><code># eliminate NAs
 # average colony measurements 
 clean_fungicide &lt;- fungicide %&gt;% 
@@ -4425,7 +5626,17 @@ hormetic_isolates &lt;- clean_fungicide %&gt;%
 <pre><code>[1] 37</code></pre>
 <pre class="r"><code>hormetic_data &lt;- semi_join(clean_fungicide, hormetic_isolates, by = c(&quot;fungicide&quot;,
                                                                         &quot;experiment&quot;, 
-                                                                        &quot;isolate&quot;))</code></pre>
+                                                                        &quot;isolate&quot;))
+
+# when combine data
+hormetic_isolates_both &lt;- clean_fungicide %&gt;% 
+  group_by(fungicide, isolate, dose) %&gt;% 
+  summarise(rel.growth = mean(rel.growth)) %&gt;% 
+  filter(rel.growth &gt; 100, 
+         !dose == 0) %&gt;% 
+  dplyr::select(fungicide, isolate)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;fungicide&#39;, &#39;isolate&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>hormetic_isolates_both %&gt;% view()</code></pre>
 </div>
 <div id="fit-log-logistic-models" class="section level2">
 <h2>Fit log logistic models</h2>
@@ -4492,7 +5703,7 @@ log_selection %&gt;%
 </tbody>
 </table>
 <p>More non-significant p-values for lack of fit for the 4 parameters model (LL.3).<br />
-Overall, LL.4 model better fit for most isolates</p>
+Overall, LL.34 model better fit for most isolates</p>
 <pre class="r"><code># extract absolute EC50s from LL.4 model
 abs_EC50 &lt;- function(models){
   ED(models, respLev = c(50), type = &quot;absolute&quot;, interval = &quot;delta&quot;)
@@ -5748,7 +6959,7 @@ compare_EC50 %&gt;%
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/compare%20EC50-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Lower EC50 for the hormetic models.</p>
 </div>
-<div id="save-results" class="section level2">
+<div id="save-results-1" class="section level2">
 <h2>save results</h2>
 <pre class="r"><code>## add isolate ID and species
 ## filter isolates not used 
@@ -5780,8 +6991,8 @@ compare_EC50_id &lt;- compare_EC50_id %&gt;%
 # write_csv(pooled_EC50_id, here(&quot;output&quot;, &quot;results&quot;, &quot;02_fungicide-sensitivity_EC50.csv&quot;))
 # write_csv(compare_EC50_id, here(&quot;output&quot;, &quot;results&quot;, &quot;02_fungicide-sensitivity_EC50_hormetic-isolates.csv&quot;))</code></pre>
 </div>
-<div id="figure-6" class="section level2">
-<h2>Figure 6</h2>
+<div id="figure-5" class="section level2">
+<h2>Figure 5</h2>
 <pre class="r"><code>fungicide_EC50 &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_fungicide-sensitivity_EC50.csv&quot;))
 
 EC50_plot &lt;- fungicide_EC50  %&gt;% 
@@ -5816,170 +7027,61 @@ EC50_plot$fungicide &lt;- str_replace_all(EC50_plot$fungicide,
 <p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/figure%205-1.png" width="528" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># ggsave(&quot;figure5.tiff&quot;, plot = figure_five, dpi = 300, path = here(&quot;docs&quot;, &quot;figure&quot;), width = 5, height = 5)</code></pre>
 </div>
-</div>
-<div id="correlation-between-aggressiveness-and-complexity" class="section level1">
-<h1>Correlation between aggressiveness and complexity</h1>
-<pre class="r"><code># import saved results
-sojae_pathotype &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_pathotype-psojae_results.csv&quot;))
-means_aggressiveness &lt;- read_csv(here(&quot;output&quot;, &quot;results&quot;, &quot;02_aggressiveness_sojae-means.csv&quot;))
-
-sojae_complexity &lt;- sojae_pathotype %&gt;% 
-  dplyr::select(isolate_id, Complexity)
-
-sojae_aggressiveness &lt;- means_aggressiveness %&gt;% 
+<div id="correlation-bw-fungicide-sensitivity-aggressiveness-and-complexity" class="section level2">
+<h2>Correlation b/w fungicide sensitivity, aggressiveness and complexity</h2>
+<pre class="r"><code># combine all data
+EC50_sojae &lt;- fungicide_EC50 %&gt;% 
   filter(species == &quot;Phytophthora sojae&quot;) %&gt;% 
-  dplyr::select(isolate_id = isolate, estimate, agg_parameter) %&gt;% 
-  spread(agg_parameter, estimate)
-
-sojae_all_data &lt;- left_join(sojae_complexity, sojae_aggressiveness, by = c(&quot;isolate_id&quot;)) 
-
-# EC50 data
-corr_EC50 &lt;- fungicide_EC50 %&gt;% 
-  filter(species == &quot;Phytophthora sojae&quot;) %&gt;% 
-  dplyr::select(isolate_id, fungicide, EC50)
-
-corr_EC50 &lt;- corr_EC50 %&gt;% 
+  dplyr::select(fungicide, isolate_id, EC50, county) %&gt;% 
   spread(fungicide, EC50)
 
-sojae_all_data_EC50 &lt;- full_join(sojae_all_data, corr_EC50, by = &quot;isolate_id&quot;)</code></pre>
-<pre class="r"><code>sojae_corr &lt;- sojae_all_data_EC50 %&gt;%
-  dplyr::select(-isolate_id) %&gt;%
+sojae_agg_comp &lt;- aggressiveness_complexity %&gt;% 
+  filter(species == &quot;Phytophthora sojae&quot;, 
+         !experiment == 3) %&gt;% 
+  dplyr::select(experiment, isolate, shoot_mg, root_mg, length_cm, area_cm.2, Complexity, )
+
+sojae_all_data &lt;- left_join(sojae_agg_comp, EC50_sojae, by = c(&quot;isolate&quot; = &quot;isolate_id&quot;))</code></pre>
+<pre class="r"><code># correlation all data including NAs
+corr_sojae_all &lt;- sojae_all_data %&gt;%
+  dplyr::select(Complexity, azoxystrobin, ethaboxam, mefenoxam, metalaxyl, shoot_mg, root_mg, length_cm,
+                area_cm.2) %&gt;%
   as.matrix() %&gt;%
   rcorr(type = &quot;pearson&quot;)
 
-sojae_corr </code></pre>
-<pre><code>                 Complexity Root area Root dry weigth Root length
-Complexity             1.00      0.44            0.35        0.41
-Root area              0.44      1.00            0.92        0.99
-Root dry weigth        0.35      0.92            1.00        0.92
-Root length            0.41      0.99            0.92        1.00
-Shoot dry weigth       0.43      0.82            0.71        0.78
-azoxystrobin           0.36      0.07            0.05        0.00
-ethaboxam             -0.10     -0.39           -0.42       -0.39
-mefenoxam              0.09      0.06            0.04        0.10
-metalaxyl             -0.29     -0.44           -0.47       -0.42
-                 Shoot dry weigth azoxystrobin ethaboxam mefenoxam metalaxyl
-Complexity                   0.43         0.36     -0.10      0.09     -0.29
-Root area                    0.82         0.07     -0.39      0.06     -0.44
-Root dry weigth              0.71         0.05     -0.42      0.04     -0.47
-Root length                  0.78         0.00     -0.39      0.10     -0.42
-Shoot dry weigth             1.00         0.30     -0.30     -0.23     -0.57
-azoxystrobin                 0.30         1.00      0.00      0.26      0.20
-ethaboxam                   -0.30         0.00      1.00      0.08      0.50
-mefenoxam                   -0.23         0.26      0.08      1.00      0.77
-metalaxyl                   -0.57         0.20      0.50      0.77      1.00
-
-n
-                 Complexity Root area Root dry weigth Root length
-Complexity               24        24              24          24
-Root area                24        24              24          24
-Root dry weigth          24        24              24          24
-Root length              24        24              24          24
-Shoot dry weigth         24        24              24          24
-azoxystrobin              9         9               9           9
-ethaboxam                 9         9               9           9
-mefenoxam                 9         9               9           9
-metalaxyl                 9         9               9           9
-                 Shoot dry weigth azoxystrobin ethaboxam mefenoxam metalaxyl
-Complexity                     24            9         9         9         9
-Root area                      24            9         9         9         9
-Root dry weigth                24            9         9         9         9
-Root length                    24            9         9         9         9
-Shoot dry weigth               24            9         9         9         9
-azoxystrobin                    9            9         9         9         9
-ethaboxam                       9            9         9         9         9
-mefenoxam                       9            9         9         9         9
-metalaxyl                       9            9         9         9         9
-
-P
-                 Complexity Root area Root dry weigth Root length
-Complexity                  0.0316    0.0939          0.0475     
-Root area        0.0316               0.0000          0.0000     
-Root dry weigth  0.0939     0.0000                    0.0000     
-Root length      0.0475     0.0000    0.0000                     
-Shoot dry weigth 0.0362     0.0000    0.0001          0.0000     
-azoxystrobin     0.3416     0.8540    0.9039          0.9900     
-ethaboxam        0.8062     0.3060    0.2655          0.3049     
-mefenoxam        0.8253     0.8739    0.9278          0.8067     
-metalaxyl        0.4413     0.2312    0.2019          0.2562     
-                 Shoot dry weigth azoxystrobin ethaboxam mefenoxam metalaxyl
-Complexity       0.0362           0.3416       0.8062    0.8253    0.4413   
-Root area        0.0000           0.8540       0.3060    0.8739    0.2312   
-Root dry weigth  0.0001           0.9039       0.2655    0.9278    0.2019   
-Root length      0.0000           0.9900       0.3049    0.8067    0.2562   
-Shoot dry weigth                  0.4266       0.4289    0.5593    0.1074   
-azoxystrobin     0.4266                        0.9979    0.4941    0.6140   
-ethaboxam        0.4289           0.9979                 0.8466    0.1718   
-mefenoxam        0.5593           0.4941       0.8466              0.0154   
-metalaxyl        0.1074           0.6140       0.1718    0.0154             </code></pre>
-<div id="figure-5" class="section level2">
-<h2>Figure 5</h2>
+corrplot(corr_sojae_all$r, method = &quot;number&quot;, type = &quot;upper&quot;, order = &quot;hclust&quot;, tl.col = &quot;black&quot;, diag = FALSE)</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/corr%20all%20sojae%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># p-values
+corr_sojae_all$P</code></pre>
+<pre><code>              Complexity azoxystrobin    ethaboxam    mefenoxam    metalaxyl
+Complexity            NA  0.007534177 0.4905655342 5.349314e-01 3.047266e-02
+azoxystrobin 0.007534177           NA 0.9941834104 5.467762e-02 1.562928e-01
+ethaboxam    0.490565534  0.994183410           NA 5.866697e-01 1.240287e-04
+mefenoxam    0.534931423  0.054677618 0.5866696630           NA 1.103961e-11
+metalaxyl    0.030472659  0.156292827 0.0001240287 1.103961e-11           NA
+shoot_mg     0.005781882  0.119891071 0.5553295314 4.136178e-01 4.046260e-02
+root_mg      0.002701316  0.556076745 0.0234663015 4.746172e-01 7.440722e-02
+length_cm    0.001098032  0.239444968 0.1170653980 7.977825e-02 3.725100e-01
+area_cm.2    0.002432946  0.228862327 0.1942186726 5.704215e-02 6.698284e-01
+                 shoot_mg      root_mg    length_cm    area_cm.2
+Complexity   5.781882e-03 2.701316e-03 1.098032e-03 2.432946e-03
+azoxystrobin 1.198911e-01 5.560767e-01 2.394450e-01 2.288623e-01
+ethaboxam    5.553295e-01 2.346630e-02 1.170654e-01 1.942187e-01
+mefenoxam    4.136178e-01 4.746172e-01 7.977825e-02 5.704215e-02
+metalaxyl    4.046260e-02 7.440722e-02 3.725100e-01 6.698284e-01
+shoot_mg               NA 2.368815e-08 1.098495e-07 2.466435e-07
+root_mg      2.368815e-08           NA 0.000000e+00 2.220446e-16
+length_cm    1.098495e-07 0.000000e+00           NA 0.000000e+00
+area_cm.2    2.466435e-07 2.220446e-16 0.000000e+00           NA</code></pre>
 <pre class="r"><code>col &lt;- colorRampPalette(c(&quot;#BB4444&quot;, &quot;#EE9988&quot;, &quot;#FFFFFF&quot;, &quot;#77AADD&quot;, &quot;#4477AA&quot;))
-corrplot(sojae_corr$r, method = &quot;color&quot;, col = col(200),
+corrplot(corr_sojae_all$r, method = &quot;color&quot;, col = col(200),
          type = &quot;upper&quot;, order = &quot;hclust&quot;, number.cex = 1.5,
          addCoef.col = &quot;black&quot;, # Add coefficient of correlation
          tl.col = &quot;black&quot;, tl.srt = 90, # Text label color and rotation
          # Combine with significance
-         p.mat = sojae_corr$P, sig.level = 0.05, insig = &quot;blank&quot;, 
+         p.mat = corr_sojae_all$P, sig.level = 0.05, insig = &quot;blank&quot;, 
          # hide correlation coefficient on the principal diagonal
          diag = FALSE, tl.cex = 1)</code></pre>
-<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/corr%20plot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>fungicide_EC50 %&gt;% 
-  group_by(fungicide, species) %&gt;% 
-  summarise(min_EC = min(EC50), 
-            max_EC = max(EC50), 
-            mean_EC = mean(EC50))</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;fungicide&#39; (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 8 x 5
-# Groups:   fungicide [4]
-  fungicide    species                  min_EC max_EC mean_EC
-  &lt;chr&gt;        &lt;chr&gt;                     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-1 azoxystrobin Phytophthora sansomeana 1.17    3.43   1.88   
-2 azoxystrobin Phytophthora sojae      0.598   2.09   1.20   
-3 ethaboxam    Phytophthora sansomeana 0.0198  0.0308 0.0234 
-4 ethaboxam    Phytophthora sojae      0.00723 0.0105 0.00844
-5 mefenoxam    Phytophthora sansomeana 0.0429  0.158  0.0617 
-6 mefenoxam    Phytophthora sojae      0.0298  0.104  0.0602 
-7 metalaxyl    Phytophthora sansomeana 0.0432  0.0885 0.0515 
-8 metalaxyl    Phytophthora sojae      0.0283  0.0773 0.0563 </code></pre>
-<pre class="r"><code>fungicide_EC50 %&gt;% 
-  filter(fungicide == &quot;azoxystrobin&quot;, 
-         EC50 &gt; 2) %&gt;% 
-  group_by(fungicide, species) %&gt;% 
-  summarise(min_EC = min(EC50), 
-            max_EC = max(EC50), 
-            mean_EC = mean(EC50))</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;fungicide&#39; (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 2 x 5
-# Groups:   fungicide [1]
-  fungicide    species                 min_EC max_EC mean_EC
-  &lt;chr&gt;        &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-1 azoxystrobin Phytophthora sansomeana   2.27   3.43    2.85
-2 azoxystrobin Phytophthora sojae        2.09   2.09    2.09</code></pre>
-<pre class="r"><code>fungicide_EC50 %&gt;% 
-  filter(fungicide == &quot;azoxystrobin&quot;, 
-         EC50 &gt; 2)</code></pre>
-<pre><code># A tibble: 3 x 9
-  isolate fungicide  species      isolate_id  EC50 std_error  lower upper county
-    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; 
-1       1 azoxystro~ Phytophthor~ 16PR009.1   2.09      1.57  -1.11  5.30 Champ~
-2      12 azoxystro~ Phytophthor~ 18PR004     2.27      1.85  -1.49  6.04 Champ~
-3      13 azoxystro~ Phytophthor~ 18PR005     3.43     36.8  -71.5  78.4  Champ~</code></pre>
-<pre class="r"><code>fungicide_EC50 %&gt;% 
-  filter(fungicide == &quot;ethaboxam&quot;, 
-         EC50 &gt; 0.03)</code></pre>
-<pre><code># A tibble: 1 x 9
-  isolate fungicide species     isolate_id   EC50 std_error  lower  upper county
-    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
-1      13 ethaboxam Phytophtho~ 18PR005    0.0308   0.00236 0.0260 0.0356 Champ~</code></pre>
-<pre class="r"><code>fungicide_EC50 %&gt;% 
-  filter(fungicide == &quot;metalaxyl&quot;, 
-         EC50 &gt; 0.07)</code></pre>
-<pre><code># A tibble: 2 x 9
-  isolate fungicide species     isolate_id   EC50 std_error  lower  upper county
-    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
-1      10 metalaxyl Phytophtho~ 18PR001    0.0773   0.00385 0.0694 0.0851 Vermi~
-2      13 metalaxyl Phytophtho~ 18PR005    0.0885   0.0160  0.0560 0.121  Champ~</code></pre>
+<p><img src="figure/02_analysis_phytophtora-spp-survey.Rmd/corr%20plot%20sample-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -6005,57 +7107,57 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] scales_1.1.1            drc_3.0-1               MASS_7.3-51.6          
- [4] corrplot_0.84           Hmisc_4.4-0             Formula_1.2-3          
- [7] survival_3.1-12         lattice_0.20-41         broom_0.5.6            
-[10] emmeans_1.4.6           ggResidpanel_0.3.0      lmerTest_3.1-2         
-[13] lme4_1.1-23             Matrix_1.2-18           pander_0.6.3           
-[16] hagis_3.0.1             cowplot_1.0.0           rnaturalearthdata_0.1.0
-[19] rnaturalearth_0.1.0     maps_3.3.0              sf_0.9-3               
-[22] here_0.1                forcats_0.5.0           stringr_1.4.0          
-[25] dplyr_1.0.0             purrr_0.3.4             readr_1.3.1            
-[28] tidyr_1.1.0             tibble_3.0.1            ggplot2_3.3.0          
-[31] tidyverse_1.3.0         workflowr_1.6.2        
+ [1] ggfortify_0.4.11        scales_1.1.1            drc_3.0-1              
+ [4] MASS_7.3-51.6           corrplot_0.84           Hmisc_4.4-0            
+ [7] Formula_1.2-3           survival_3.1-12         lattice_0.20-41        
+[10] broom_0.5.6             emmeans_1.5.2-1         ggResidpanel_0.3.0     
+[13] lmerTest_3.1-2          lme4_1.1-23             Matrix_1.2-18          
+[16] pander_0.6.3            hagis_3.0.1             cowplot_1.0.0          
+[19] rnaturalearthdata_0.1.0 rnaturalearth_0.1.0     maps_3.3.0             
+[22] sf_0.9-3                here_0.1                forcats_0.5.0          
+[25] stringr_1.4.0           dplyr_1.0.0             purrr_0.3.4            
+[28] readr_1.3.1             tidyr_1.1.0             tibble_3.0.1           
+[31] ggplot2_3.3.0           tidyverse_1.3.0         workflowr_1.6.2        
 
 loaded via a namespace (and not attached):
   [1] readxl_1.3.1        backports_1.1.6     plyr_1.8.6         
   [4] lazyeval_0.2.2      sp_1.4-2            splines_4.0.2      
   [7] TH.data_1.0-10      digest_0.6.25       qqplotr_0.0.4      
- [10] htmltools_0.5.0     fansi_0.4.1         magrittr_1.5       
+ [10] htmltools_0.5.0     fansi_0.4.1         magrittr_2.0.1     
  [13] checkmate_2.0.0     cluster_2.1.0       openxlsx_4.1.5     
- [16] modelr_0.1.8        sandwich_2.5-1      jpeg_0.1-8.1       
- [19] colorspace_1.4-1    rvest_0.3.5         haven_2.2.0        
+ [16] modelr_0.1.8        sandwich_3.0-0      jpeg_0.1-8.1       
+ [19] colorspace_1.4-1    rvest_0.3.6         haven_2.2.0        
  [22] xfun_0.16           crayon_1.3.4        jsonlite_1.7.1     
  [25] zoo_1.8-8           glue_1.4.2          gtable_0.3.0       
- [28] car_3.0-8           DEoptimR_1.0-8      abind_1.4-5        
- [31] mvtnorm_1.1-0       DBI_1.1.0           Rcpp_1.0.4.6       
+ [28] car_3.0-10          DEoptimR_1.0-8      abind_1.4-5        
+ [31] mvtnorm_1.1-1       DBI_1.1.0           Rcpp_1.0.5         
  [34] plotrix_3.7-8       viridisLite_0.3.0   xtable_1.8-4       
- [37] htmlTable_1.13.3    units_0.6-6         foreign_0.8-80     
- [40] htmlwidgets_1.5.1   httr_1.4.1          RColorBrewer_1.1-2 
+ [37] htmlTable_2.1.0     units_0.6-6         foreign_0.8-80     
+ [40] htmlwidgets_1.5.2   httr_1.4.2          RColorBrewer_1.1-2 
  [43] acepack_1.4.1       ellipsis_0.3.1      farver_2.0.3       
  [46] pkgconfig_2.0.3     multcompView_0.1-8  nnet_7.3-14        
- [49] dbplyr_1.4.3        utf8_1.1.4          labeling_0.3       
+ [49] dbplyr_2.0.0        utf8_1.1.4          labeling_0.4.2     
  [52] tidyselect_1.1.0    rlang_0.4.7         later_1.1.0.1      
  [55] munsell_0.5.0       cellranger_1.1.0    tools_4.0.2        
- [58] cli_2.0.2           generics_0.0.2      pacman_0.5.1       
- [61] evaluate_0.14       yaml_2.2.1          knitr_1.29         
+ [58] cli_2.2.0           generics_0.1.0      pacman_0.5.1       
+ [61] evaluate_0.14       yaml_2.2.1          knitr_1.30         
  [64] fs_1.4.1            zip_2.0.4           robustbase_0.93-6  
- [67] nlme_3.1-148        whisker_0.4         xml2_1.3.2         
- [70] pbkrtest_0.4-8.6    compiler_4.0.2      rstudioapi_0.11    
- [73] plotly_4.9.2.1      curl_4.3            png_0.1-7          
+ [67] nlme_3.1-150        whisker_0.4         xml2_1.3.2         
+ [70] pbkrtest_0.4-8.6    compiler_4.0.2      rstudioapi_0.13    
+ [73] curl_4.3            plotly_4.9.2.1      png_0.1-7          
  [76] e1071_1.7-3         reprex_0.3.0        statmod_1.4.34     
- [79] stringi_1.4.6       rgeos_0.5-3         classInt_0.4-3     
- [82] nloptr_1.2.2.1      vctrs_0.3.0         pillar_1.4.4       
- [85] lifecycle_0.2.0     estimability_1.3    data.table_1.12.8  
- [88] httpuv_1.5.2        R6_2.4.1            latticeExtra_0.6-29
- [91] promises_1.1.0      KernSmooth_2.23-17  gridExtra_2.3      
- [94] rio_0.5.16          codetools_0.2-16    gtools_3.8.2       
- [97] boot_1.3-25         assertthat_0.2.1    rprojroot_1.3-2    
-[100] withr_2.2.0         multcomp_1.4-13     parallel_4.0.2     
-[103] hms_0.5.3           grid_4.0.2          rpart_4.1-15       
-[106] class_7.3-17        minqa_1.2.4         rmarkdown_2.3      
-[109] carData_3.0-4       git2r_0.27.1        numDeriv_2016.8-1.1
-[112] lubridate_1.7.8     base64enc_0.1-3    </code></pre>
+ [79] stringi_1.4.6       ps_1.4.0            rgeos_0.5-5        
+ [82] classInt_0.4-3      nloptr_1.2.2.1      vctrs_0.3.0        
+ [85] pillar_1.4.7        lifecycle_0.2.0     estimability_1.3   
+ [88] data.table_1.12.8   httpuv_1.5.2        R6_2.5.0           
+ [91] latticeExtra_0.6-29 promises_1.1.0      KernSmooth_2.23-18 
+ [94] gridExtra_2.3       rio_0.5.16          codetools_0.2-18   
+ [97] gtools_3.8.2        boot_1.3-25         assertthat_0.2.1   
+[100] rprojroot_2.0.2     withr_2.3.0         multcomp_1.4-15    
+[103] parallel_4.0.2      hms_0.5.3           grid_4.0.2         
+[106] rpart_4.1-15        class_7.3-17        minqa_1.2.4        
+[109] rmarkdown_2.5       carData_3.0-4       git2r_0.27.1       
+[112] numDeriv_2016.8-1.1 lubridate_1.7.8     base64enc_0.1-3    </code></pre>
 </div>
 </div>
 </div>
@@ -6083,7 +7185,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
