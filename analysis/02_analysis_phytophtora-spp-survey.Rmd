@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # install.packages(c("googleway", "ggrepel","ggspatial", "libwgeom", "sf", "rnaturalearth", 
 # "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
-               cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom, 
-               Hmisc, corrplot, drc, scales, broom, ggfortify)
+               cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom,
+                                                  Hmisc, corrplot, drc, scales, broom, ggfortify)
 ```
 
 # Import data
@@ -40,6 +40,34 @@ agg_temperature <- read_csv(all_data[3])
 fungicide <- read.csv(all_data[5])
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+isolates_recovered %>% 
+  filter(identification == "sequence") %>% 
+  group_by(species) %>% 
+  count() %>% 
+  mutate(percentage = n/97)
+  
+isolates_recovered %>% 
+ filter(species == "Phytophthora sojae") %>%
+  arrange(year) %>% 
+  view()
+  group_by(sample_id) %>% 
+  count()
+
+```
 
 # Sample collection
 
@@ -410,7 +438,7 @@ sansomeana_summ <- sansomeana %>%
   group_by(isolate_id, differential, gene) %>% 
   summarise(percent_susceptible = mean(percent.susceptible))
 
-sansomeana_summ %>% 
+sansomeana_summ %>% view()
   filter(percent_susceptible > 75)
 ```
 
@@ -653,7 +681,7 @@ anova(fm_root_area_01_log)
 emmeans(fm_root_area_01_log,  ~ species, type = "response") %>% 
   multcomp::cld()
 emmeans(fm_root_area_01_log, ~ isolate, type = "response") %>%  
-  multcomp::cld()
+  multcomp::cld() 
 
 # root dry weight
 fm_root_dry_01 <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
@@ -952,6 +980,44 @@ figure_four <- means_aggressiveness %>%
 
 # ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 6, height = 6.8) 
 ```
+  
+```{r effects}
+means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
+
+means_aggressiveness$agg_component
+            
+effect_length <-  means_aggressiveness %>% 
+  filter(experiment == "1 and 2", 
+         agg_component == "length") %>% 
+  mutate(effect = (estimate - 90.2)/90.2)
+
+effect_area <-  means_aggressiveness %>% 
+  filter(experiment == "1 and 2", 
+         agg_component == "area") %>% 
+  mutate(effect = (estimate - 4.76 )/ 4.76)
+
+effect_root_weight <-  means_aggressiveness %>% 
+  filter(experiment == "1 and 2", 
+         agg_component == "root dry") %>% 
+  mutate(effect = (estimate - 38.4)/ 38.4)
+
+effect_shoot_weight <-  means_aggressiveness %>% 
+  filter(experiment == "1 and 2", 
+         agg_component == "shoot dry") %>% 
+  mutate(effect = (estimate - 88.2)/ 88.2)
+```
+  
+```{r}
+## length
+effect_shoot_weight %>% 
+  filter(estimate > 46.9 , 
+         species == "Phytophthora sojae", 
+         !isolate == "17PR013G.3") %>% 
+  summarise(mean(effect))
+
+```
+
+  
   
 ## Correlation b/w aggressiveness and complexity
 
@@ -1438,3 +1504,10 @@ corrplot(corr_sojae_all$r, method = "color", col = col(200),
          # hide correlation coefficient on the principal diagonal
          diag = FALSE, tl.cex = 1)
 ```
+
+
+```{r}
+sojae_all_data
+```
+
+
