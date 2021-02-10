@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom,
-                                                  Hmisc, corrplot, drc, scales, broom, ggfortify)
+               Hmisc, corrplot, drc, scales, broom, ggfortify)
 ```
 
 # Import data
@@ -39,17 +39,6 @@ agg_temperature <- read_csv(all_data[3])
 # fungicide sensitivity 
 fungicide <- read.csv(all_data[5])
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 
 ```{r}
@@ -611,7 +600,7 @@ fm_root_length <- lm(log(length_cm) ~ species + isolate + experiment, data = agg
 # diagnostics
 autoplot(fm_root_length, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_length$residuals)
-# anova and mean seperation
+# anova and mean separation
 anova(fm_root_length) 
 emmeans(fm_root_length , ~ experiment, type = "response") %>%
   multcomp::cld()
@@ -632,7 +621,7 @@ fm_root_dry <- lm(root_mg ~ species + isolate + experiment, data = aggressivenes
 autoplot(fm_root_dry, which = 1:6, ncol = 3, label.size = 3)
 qplot(fm_root_dry$residuals)
 anova(fm_root_dry)
-emmeans(fm_root_dry, ~ isolate|experiment) %>% 
+emmeans(fm_root_dry, ~ isolate) %>% 
   multcomp::cld()
 ```
 
@@ -642,7 +631,8 @@ autoplot(fm_shoot_dry, which = 1:6, ncol = 3, label.size = 3)
 anova(fm_shoot_dry)
 emmeans(fm_shoot_dry, ~ experiment) %>% 
   multcomp::cld()
-
+emmeans(fm_shoot_dry, ~ isolate) %>% 
+  multcomp::cld()
 ```
 
 The experiment factor is significant for all aggressiveness components. I will analyze first two experiments together and the third separate. 
@@ -1026,6 +1016,8 @@ effect_shoot_weight %>%
 aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
 
+sojae_pathotype %>% view()
+
 sojae_complexity <- sojae_pathotype %>% 
   dplyr::select(isolate_id, Complexity) %>% 
   rename(isolate = isolate_id)
@@ -1036,23 +1028,54 @@ aggressiveness_complexity <- left_join(aggressiveness, sojae_complexity, by = "i
 ```{r correlation }
 # correlation
 # experiment 1 and 2
-corr_agg_patho <- aggressiveness_complexity %>%
+corr_agg_patho_1 <- aggressiveness_complexity %>%
   filter(species == "Phytophthora sojae",
-         !experiment == 3) %>% 
+         experiment == 1) %>% 
   dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
 
-corrplot(corr_agg_patho$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+corrplot(corr_agg_patho_1$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 # p-values
 corr_agg_patho$P
 ```
 
+```{r}
+corr_agg_patho_2 <- aggressiveness_complexity %>%
+  filter(species == "Phytophthora sojae",
+         experiment == 2) %>% 
+  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
+corrplot(corr_agg_patho_2$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+# p-values
+corr_agg_patho$P
+```
+
+```{r}
+corr_agg_patho_3 <- aggressiveness_complexity %>%
+  filter(species == "Phytophthora sojae",
+         experiment == 3) %>% 
+  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
+  as.matrix() %>%
+  rcorr(type = "pearson")
+
+corrplot(corr_agg_patho_3$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+# p-values
+corr_agg_patho$P
+```
+
+
+
+
+
+
+
 ```{r corr box plot}
 box_corr1 <- aggressiveness_complexity %>% 
-  filter(!experiment == 3,
-    !is.na(Complexity)) %>% 
-  ggplot(aes(x = factor(Complexity), y = length_cm)) +
+  filter(!is.na(Complexity)) %>% 
+  ggplot(aes(x = factor(Complexity), y = root_mg)) +
   geom_boxplot() +
   geom_point(alpha = 0.2) +
   labs(x = "Compelxity", 
@@ -1060,10 +1083,11 @@ box_corr1 <- aggressiveness_complexity %>%
   theme_light() +
   theme(panel.grid.minor = element_blank(), 
         axis.text.x = element_blank(), 
-        axis.title.x = element_blank())
+        axis.title.x = element_blank()) +
+  facet_wrap(vars(experiment))
 
 box_corr2 <- aggressiveness_complexity %>% 
-  filter(!experiment == 3,
+  filter(experiment == 3,
     !is.na(Complexity)) %>% 
   ggplot(aes(x = factor(Complexity), y = root_mg)) +
   geom_boxplot() +
@@ -1510,4 +1534,50 @@ corrplot(corr_sojae_all$r, method = "color", col = col(200),
 sojae_all_data
 ```
 
+# Extra info 
+```{r}
+
+rojas_data <- read_csv("https://raw.githubusercontent.com/Chilverslab/Rojas_Survey_Phytopath_2016/master/data/clean/Isolates_11-12_final.csv")
+
+# 11 states
+rojas_data %>%
+  filter(Species == "Phytophthora sansomeana") %>% 
+  group_by(State) %>% 
+  summarise(n = n()) %>% 
+  arrange(n)
+
+rojas_data %>%
+  filter(Species == "Phytophthora sojae") %>% 
+  group_by(State) %>% 
+  summarise(n = n()) %>% 
+  arrange(n) 
+
+
+# no sojae
+rojas_data %>% 
+  filter(State == "Ontario") %>% 
+  group_by(Species) %>% 
+  summarise(n = n()) %>% 
+  arrange(n) %>% 
+  view()
+
+
+rojas_data %>%
+  filter(State == "Illinois") %>% 
+  view()
+
+
+## noel data isolation oomycete paper
+noel_data <- read_csv("https://raw.githubusercontent.com/noelzach/Oomycete-Isolation-from-seed-treatments/master/GitHub/IsolationRecoveryV6.csv")
+
+noel_data %>% 
+  filter(location == "IL", 
+         !`Highest BLAST taxonomy` == ".") %>% 
+  group_by(`Highest BLAST taxonomy`) %>% 
+  count() %>% 
+  arrange(n)
+
+# 1 sansomena, no sojae, dominated by pythium 
+
+```
 
