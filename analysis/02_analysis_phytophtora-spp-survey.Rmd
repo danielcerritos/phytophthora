@@ -4,7 +4,7 @@ author: "Daniel Cerritos"
 date: "4/24/2020"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -911,6 +911,21 @@ legend_three <- get_legend(a3 + theme(legend.position = "bottom"))
 # ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 6, height = 5) 
 ```
 
+```{r}
+emmeans(fm_root_dry, ~ isolate) %>% 
+  multcomp::cld()
+```
+
+
+
+```{r}
+emmeans(fm_shoot_dry, ~ isolate) %>% 
+  multcomp::cld()
+```
+
+
+
+
 ## Figure 4
 
 ```{r figure 4, fig 3, fig.height=6, fig.width=6.8,  warning=FALSE, message=FALSE}
@@ -1498,7 +1513,7 @@ EC50_sojae <- fungicide_EC50 %>%
 sojae_agg_comp <- aggressiveness_complexity %>% 
   filter(species == "Phytophthora sojae", 
          !experiment == 3) %>% 
-  dplyr::select(experiment, isolate, shoot_mg, root_mg, length_cm, area_cm.2, Complexity, )
+  dplyr::select(experiment, isolate, shoot_mg, root_mg, Complexity)
 
 sojae_all_data <- left_join(sojae_agg_comp, EC50_sojae, by = c("isolate" = "isolate_id"))
 ```
@@ -1506,8 +1521,7 @@ sojae_all_data <- left_join(sojae_agg_comp, EC50_sojae, by = c("isolate" = "isol
 ```{r corr all sojae data}
 # correlation all data including NAs
 corr_sojae_all <- sojae_all_data %>%
-  dplyr::select(Complexity, azoxystrobin, ethaboxam, mefenoxam, metalaxyl, shoot_mg, root_mg, length_cm,
-                area_cm.2) %>%
+  dplyr::select(Complexity, azoxystrobin, ethaboxam, mefenoxam, metalaxyl, shoot_mg, root_mg) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
 
