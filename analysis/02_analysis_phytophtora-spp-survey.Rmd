@@ -42,7 +42,6 @@ fungicide <- read.csv(all_data[5])
 
 
 ```{r}
-
 isolates_recovered %>% 
   filter(identification == "sequence") %>% 
   group_by(species) %>% 
@@ -144,7 +143,7 @@ map_plant <- map_plant %>%
 
 ## Figure 1
 
-```{r sample map}
+```{r sample map, fig.height=5, fig.width=5}
 # samples collection map 
 (figure_one <- ggplot() +
   geom_sf(data = counties, fill = NA) +
@@ -157,7 +156,7 @@ map_plant <- map_plant %>%
   theme_map()
 )
 
-# ggsave("figure1.tiff", plot = figure_one, dpi = 300, path = here("docs", "figure"))
+# ggsave("figure1.tiff", plot = figure_one, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
 ```
 
 # Identification of isolates
@@ -331,7 +330,7 @@ pander(summary(complexities))
 
 ## Figure 2
 
-```{r fig 2, fig.height=5.7, fig.width=4.5, warning=FALSE}
+```{r fig 2, fig.height=5.5, fig.width=4, warning=FALSE}
 effective_rps <- sojae_rps %>% 
   mutate(percent_pathogenic = percent_pathogenic/100) %>% # to use the scales format
   ggplot(aes(x = gene, y = percent_pathogenic)) +
@@ -362,7 +361,7 @@ mean_complexity <- complexity_percent %>%
 
 (figure_two <- plot_grid(effective_rps, mean_complexity, labels = "AUTO", ncol = 1))
 
-# ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4.5, height = 5.7)
+# ggsave("figure2.tiff", plot = figure_two, dpi = 300, path = here("docs", "figure"), width = 4, height = 5.5)
 ```
 
 ```{r diversity indexes}
@@ -480,14 +479,15 @@ aggressiveness  <- aggressiveness %>%
 # save data
 # write_csv(aggressiveness, here("output", "transform_data", "02_aggressiveness_transform.csv"))
 ```
-
 ```{r temperature}
 # temperature data
-agg_temperature <- agg_temperature %>% 
+  agg_temperature <- agg_temperature %>% 
   mutate(room_temperature = (room_temperature-32) * 5/9) # transform to Celsius
 ```
 
 ## Exploratory analysis
+
+### Temperature
 
 ```{r average temperature, message=FALSE}
 agg_temperature %>% 
@@ -499,21 +499,16 @@ group_by(experiment) %>%
 ```
 
 ```{r temperature agg}
-agg_temperature$time <- as.character(agg_temperature$time)
-# filter to the hours they have in common 
-agg_temperature_filtered <- agg_temperature %>% 
-  filter(time %in% c("00:15:00", "08:15:00", "16:15:00"))
-
-agg_temperature_filtered %>% 
-  ggplot(aes(x = date, y = room_temperature, color = as.factor(experiment))) +
+agg_temperature %>% 
+  ggplot(aes(x = date, y = room_temperature)) +
   geom_line(group = 1)  +
-  theme_light() +
+  theme_minimal() +
   facet_grid(~ as.factor(experiment), scales = "free_x") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
         legend.position = "none") +
-  labs(x = "Date", y = "Room temperature (°C)")
+  labs(x = "Date", y = "Temperature (°C)")
 ```
-
+### Variance 
 
 Can we combine experiments?
 
@@ -533,34 +528,18 @@ exp_plot <- function(y) {
 
 by_exp_shoot <- exp_plot("shoot_mg")
 by_exp_dry <- exp_plot("root_mg")
-by_exp_length <- exp_plot("length_cm")
-by_exp_area <- exp_plot("area_cm.2")
-
-plot_grid(by_exp_shoot, by_exp_dry, by_exp_length, by_exp_area)
+plot_grid(by_exp_shoot, by_exp_dry)
 ```
 
 
 ```{r species by experiment}
-ggplot(data = aggressiveness, aes(x = species, y = length_cm, color = species)) +
-  geom_boxplot() +
-  geom_point() +
-  theme_light() +
-  theme(legend.position = "none") +
-  facet_wrap(~experiment)
-
-ggplot(data = aggressiveness, aes(x = species, y = area_cm.2, color = species)) +
-  geom_boxplot() +
-  theme_light() +
-  geom_point(position = position_jitterdodge()) +
-  theme(legend.position = "none") +
-  facet_wrap(~experiment)
-
 ggplot(data = aggressiveness, aes(x = species, y = root_mg, color = species)) +
   geom_boxplot() +
   theme_light() +
   geom_point(position = position_jitterdodge()) +
   theme(legend.position = "none") +
-  facet_wrap(~ experiment)
+  facet_wrap(~ experiment) +
+  coord_flip()
 
 ggplot(data = aggressiveness, aes(x = species, y = shoot_mg, color = species)) +
   theme_light() +
@@ -570,308 +549,70 @@ ggplot(data = aggressiveness, aes(x = species, y = shoot_mg, color = species)) +
   facet_wrap(~experiment)
 ```
 
-Unequal variances in length_cm and area_cm.2. Results seem to vary depending experiment, so I would include experiment as a factor.
-
-Experiment 1 and 2 seem more similar. 
-
 ```{r distribution}
-qplot(length_cm, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1) +
-  theme_light()
-  
-qplot(area_cm.2, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1) +
-  theme_light()
-
 qplot(root_mg, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1) +
   theme_light()
 
 qplot(shoot_mg, data = aggressiveness) +
-  facet_wrap(~ experiment, ncol = 1) +
   theme_light()
 ```
 
-## Fit lm models and ANOVAs
+## Fit model and ANOVAs
 
-```{r fm root length}
-# not nesting isolate:species, isolates coded in a way there is no need
-fm_root_length <- lm(log(length_cm) ~ species + isolate + experiment, data = aggressiveness)
-# diagnostics
-autoplot(fm_root_length, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_root_length$residuals)
-# anova and mean separation
-anova(fm_root_length) 
-emmeans(fm_root_length , ~ experiment, type = "response") %>%
-  multcomp::cld()
-```
-
-```{r fm root area}
-# fit again with transformation
-fm_root_area <- lm(log(area_cm.2) ~ experiment, data = aggressiveness)
-autoplot(fm_root_area, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_root_area$residuals)
-anova(fm_root_area) 
-emmeans(fm_root_area , ~ experiment, type = "response") %>% # back-transform estimates
-  multcomp::cld()
-```
-
-```{r fm root dry}
-fm_root_dry <- lm(root_mg ~ species + isolate + experiment, data = aggressiveness)
-autoplot(fm_root_dry, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_root_dry$residuals)
+```{r fm_root_dry}
+# root weight
+fm_root_dry <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_root_dry)
 anova(fm_root_dry)
+# mean seperation
+emmeans(fm_root_dry, ~ species) %>% 
+  multcomp::cld()
 emmeans(fm_root_dry, ~ isolate) %>% 
   multcomp::cld()
 ```
 
-```{r fm shoot dry}
-fm_shoot_dry <- lm(shoot_mg ~ species + isolate + experiment, data = aggressiveness)
-autoplot(fm_shoot_dry, which = 1:6, ncol = 3, label.size = 3)
+```{r fm_shoot_dry}
+# shoot dry
+fm_shoot_dry <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness)
+resid_panel(fm_shoot_dry)
 anova(fm_shoot_dry)
-emmeans(fm_shoot_dry, ~ experiment) %>% 
+emmeans(fm_shoot_dry, ~ species) %>% 
   multcomp::cld()
 emmeans(fm_shoot_dry, ~ isolate) %>% 
-  multcomp::cld()
-```
-
-The experiment factor is significant for all aggressiveness components. I will analyze first two experiments together and the third separate. 
-
-## Analysis by experiment 
-
-```{r by experiment data}
-aggressiveness_1_and_2 <- aggressiveness %>% 
-  filter(!experiment == 3)
-```
-
-### Experiment 1 and 2
-
-```{r experiment 1 and 2}
-# root length
-fm_root_length_01 <- lmer(length_cm ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
-summary(fm_root_length_01)
-# diagnostics
-resid_panel(fm_root_length_01) 
-# anova and post-hoc
-anova(fm_root_length_01)
-emmeans(fm_root_length_01, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_root_length_01, ~ isolate) %>% 
-  multcomp::cld()
-
-# root area
-fm_root_area_01 <- lmer(area_cm.2 ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
-resid_panel(fm_root_area_01) # non-constant variance
-# log-transformation
-fm_root_area_01_log <- lmer(log(area_cm.2) ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
-resid_panel(fm_root_area_01_log)
-summary(fm_root_area_01_log)
-# anova
-anova(fm_root_area_01_log)
-emmeans(fm_root_area_01_log,  ~ species, type = "response") %>% 
-  multcomp::cld()
-emmeans(fm_root_area_01_log, ~ isolate, type = "response") %>%  
-  multcomp::cld() 
-
-# root dry weight
-fm_root_dry_01 <- lmer(root_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
-resid_panel(fm_root_dry_01)
-anova(fm_root_dry_01)
-emmeans(fm_root_dry_01, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_root_dry_01, ~ isolate) %>% 
-  multcomp::cld()
-
-# shoot dry weight
-fm_shoot_dry_01 <- lmer(shoot_mg ~ species + isolate + (1|experiment), data = aggressiveness_1_and_2)
-resid_panel(fm_shoot_dry_01)
-anova(fm_shoot_dry_01)
-emmeans(fm_shoot_dry_01, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_shoot_dry_01, ~ isolate) %>% 
-  multcomp::cld()
-```
-
-### Experiment 3
-
-```{r experiment 3 data}
-aggressiveness_3 <- aggressiveness %>% 
-  filter(experiment == 3)
-```
-
-```{r experiment 3}
-fm_root_length_03 <- lm(length_cm  ~ species + isolate, data = aggressiveness_3)
-autoplot(fm_root_length_03, which = 1:6, ncol = 3, label.size = 3)  # outlier
-qplot(fm_root_length_03$residuals)
-
-fm_root_area_03 <- lm(area_cm.2 ~ species + isolate, data = aggressiveness_3)
-autoplot(fm_root_area_03, which = 1:6, ncol = 3, label.size = 3) 
-qplot(fm_root_area_03$residuals) # outlier
-
-fm_root_dry_03 <- lm(root_mg ~ species + isolate, data = aggressiveness_3)
-autoplot(fm_root_dry_03, which = 1:6, ncol = 3, label.size = 3) 
-qplot(fm_root_dry_03$residuals) # outliers
-
-fm_shoot_dry_03 <- lm(shoot_mg ~ species + isolate, data = aggressiveness_3)
-autoplot(fm_shoot_dry_03, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_shoot_dry_03$residuals) # outlier
-```
-
-Check the observation # 6, which is an outlier in all the models fitted.
-
-```{r analysis with no outlier}
-aggressiveness_3[6, ]
-aggressiveness_3 %>% filter(isolate == "17PR009A.2") # very different from other two reps
-aggressiveness_3_out <- aggressiveness_3[-c(6), ] # remove observation from data
-
-# fit models without the outlier, let see if it influences the results
-fm_root_length_03_out <- lm(length_cm ~ species + isolate, data = aggressiveness_3_out)
-# compare anova results 
-anova(fm_root_length_03) # with outlier
-anova(fm_root_length_03_out) # without 
-# isolate p-value changed
-autoplot(fm_root_length_03_out, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_root_length_03_out$residuals)
-# mean separation
-emmeans(fm_root_length_03_out, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_root_length_03, ~ species) %>%
-  multcomp::cld()
-emmeans(fm_root_length_03_out, ~ isolate) %>% 
-  multcomp::cld()
-emmeans(fm_root_length_03, ~ isolate) %>% 
-  multcomp::cld()
-
-fm_root_area_03_out <- lm(area_cm.2 ~ species + isolate, data = aggressiveness_3_out)
-# compare anova results 
-anova(fm_root_area_03)
-anova(fm_root_area_03_out)
-autoplot(fm_root_area_03_out, which = 1:6, ncol = 3, label.size = 3) 
-qplot(fm_root_area_03_out$residuals) 
-emmeans(fm_root_area_03_out, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_root_area_03_out, ~ isolate) %>% 
-  multcomp::cld()
-
-fm_root_dry_03_out <- lm(root_mg ~ species + isolate, data = aggressiveness_3_out)
-# compare anova results 
-anova(fm_root_dry_03)
-anova(fm_root_dry_03_out)
-autoplot(fm_root_dry_03_out, which = 1:6, ncol = 3, label.size = 3) 
-qplot(fm_root_dry_03_out$residuals) 
-emmeans(fm_root_dry_03_out, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_root_dry_03_out, ~ isolate) %>% 
-  multcomp::cld()
-emmeans(fm_root_dry_03, ~ isolate) %>% 
-  multcomp::cld()
-
-# shoot dry weight  
-fm_shoot_dry_03_out <- lm(shoot_mg ~ species + isolate, data = aggressiveness_3_out)
-autoplot(fm_shoot_dry_03_out, which = 1:6, ncol = 3, label.size = 3)
-qplot(fm_shoot_dry_03_out$residuals) # outlier
-# compare results
-anova(fm_shoot_dry_03)
-anova(fm_shoot_dry_03_out)
-emmeans(fm_shoot_dry_03_out, ~ species) %>% 
-  multcomp::cld()
-emmeans(fm_shoot_dry_03_out, ~ isolate) %>% 
-  multcomp::cld()
-emmeans(fm_shoot_dry_03, ~ isolate) %>% 
   multcomp::cld()
 ```
 
 ### Save results
 
 ```{r aggressiveness means}
-# Experiment 1 and 2
-length_mean <- emmeans(fm_root_length_01, ~ isolate) %>% 
+root_means <-  emmeans(fm_root_dry, ~ isolate) %>%
   tidy() %>% 
-  mutate(agg_component = "length")
+  mutate(agg_component = "Root weight")
 
-area_mean <- emmeans(fm_root_area_01_log, ~ isolate, type = "response") %>%  
+shoot_means <- emmeans(fm_shoot_dry, ~ isolate) %>% 
   tidy() %>% 
-  mutate(agg_component = "area") %>% 
-  rename(estimate = response)
+  mutate(agg_component = "Shoot weight")
 
-root_mean <- emmeans(fm_root_dry_01, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(agg_component = "root dry")
-  
-shoot_mean <- emmeans(fm_shoot_dry_01, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(agg_component = "shoot dry")
+all_means <- bind_rows(root_means, shoot_means)
 
-means_experiment_1_2 <- bind_rows(length_mean, area_mean, root_mean, shoot_mean) %>% 
-  mutate(experiment = "1 and 2")
-  
-# Experiment 3
-length_mean_3 <- emmeans(fm_root_length_03_out, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(agg_component = "length")
-
-area_mean_3 <-emmeans(fm_root_area_03_out, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(agg_component = "area")
-
-root_mean_3 <-emmeans(fm_root_dry_03_out, ~ isolate) %>%    
-  tidy() %>% 
-  mutate(agg_component = "root dry")
-
-shoot_mean_3 <-emmeans(fm_shoot_dry_03_out, ~ isolate) %>% 
-  tidy() %>% 
-  mutate(agg_component= "shoot dry")
-
-means_experiment_3 <- bind_rows(length_mean_3, area_mean_3, root_mean_3, shoot_mean_3) %>% 
-  mutate(experiment = "3")
-
-# combine both 
-aggressiveness_isolates <- bind_rows(means_experiment_1_2, means_experiment_3)
-# write_csv(aggressiveness_isolates, here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
+write_csv(all_means, here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 ```
-
-I would focus on experiments 1 and 2, the third is different and also the environment (temperature)  
-was different from the first two. 
 
 ## Figure 3
 
 ```{r agg data}
+plot_aggressiveness <- aggressiveness
 # combine the two controls for plotting
-aggressiveness$species <- str_replace_all(aggressiveness$species, 
-                                          c("Control Agar" = "Control", 
-                                            "Control None" = "Control", 
-                                            "Phytophthora sojae" = "P. sojae", 
-                                            "Phytophthora sansomeana" = "P. sansomeana")                
-                                          )
+plot_aggressiveness$species <- str_replace_all(plot_aggressiveness$species, 
+                                               c("Control Agar" = "Control", 
+                                                 "Control None" = "Control", 
+                                                 "Phytophthora sojae" = "P. sojae", 
+                                                 "Phytophthora sansomeana" = "P. sansomeana")
+                                               )
 ```
 
-```{r fig 3, fig.height=5, fig.width=6,  warning=FALSE, message=FALSE}
-
-a3 <- aggressiveness %>% 
-  ggplot(aes(x = species, y = length_cm, color =  species)) +
-  geom_boxplot() +
-  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
-  labs(x = "", 
-       y = "Root length (cm)", 
-       color = "") + 
-  theme_light() +
-  theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size = 1.2,
-                 position=position_dodge(width = 0.75), color="black")
-
-b3 <- aggressiveness %>% 
-  ggplot(aes(x = species, y = area_cm.2, color =  species)) +
-  geom_boxplot() +
-  geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
-  labs(x = "", 
-       y = expression('Root area (cm'^2*')'), 
-       color = "") + 
-  theme_light() +
-  theme(axis.text.x = element_blank()) +
-  stat_summary(fun ="mean", geom="point", size = 1.2,
-                 position=position_dodge(width = 0.75), color="black")
-
-c3 <- aggressiveness %>% 
+```{r fig 3, fig.height = 5, fig.width = 3.25,  warning=FALSE, message=FALSE}
+fig_3a <- plot_aggressiveness %>% 
   ggplot(aes(x = species, y = root_mg, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
@@ -879,92 +620,76 @@ c3 <- aggressiveness %>%
        y = "Root weight (mg)", 
        color = "") + 
   theme_light() +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_blank(), 
+        legend.position = "bottom") +
   stat_summary(fun ="mean", geom="point", size = 1.2,
-                 position=position_dodge(width = 0.75), color="black")
+               position=position_dodge(width = 0.75), color="black") 
 
-d3 <- aggressiveness %>% 
+fig_3b <- plot_aggressiveness %>% 
   ggplot(aes(x = species, y = shoot_mg, color =  species)) +
   geom_boxplot() +
   geom_point(position = position_jitter(), alpha = 0.15, color = "gray50") +
   labs(x = "", 
-       y = "Shoot dry weight (mg)", 
+       y = "Shoot weight (mg)", 
        color = "") + 
   theme_light() +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_blank(), 
+        legend.position = "bottom") +
   stat_summary(fun ="mean", geom="point", size = 1.2,
-                 position=position_dodge(width = 0.75), color="black")
+               position=position_dodge(width = 0.75), color="black") 
 
-figure_three_no_legend <- plot_grid(
-  a3 + theme(legend.position="none"),
-  b3 + theme(legend.position="none"),
-  c3 + theme(legend.position="none"),
-  d3 + theme(legend.position="none"), 
+
+
+new_fig3_no_legend <- plot_grid(
+  fig_3a + theme(legend.position="none"),
+  fig_3b + theme(legend.position="none"),
   align = "hv", 
-  labels = ""
+  labels = "", 
+  ncol = 1
 )
 
-legend_three <- get_legend(a3 + theme(legend.position = "bottom"))
+new_legend_three <- get_legend( fig_3a + theme(legend.position = "bottom"))
 
-(figure_three <- plot_grid(figure_three_no_legend, legend_three, ncol = 1, rel_heights = c(1, 0.1)))
+(figure_three <- plot_grid(new_fig3_no_legend, new_legend_three, ncol = 1, rel_heights = c(1, 0.1)))
 
-# ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 6, height = 5) 
+# ggsave("figure3.tiff", plot = figure_three, dpi = 300, path = here("docs", "figure"), width = 3.25, height = 5) 
 ```
-
-```{r}
-emmeans(fm_root_dry, ~ isolate) %>% 
-  multcomp::cld()
-```
-
-
-
-```{r}
-emmeans(fm_shoot_dry, ~ isolate) %>% 
-  multcomp::cld()
-```
-
-
-
 
 ## Figure 4
 
-```{r figure 4, fig 3, fig.height=6, fig.width=6.8,  warning=FALSE, message=FALSE}
+```{r figure 4, fig.height=4.5, fig.width=7,  warning=FALSE, message=FALSE}
 means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
 
-# change facets name
+# title for x-axis
 means_aggressiveness$facets <- factor(means_aggressiveness$agg_component, 
                                       labels = c( 
-                                        "Root~area~(cm^{2})", 
-                                        "Root~length~(cm)", 
                                         "Root~weight~(mg)", 
-                                        "Shoot~weight~(mg)"
-                                        ))
+                                        "Shoot~weight~(mg)")
+                                      )
 
 # change for color
 means_aggressiveness$species <- str_replace_all(means_aggressiveness$species, 
-                                          c("Control Agar" = "Control", 
-                                            "Control None" = "Control", 
-                                            "Phytophthora sojae" = "P. sojae", 
-                                            "Phytophthora sansomeana" = "P. sansomeana")                
-                                          )
+                                                c("Control Agar" = "Control", 
+                                                  "Control None" = "Control", 
+                                                  "Phytophthora sojae" = "P. sojae", 
+                                                  "Phytophthora sansomeana" = "P. sansomeana")
+                                                )
 
-# sig difference lines 
-line_most_agg <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)", 
-                                       "Root~weight~(mg)", "Shoot~weight~(mg)"), 
-                            value = c(3.245, 91.75, 26, 78.4))
+# significantly difference lines 
+line_most_agg <- data.frame(facets = c("Root~weight~(mg)", "Shoot~weight~(mg)"), 
+                            value = c(20.565, 63.65))
 
-line_control <- data.frame(facets = c("Root~area~(cm^{2})", "Root~length~(cm)", 
-                                       "Root~weight~(mg)", "Shoot~weight~(mg)"), 
-                           value = c(1.52, NA, 25, 47.4))
+line_control <- data.frame(facets = c("Root~weight~(mg)", "Shoot~weight~(mg)"), 
+                           value = c(23.53, 51.1))
 
-figure_four <- means_aggressiveness %>% 
-  filter(experiment == "1 and 2") %>% 
+# figure 4 
+fig_4 <- means_aggressiveness %>% 
   ggplot(aes(x = reorder(isolate, estimate), y = estimate, color = species)) + 
   geom_hline(data = line_most_agg, aes(yintercept = value),
              linetype="dashed",  size = 0.7, color = "gray70") +
   geom_hline(data = line_control, aes(yintercept = value),
              linetype="dashed",  size = 0.7, color = "red", alpha = 0.5) +
-
+  
   geom_point(size = 2) +
   geom_errorbar(aes(ymin = estimate - std.error , ymax = estimate + std.error), 
                 width = 0.2) +
@@ -982,138 +707,86 @@ figure_four <- means_aggressiveness %>%
   facet_wrap(vars(facets), labeller = label_parsed, 
              strip.position = "left", scales = "free_y", ncol = 1) 
 
+fig_4 
 
-# ggsave("figure4.tiff", plot = figure_four, dpi = 300, path = here("docs", "figure"), width = 6, height = 6.8) 
+# ggsave("figure4.tiff", plot = fig_4, dpi = 300, path = here("docs", "figure"), width = 7, height = 4.5) 
 ```
   
-```{r effects}
-means_aggressiveness <- read_csv(here("output", "results", "02_aggressiveness-means-isolates_results.csv"))
+## Effect sizes
 
-means_aggressiveness$agg_component
-            
-effect_length <-  means_aggressiveness %>% 
-  filter(experiment == "1 and 2", 
-         agg_component == "length") %>% 
-  mutate(effect = (estimate - 90.2)/90.2)
 
-effect_area <-  means_aggressiveness %>% 
-  filter(experiment == "1 and 2", 
-         agg_component == "area") %>% 
-  mutate(effect = (estimate - 4.76 )/ 4.76)
-
-effect_root_weight <-  means_aggressiveness %>% 
-  filter(experiment == "1 and 2", 
-         agg_component == "root dry") %>% 
-  mutate(effect = (estimate - 38.4)/ 38.4)
-
-effect_shoot_weight <-  means_aggressiveness %>% 
-  filter(experiment == "1 and 2", 
-         agg_component == "shoot dry") %>% 
-  mutate(effect = (estimate - 88.2)/ 88.2)
-```
-  
 ```{r}
-## length
-effect_shoot_weight %>% 
-  filter(estimate > 46.9 , 
-         species == "Phytophthora sojae", 
-         !isolate == "17PR013G.3") %>% 
-  summarise(mean(effect))
+# effect sizes to write the results 
+means_aggressiveness  %>% 
+  filter(isolate == "Control Agar") # compare against agar control
 
+root_effect <- means_aggressiveness  %>% 
+  filter(agg_component == "Root weight") %>% 
+  mutate(reduction = (34.0  - estimate)/34.0)
+
+shoot_effect <- means_aggressiveness  %>%
+  filter(agg_component == "Shoot weight") %>% 
+  mutate(reduction = (83.5  - estimate)/83.5)
 ```
 
   
-  
-## Correlation b/w aggressiveness and complexity
+# Correlation b/w aggressiveness and complexity
 
 ```{r corr data}
+# correlation
 # combine with pathotype data 
-aggressiveness <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
+aggressiveness_trans <- read_csv(here("output", "transform_data", "02_aggressiveness_transform.csv")) 
 sojae_pathotype <- read_csv(here("output", "results", "02_pathotype-psojae_results.csv"))
-
-sojae_pathotype %>% view()
 
 sojae_complexity <- sojae_pathotype %>% 
   dplyr::select(isolate_id, Complexity) %>% 
   rename(isolate = isolate_id)
 
-aggressiveness_complexity <- left_join(aggressiveness, sojae_complexity, by = "isolate")
+aggressiveness_complexity <- left_join(aggressiveness_trans, sojae_complexity, by = "isolate")
 ```
 
 ```{r correlation }
-# correlation
-# experiment 1 and 2
-corr_agg_patho_1 <- aggressiveness_complexity %>%
-  filter(species == "Phytophthora sojae",
-         experiment == 1) %>% 
-  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
+corr_agg_patho <- aggressiveness_complexity %>%
+  filter(species == "Phytophthora sojae") %>% 
+  dplyr::select(Complexity, shoot_mg, root_mg) %>%
   as.matrix() %>%
   rcorr(type = "pearson")
 
-corrplot(corr_agg_patho_1$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
+corrplot(corr_agg_patho$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 # p-values
 corr_agg_patho$P
 ```
 
-```{r}
-corr_agg_patho_2 <- aggressiveness_complexity %>%
-  filter(species == "Phytophthora sojae",
-         experiment == 2) %>% 
-  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
-  as.matrix() %>%
-  rcorr(type = "pearson")
+## Figure 5
 
-corrplot(corr_agg_patho_2$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
-# p-values
-corr_agg_patho$P
-```
-
-```{r}
-corr_agg_patho_3 <- aggressiveness_complexity %>%
-  filter(species == "Phytophthora sojae",
-         experiment == 3) %>% 
-  dplyr::select(Complexity, shoot_mg, root_mg, length_cm, area_cm.2) %>%
-  as.matrix() %>%
-  rcorr(type = "pearson")
-
-corrplot(corr_agg_patho_3$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
-# p-values
-corr_agg_patho$P
-```
-
-
-
-
-
-
-
-```{r corr box plot}
+```{r corr box plot, fig.height=4, fig.width=3.25, warning=FALSE, message=FALSE}
+# box-plot with complexity 
 box_corr1 <- aggressiveness_complexity %>% 
   filter(!is.na(Complexity)) %>% 
   ggplot(aes(x = factor(Complexity), y = root_mg)) +
   geom_boxplot() +
   geom_point(alpha = 0.2) +
   labs(x = "Compelxity", 
-       y = "Length (cm)") +
+       y = "Root weigth (mg)") +
   theme_light() +
   theme(panel.grid.minor = element_blank(), 
         axis.text.x = element_blank(), 
-        axis.title.x = element_blank()) +
-  facet_wrap(vars(experiment))
+        axis.title.x = element_blank()) 
 
 box_corr2 <- aggressiveness_complexity %>% 
-  filter(experiment == 3,
-    !is.na(Complexity)) %>% 
-  ggplot(aes(x = factor(Complexity), y = root_mg)) +
+  filter(!is.na(Complexity)) %>% 
+  ggplot(aes(x = factor(Complexity), y = shoot_mg)) +
   geom_boxplot() +
   geom_point(alpha = 0.2) +
   labs(x = "Complexity", 
-       y = "Root weight (mg)") +
+       y = "Shoot weight (mg)") +
   theme_light() +
   theme(panel.grid.minor = element_blank())
 
 
-plot_grid(box_corr1, box_corr2, ncol = 1, align = "v", rel_heights = c(1, 1.1))
+fig_5 <- plot_grid(box_corr1, box_corr2, ncol = 1, align = "v", rel_heights = c(1, 1.1))
+fig_5
+# ggsave("figure5.tiff", plot = fig_5, dpi = 300, path = here("docs", "figure"), width = 3.25, height = 4)
 ``` 
 
 
@@ -1462,9 +1135,9 @@ compare_EC50_id <- compare_EC50_id %>%
 
 ```
 
-## Figure 5
+## Figure 6
 
-```{r figure 5,fig.height=5, fig.width=5.5, message=FALSE}
+```{r figure 5,fig.height=4.5, fig.width=5, message=FALSE}
 fungicide_EC50 <- read_csv(here("output", "results", "02_fungicide-sensitivity_EC50.csv"))
 
 EC50_plot <- fungicide_EC50  %>% 
@@ -1481,7 +1154,7 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
                                        )
 
 
-(figure_five <- ggplot(EC50_plot, aes(x = EC50, fill = species)) +
+(figure_six <- ggplot(EC50_plot, aes(x = EC50, fill = species)) +
   geom_histogram(alpha = 0.6, color = "white", bins = 10) +
   facet_wrap(~ fungicide, scales = "free_x") +
   labs(x = expression('EC'[50]*' (μg ml'^-1*')'), 
@@ -1497,7 +1170,7 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) 
 )
 
-# ggsave("figure5.tiff", plot = figure_five, dpi = 300, path = here("docs", "figure"), width = 5, height = 5)
+# ggsave("figure6.tiff", plot = figure_six, dpi = 300, path = here("docs", "figure"), width = 5, height = 4.5)
 ```
 
 
@@ -1528,7 +1201,6 @@ corr_sojae_all <- sojae_all_data %>%
 corrplot(corr_sojae_all$r, method = "number", type = "upper", order = "hclust", tl.col = "black", diag = FALSE)
 # p-values
 corr_sojae_all$P
-
 ```
 
 ```{r corr plot sample}
@@ -1543,55 +1215,4 @@ corrplot(corr_sojae_all$r, method = "color", col = col(200),
          diag = FALSE, tl.cex = 1)
 ```
 
-
-```{r}
-sojae_all_data
-```
-
-# Extra info 
-```{r}
-
-rojas_data <- read_csv("https://raw.githubusercontent.com/Chilverslab/Rojas_Survey_Phytopath_2016/master/data/clean/Isolates_11-12_final.csv")
-
-# 11 states
-rojas_data %>%
-  filter(Species == "Phytophthora sansomeana") %>% 
-  group_by(State) %>% 
-  summarise(n = n()) %>% 
-  arrange(n)
-
-rojas_data %>%
-  filter(Species == "Phytophthora sojae") %>% 
-  group_by(State) %>% 
-  summarise(n = n()) %>% 
-  arrange(n) 
-
-
-# no sojae
-rojas_data %>% 
-  filter(State == "Ontario") %>% 
-  group_by(Species) %>% 
-  summarise(n = n()) %>% 
-  arrange(n) %>% 
-  view()
-
-
-rojas_data %>%
-  filter(State == "Illinois") %>% 
-  view()
-
-
-## noel data isolation oomycete paper
-noel_data <- read_csv("https://raw.githubusercontent.com/noelzach/Oomycete-Isolation-from-seed-treatments/master/GitHub/IsolationRecoveryV6.csv")
-
-noel_data %>% 
-  filter(location == "IL", 
-         !`Highest BLAST taxonomy` == ".") %>% 
-  group_by(`Highest BLAST taxonomy`) %>% 
-  count() %>% 
-  arrange(n)
-
-# 1 sansomena, no sojae, dominated by pythium 
-
-```
 
