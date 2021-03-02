@@ -1,4 +1,4 @@
-# Characterization of _Phytophthora_ spp. associated with PRR in Illinois
+# Characterization of _Phytophthora_ species associated with soybean in Illinois: Complexity, Aggressiveness and Fungicide Sensitivity 
 
 This repository contains data and code used to analyze data for the manuscript XXXX. The repository is divided in the following folders:  
 - [analysis](https://github.com/danielcerritos/phytophthora/tree/master/analysis): Code use for analysis.  
