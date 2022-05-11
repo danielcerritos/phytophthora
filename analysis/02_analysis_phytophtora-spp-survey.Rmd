@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # "rnaturalearthdata","hagis", "corrplot", "Hmisc", "drc", "rgeos", "scales"))
 pacman::p_load(tidyverse, here, sf, maps, rnaturalearth, rnaturalearthdata, 
                cowplot, hagis, pander, lmerTest, ggResidpanel, emmeans, broom,
-               Hmisc, corrplot, drc, scales, broom, ggfortify)
+               Hmisc, corrplot, drc, scales, broom, ggfortify, ggtext)
 ```
 
 # Import data
@@ -1157,17 +1157,20 @@ EC50_plot$fungicide <- str_replace_all(EC50_plot$fungicide,
 (figure_six <- ggplot(EC50_plot, aes(x = EC50, fill = species)) +
   geom_histogram(alpha = 0.6, color = "white", bins = 10) +
   facet_wrap(~ fungicide, scales = "free_x") +
-  labs(x = expression('EC'[50]*' (μg ml'^-1*')'), 
+  labs(x = expression('EC'[50]*' (μg/ml)'), 
        y = "Frequency", 
        fill = "") +
   theme_minimal() +
   panel_border() +
+  scale_fill_discrete(labels = c("*P. sansomeana*", "*P. sojae*")) +
   theme(strip.text = element_text(face = "bold", size = rel(1)), 
         panel.grid.major.x = element_blank(), 
         panel.grid.minor.x = element_blank(), 
         panel.grid.minor.y = element_blank(), 
-        legend.position = "bottom") +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) 
+        legend.position = "bottom", 
+        legend.text = element_markdown()) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+    
 )
 
 # ggsave("figure6.tiff", plot = figure_six, dpi = 300, path = here("docs", "figure"), width = 5, height = 4.5)
